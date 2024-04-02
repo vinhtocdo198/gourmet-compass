@@ -1,0 +1,2 @@
+# Gourmet Compass
+Gourmet Compass is a restaurant review application tailored to culinary enthusiasts seeking to explore and share their dining experiences. This app is crafted to assist users in discovering, reviewing, and recommending restaurants of various cuisines and dining preferences. Gourmet Compass offers a comprehensive platform for users to engage with a diverse culinary community. With intuitive features, personalized recommendations, and a dynamic user interface, our application aims to elevate the dining experience and foster a culture of culinary exploration.
