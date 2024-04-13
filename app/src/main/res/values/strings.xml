@@ -13,6 +13,9 @@
     <string name="open_hr_title">Opening Hours</string>
     <string name="ratings_title">Ratings (4/5)</string>
     <string name="star">Star</string>
-    <string name="res_bg_image">Restaurant background image</string>
-    <string name="round_button">Round white button</string>
+    <string name="res_bg_image">Restaurant bg image</string>
+    <string name="round_btn">Round white btn</string>
+    <string name="restaurant_name">Restaurant Name</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
