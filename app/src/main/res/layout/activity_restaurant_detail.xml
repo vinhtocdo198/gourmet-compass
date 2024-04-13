@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    tools:context=".RestaurantDetailActivity">
+
+
+    <FrameLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:contentDescription="@string/res_bg_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_10"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/icon_arrow_back"
+                android:layout_width="@dimen/round_btn_size"
+                android:layout_height="@dimen/round_btn_size"
+                android:background="@drawable/btn_round_white"
+                android:contentDescription="@string/round_button"
+                android:src="@drawable/ic_arrow_back" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/icon_search"
+                android:layout_width="@dimen/round_btn_size"
+                android:layout_height="@dimen/round_btn_size"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:background="@drawable/btn_round_white"
+                android:contentDescription="@string/round_button"
+                android:src="@drawable/ic_search"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/icon_plus"
+                android:layout_width="@dimen/round_btn_size"
+                android:layout_height="@dimen/round_btn_size"
+                android:background="@drawable/btn_round_white"
+                android:contentDescription="@string/round_button"
+                android:src="@drawable/ic_plus"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_20"
+        android:fontFamily="@font/nunito_sans_bold"
+        android:text="Restaurant Name"
+        android:textAlignment="center"
+        android:textColor="@color/title_text"
+        android:textSize="@dimen/text_20"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar" />
+
+    <LinearLayout
+        android:id="@+id/tab_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_20"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="@dimen/margin_20"
+        android:background="@drawable/tab_bar"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+        <Button
+            android:id="@+id/detailBtn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_res_detail"
+            android:fontFamily="@font/nunito_sans_bold"
+            android:text="@string/detail_btn"
+            android:textAllCaps="false"
+            android:textColor="@color/option_text"
+            android:textSize="@dimen/text_14" />
+
+        <Button
+            android:id="@+id/menuBtn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_res_detail"
+            android:fontFamily="@font/nunito_sans_bold"
+            android:text="@string/menu_btn"
+            android:textAllCaps="false"
+            android:textColor="@color/option_text"
+            android:textSize="@dimen/text_14" />
+
+
+        <Button
+            android:id="@+id/galleryBtn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_res_detail"
+            android:fontFamily="@font/nunito_sans_bold"
+            android:text="@string/gallery_btn"
+            android:textAllCaps="false"
+            android:textColor="@color/option_text"
+            android:textSize="@dimen/text_14" />
+
+        <Button
+            android:id="@+id/reviewBtn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_res_detail"
+            android:fontFamily="@font/nunito_sans_bold"
+            android:text="@string/review_btn"
+            android:textAllCaps="false"
+            android:textColor="@color/option_text"
+            android:textSize="@dimen/text_14" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/desc_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/padding_30"
+        android:layout_marginTop="@dimen/margin_20"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab_bar">
+
+        <TextView
+            android:id="@+id/descTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunito_sans_bold"
+            android:text="@string/desc_title"
+            android:textColor="@color/title_text"
+            android:textSize="@dimen/text_18"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/descContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunito_sans_regular"
+            android:text="Content"
+            android:textColor="@color/content_text"
+            android:textSize="@dimen/text_16"
+            android:textStyle="normal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/address_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/padding_30"
+        android:layout_marginTop="@dimen/margin_20"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/desc_layout">
+
+        <TextView
+            android:id="@+id/addressTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunito_sans_regular"
+            android:text="@string/address_title"
+            android:textColor="@color/title_text"
+            android:textSize="@dimen/text_18"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/addressContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunito_sans_regular"
+            android:text="Content"
+            android:textColor="@color/address_text"
+            android:textSize="@dimen/text_16"
+            android:textStyle="normal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/phone_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/padding_30"
+        android:layout_marginTop="@dimen/margin_20"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/address_layout">
+
+        <TextView
+            android:id="@+id/phoneTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunito_sans_regular"
+            android:text="@string/phone_title"
+            android:textColor="@color/title_text"
+            android:textSize="@dimen/text_18"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/phoneContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunito_sans_regular"
+            android:text="0123456789"
+            android:textColor="@color/content_text"
+            android:textSize="@dimen/text_16"
+            android:textStyle="normal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/open_hr_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/padding_30"
+        android:layout_marginTop="@dimen/margin_20"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phone_layout">
+
+        <TextView
+            android:id="@+id/openHrTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunito_sans_regular"
+            android:text="@string/open_hr_title"
+            android:textColor="@color/title_text"
+            android:textSize="@dimen/text_18"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/openHrContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunito_sans_regular"
+            android:text="Content"
+            android:textColor="@color/content_text"
+            android:textSize="@dimen/text_16"
+            android:textStyle="normal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ratings"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/padding_30"
+        android:layout_marginTop="@dimen/margin_20"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/open_hr_layout">
+
+        <TextView
+            android:id="@+id/ratingsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:fontFamily="@font/nunito_sans_regular"
+            android:text="@string/ratings_title"
+            android:textColor="@color/title_text"
+            android:textSize="@dimen/text_18"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/rate_count_5"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:gravity="center"
+                android:text="(0)"
+                android:textColor="@color/star"
+                android:textSize="@dimen/text_18"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+
+            <View
+                android:layout_width="250dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:background="@drawable/rating_line" />
+
+
+            <TextView
+                android:id="@+id/star5"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_5"
+                android:gravity="center"
+                android:text="5"
+                android:textColor="@color/star"
+                android:textSize="@dimen/text_18"
+                android:textStyle="bold"
+
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:contentDescription="@string/star"
+                android:src="@drawable/ic_full_star" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/rate_count_4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:gravity="center"
+                android:text="(0)"
+                android:textColor="@color/star"
+                android:textSize="@dimen/text_18"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <View
+                android:layout_width="200dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:background="@drawable/rating_line" />
+
+
+            <TextView
+                android:id="@+id/star4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_5"
+                android:gravity="center"
+                android:text="4"
+                android:textColor="@color/star"
+                android:textSize="@dimen/text_18"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:contentDescription="@string/star"
+                android:src="@drawable/ic_full_star" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/rate_count_3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:gravity="center"
+                android:text="(0)"
+                android:textColor="@color/star"
+                android:textSize="@dimen/text_18"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <View
+                android:layout_width="150dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:background="@drawable/rating_line" />
+
+            <TextView
+                android:id="@+id/star3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_5"
+                android:gravity="center"
+                android:text="3"
+                android:textColor="@color/star"
+                android:textSize="@dimen/text_18"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:contentDescription="@string/star"
+                android:src="@drawable/ic_full_star" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/rate_count_2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:gravity="center"
+                android:text="(0)"
+                android:textColor="@color/star"
+                android:textSize="@dimen/text_18"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <View
+                android:layout_width="100dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:background="@drawable/rating_line" />
+
+            <TextView
+                android:id="@+id/star2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_5"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/star"
+                android:textSize="@dimen/text_18"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:contentDescription="@string/star"
+                android:src="@drawable/ic_full_star" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/rate_count_1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:gravity="center"
+                android:text="(0)"
+                android:textColor="@color/star"
+                android:textSize="@dimen/text_18"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:background="@drawable/rating_line" />
+
+            <TextView
+                android:id="@+id/star1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_5"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/star"
+                android:textSize="@dimen/text_18"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:contentDescription="@string/star"
+                android:src="@drawable/ic_full_star" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

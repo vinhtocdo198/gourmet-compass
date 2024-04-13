@@ -3,4 +3,16 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="detail_btn">Detail</string>
+    <string name="menu_btn">Menu</string>
+    <string name="gallery_btn">Gallery</string>
+    <string name="review_btn">Review</string>
+    <string name="desc_title">Description</string>
+    <string name="address_title">Address</string>
+    <string name="phone_title">Phone Number</string>
+    <string name="open_hr_title">Opening Hours</string>
+    <string name="ratings_title">Ratings (4/5)</string>
+    <string name="star">Star</string>
+    <string name="res_bg_image">Restaurant background image</string>
+    <string name="round_button">Round white button</string>
 </resources>
