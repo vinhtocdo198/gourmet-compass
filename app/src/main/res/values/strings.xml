@@ -16,6 +16,12 @@
     <string name="res_bg_image">Restaurant bg image</string>
     <string name="round_btn">Round white btn</string>
     <string name="restaurant_name">Restaurant Name</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="gallery_img">Gallery image</string>
+    <string name="dish_ava">Dish avatar</string>
+    <string name="icon">Icon</string>
+    <string name="reply">Reply</string>
+    <string name="like">Like</string>
+    <string name="dislike">Dislike</string>
+    <string name="add_to_collection">Add to collection</string>
+    <string name="rate_this_restaurant">Rate this restaurant</string>
 </resources>

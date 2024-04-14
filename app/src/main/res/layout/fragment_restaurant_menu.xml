@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui_restaurant_detail.RestaurantDetailActivity">
+    android:layout_height="wrap_content"
+    android:background="@color/app_bg">
 
-    <TextView
+
+    <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fontFamily="@font/nunito_sans_bold"
-        android:text="@string/restaurant_name"
-        android:textAlignment="center" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:columnCount="1"
+        android:columnOrderPreserved="false"
+        android:paddingBottom="@dimen/padding_10"
+        tools:ignore="RtlSymmetry">
 
-</FrameLayout>
+        <include
+            layout="@layout/item_dish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_10" />
+
+        <include
+            layout="@layout/item_dish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_10" />
+
+
+    </GridLayout>
+
+
+</ScrollView>

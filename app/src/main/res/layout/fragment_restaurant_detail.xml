@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,382 +7,390 @@
     android:background="@color/app_bg"
     tools:context=".ui_restaurant_detail.RestaurantDetailActivity">
 
-    <LinearLayout
-        android:id="@+id/desc_layout"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_40"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/descTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nunito_sans_bold"
-            android:text="@string/desc_title"
-            android:textColor="@color/title_text"
-            android:textSize="@dimen/text_18" />
-
-        <TextView
-            android:id="@+id/descContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nunito_sans_regular"
-            android:text="Content"
-            android:textColor="@color/content_text"
-            android:textSize="@dimen/text_16" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/address_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_40"
-        android:layout_marginTop="@dimen/margin_20"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/desc_layout">
-
-        <TextView
-            android:id="@+id/addressTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nunito_sans_bold"
-            android:text="@string/address_title"
-            android:textColor="@color/title_text"
-            android:textSize="@dimen/text_18" />
-
-        <TextView
-            android:id="@+id/addressContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nunito_sans_regular"
-            android:text="Content"
-            android:textColor="@color/address_text"
-            android:textSize="@dimen/text_16" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/phone_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_40"
-        android:layout_marginTop="@dimen/margin_20"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/address_layout">
-
-        <TextView
-            android:id="@+id/phoneTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nunito_sans_bold"
-            android:text="@string/phone_title"
-            android:textColor="@color/title_text"
-            android:textSize="@dimen/text_18" />
-
-        <TextView
-            android:id="@+id/phoneContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nunito_sans_regular"
-            android:text="0123456789"
-            android:textColor="@color/content_text"
-            android:textSize="@dimen/text_16" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/open_hr_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_40"
-        android:layout_marginTop="@dimen/margin_20"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phone_layout">
-
-        <TextView
-            android:id="@+id/openHrTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nunito_sans_bold"
-            android:text="@string/open_hr_title"
-            android:textColor="@color/title_text"
-            android:textSize="@dimen/text_18" />
-
-        <TextView
-            android:id="@+id/openHrContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/nunito_sans_regular"
-            android:text="Content"
-            android:textColor="@color/content_text"
-            android:textSize="@dimen/text_16" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ratings"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_40"
-        android:layout_marginTop="@dimen/margin_20"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/open_hr_layout">
-
-        <TextView
-            android:id="@+id/ratingsTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_10"
-            android:fontFamily="@font/nunito_sans_bold"
-            android:text="@string/ratings_title"
-            android:textColor="@color/title_text"
-            android:textSize="@dimen/text_18" />
+        android:background="@color/app_bg">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/desc_layout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_5"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_marginHorizontal="@dimen/margin_40"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/rate_count_5"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_10"
+                android:id="@+id/desc_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/nunito_sans_bold"
-                android:gravity="center"
-                android:text="(0)"
-                android:textColor="@color/star"
-                android:textSize="@dimen/text_18"
-                tools:ignore="HardcodedText" />
-
-
-            <View
-                android:layout_width="250dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:background="@drawable/rating_line" />
-
+                android:text="@string/desc_title"
+                android:textColor="@color/title_text"
+                android:textSize="@dimen/text_18" />
 
             <TextView
-                android:id="@+id/star5"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_5"
-                android:fontFamily="@font/nunito_sans_bold"
-                android:gravity="center"
-                android:text="5"
-                android:textColor="@color/star"
-                android:textSize="@dimen/text_18"
-                tools:ignore="HardcodedText" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:contentDescription="@string/star"
-                android:src="@drawable/ic_full_star" />
-
+                android:id="@+id/desc_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_sans_regular"
+                android:text="abc"
+                android:textColor="@color/content_text"
+                android:textSize="@dimen/text_16" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/address_layout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_5"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_marginHorizontal="@dimen/margin_40"
+            android:layout_marginTop="@dimen/margin_20"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/desc_layout">
 
             <TextView
-                android:id="@+id/rate_count_4"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_10"
+                android:id="@+id/address_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/nunito_sans_bold"
-                android:gravity="center"
-                android:text="(0)"
-                android:textColor="@color/star"
-                android:textSize="@dimen/text_18"
-                tools:ignore="HardcodedText" />
-
-            <View
-                android:layout_width="200dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:background="@drawable/rating_line" />
-
+                android:text="@string/address_title"
+                android:textColor="@color/title_text"
+                android:textSize="@dimen/text_18" />
 
             <TextView
-                android:id="@+id/star4"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_5"
-                android:fontFamily="@font/nunito_sans_bold"
-                android:gravity="center"
-                android:text="4"
-                android:textColor="@color/star"
-                android:textSize="@dimen/text_18"
-                tools:ignore="HardcodedText" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:contentDescription="@string/star"
-                android:src="@drawable/ic_full_star" />
-
+                android:id="@+id/address_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_sans_regular"
+                android:text="Content"
+                android:textColor="@color/address_text"
+                android:textSize="@dimen/text_16" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/phone_layout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_5"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_marginHorizontal="@dimen/margin_40"
+            android:layout_marginTop="@dimen/margin_20"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/address_layout">
 
             <TextView
-                android:id="@+id/rate_count_3"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_10"
+                android:id="@+id/phone_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/nunito_sans_bold"
-                android:gravity="center"
-                android:text="(0)"
-                android:textColor="@color/star"
-                android:textSize="@dimen/text_18"
-                tools:ignore="HardcodedText" />
-
-            <View
-                android:layout_width="150dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:background="@drawable/rating_line" />
+                android:text="@string/phone_title"
+                android:textColor="@color/title_text"
+                android:textSize="@dimen/text_18" />
 
             <TextView
-                android:id="@+id/star3"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_5"
-                android:fontFamily="@font/nunito_sans_bold"
-                android:gravity="center"
-                android:text="3"
-                android:textColor="@color/star"
-                android:textSize="@dimen/text_18"
-                tools:ignore="HardcodedText" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:contentDescription="@string/star"
-                android:src="@drawable/ic_full_star" />
-
-
+                android:id="@+id/phone_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_sans_regular"
+                android:text="0123456789"
+                android:textColor="@color/content_text"
+                android:textSize="@dimen/text_16" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/open_hr_layout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_5"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_marginHorizontal="@dimen/margin_40"
+            android:layout_marginTop="@dimen/margin_20"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phone_layout">
 
             <TextView
-                android:id="@+id/rate_count_2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_10"
+                android:id="@+id/open_hr_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/nunito_sans_bold"
-                android:gravity="center"
-                android:text="(0)"
-                android:textColor="@color/star"
-                android:textSize="@dimen/text_18"
-                tools:ignore="HardcodedText" />
-
-            <View
-                android:layout_width="100dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:background="@drawable/rating_line" />
+                android:text="@string/open_hr_title"
+                android:textColor="@color/title_text"
+                android:textSize="@dimen/text_18" />
 
             <TextView
-                android:id="@+id/star2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_5"
-                android:fontFamily="@font/nunito_sans_bold"
-                android:gravity="center"
-                android:text="2"
-                android:textColor="@color/star"
-                android:textSize="@dimen/text_18"
-                tools:ignore="HardcodedText" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:contentDescription="@string/star"
-                android:src="@drawable/ic_full_star" />
-
-
+                android:id="@+id/open_hr_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_sans_regular"
+                android:text="Content"
+                android:textColor="@color/content_text"
+                android:textSize="@dimen/text_16" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/ratings"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_5"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_marginHorizontal="@dimen/margin_40"
+            android:layout_marginTop="@dimen/margin_20"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding_20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/open_hr_layout">
 
             <TextView
-                android:id="@+id/rate_count_1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_10"
+                android:id="@+id/ratings_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_10"
                 android:fontFamily="@font/nunito_sans_bold"
-                android:gravity="center"
-                android:text="(0)"
-                android:textColor="@color/star"
-                android:textSize="@dimen/text_18"
-                tools:ignore="HardcodedText" />
+                android:text="@string/ratings_title"
+                android:textColor="@color/title_text"
+                android:textSize="@dimen/text_18" />
 
-            <View
-                android:layout_width="50dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:background="@drawable/rating_line" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/star1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_5"
-                android:fontFamily="@font/nunito_sans_bold"
-                android:gravity="center"
-                android:text="1"
-                android:textColor="@color/star"
-                android:textSize="@dimen/text_18"
-                tools:ignore="HardcodedText" />
+                <TextView
+                    android:id="@+id/rate_count_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:fontFamily="@font/nunito_sans_bold"
+                    android:gravity="center"
+                    android:text="(0)"
+                    android:textColor="@color/star"
+                    android:textSize="@dimen/text_18"
+                    tools:ignore="HardcodedText" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:contentDescription="@string/star"
-                android:src="@drawable/ic_full_star" />
 
+                <View
+                    android:layout_width="250dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:background="@drawable/rating_line" />
+
+
+                <TextView
+                    android:id="@+id/star5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/margin_5"
+                    android:fontFamily="@font/nunito_sans_bold"
+                    android:gravity="center"
+                    android:text="5"
+                    android:textColor="@color/star"
+                    android:textSize="@dimen/text_18"
+                    tools:ignore="HardcodedText" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:contentDescription="@string/star"
+                    android:src="@drawable/ic_full_star" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/rate_count_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:fontFamily="@font/nunito_sans_bold"
+                    android:gravity="center"
+                    android:text="(0)"
+                    android:textColor="@color/star"
+                    android:textSize="@dimen/text_18"
+                    tools:ignore="HardcodedText" />
+
+                <View
+                    android:layout_width="200dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:background="@drawable/rating_line" />
+
+
+                <TextView
+                    android:id="@+id/star4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/margin_5"
+                    android:fontFamily="@font/nunito_sans_bold"
+                    android:gravity="center"
+                    android:text="4"
+                    android:textColor="@color/star"
+                    android:textSize="@dimen/text_18"
+                    tools:ignore="HardcodedText" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:contentDescription="@string/star"
+                    android:src="@drawable/ic_full_star" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/rate_count_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:fontFamily="@font/nunito_sans_bold"
+                    android:gravity="center"
+                    android:text="(0)"
+                    android:textColor="@color/star"
+                    android:textSize="@dimen/text_18"
+                    tools:ignore="HardcodedText" />
+
+                <View
+                    android:layout_width="150dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:background="@drawable/rating_line" />
+
+                <TextView
+                    android:id="@+id/star3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/margin_5"
+                    android:fontFamily="@font/nunito_sans_bold"
+                    android:gravity="center"
+                    android:text="3"
+                    android:textColor="@color/star"
+                    android:textSize="@dimen/text_18"
+                    tools:ignore="HardcodedText" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:contentDescription="@string/star"
+                    android:src="@drawable/ic_full_star" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/rate_count_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:fontFamily="@font/nunito_sans_bold"
+                    android:gravity="center"
+                    android:text="(0)"
+                    android:textColor="@color/star"
+                    android:textSize="@dimen/text_18"
+                    tools:ignore="HardcodedText" />
+
+                <View
+                    android:layout_width="100dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:background="@drawable/rating_line" />
+
+                <TextView
+                    android:id="@+id/star2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/margin_5"
+                    android:fontFamily="@font/nunito_sans_bold"
+                    android:gravity="center"
+                    android:text="2"
+                    android:textColor="@color/star"
+                    android:textSize="@dimen/text_18"
+                    tools:ignore="HardcodedText" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:contentDescription="@string/star"
+                    android:src="@drawable/ic_full_star" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/rate_count_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:fontFamily="@font/nunito_sans_bold"
+                    android:gravity="center"
+                    android:text="(0)"
+                    android:textColor="@color/star"
+                    android:textSize="@dimen/text_18"
+                    tools:ignore="HardcodedText" />
+
+                <View
+                    android:layout_width="50dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:background="@drawable/rating_line" />
+
+                <TextView
+                    android:id="@+id/star1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/margin_5"
+                    android:fontFamily="@font/nunito_sans_bold"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/star"
+                    android:textSize="@dimen/text_18"
+                    tools:ignore="HardcodedText" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:contentDescription="@string/star"
+                    android:src="@drawable/ic_full_star" />
+
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
