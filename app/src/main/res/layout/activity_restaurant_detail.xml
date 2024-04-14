@@ -36,7 +36,7 @@
                 android:id="@+id/btn_back"
                 android:layout_width="@dimen/round_btn_size"
                 android:layout_height="@dimen/round_btn_size"
-                android:background="@drawable/btn_round_white"
+                android:background="@drawable/btn_round_with_icon"
                 android:contentDescription="@string/round_btn"
                 android:src="@drawable/ic_arrow_back" />
 
@@ -50,16 +50,15 @@
                 android:layout_width="@dimen/round_btn_size"
                 android:layout_height="@dimen/round_btn_size"
                 android:layout_marginEnd="@dimen/margin_10"
-                android:background="@drawable/btn_round_white"
+                android:background="@drawable/btn_round_with_icon"
                 android:contentDescription="@string/round_btn"
-                android:src="@drawable/ic_search"
-                android:visibility="invisible" />
+                android:src="@drawable/ic_search" />
 
             <ImageButton
                 android:id="@+id/btn_plus"
                 android:layout_width="@dimen/round_btn_size"
                 android:layout_height="@dimen/round_btn_size"
-                android:background="@drawable/btn_round_white"
+                android:background="@drawable/btn_round_with_icon"
                 android:contentDescription="@string/round_btn"
                 android:src="@drawable/ic_plus" />
 
@@ -88,12 +87,12 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_20"
         android:layout_marginTop="@dimen/margin_20"
-        android:background="@drawable/tab_bar_layout"
+        android:background="@drawable/border_tab_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/res_name"
-        app:tabIndicator="@drawable/tab_bar_item"
+        app:tabIndicator="@drawable/item_tab_bar"
         app:tabIndicatorAnimationMode="elastic"
         app:tabIndicatorColor="@color/option_chosen_bg"
         app:tabIndicatorGravity="stretch"

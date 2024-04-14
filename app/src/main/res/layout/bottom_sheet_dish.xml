@@ -37,7 +37,7 @@
         android:background="@drawable/btn_bottom_sheet"
         android:elevation="5dp"
         android:fontFamily="@font/nunito_sans_bold"
-        android:text="@string/add_a_review"
+        android:text="@string/rate_this_dish"
         android:textAllCaps="false"
         android:textSize="@dimen/text_16" />
 

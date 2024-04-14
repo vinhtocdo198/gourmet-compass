@@ -5,16 +5,20 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.gourmetcompass.R;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -22,12 +26,19 @@ import java.util.Objects;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
 
+    // Tab layout
     ViewPagerAdapter viewPagerAdapter;
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     private final String[] titles = {"Detail", "Menu", "Gallery", "Review"};
 
+    // Buttons
     ImageButton plusBtn;
+    ImageButton searchBtn;
+    ImageButton backBtn;
+
+    // Bottom sheet
+    BottomSheetDialog bottomSheetDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +53,51 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> tab.setText(titles[position])).attach();
 
 
-        // Open bottom sheet
         plusBtn = findViewById(R.id.btn_plus);
+        searchBtn = findViewById(R.id.btn_search);
+        backBtn = findViewById(R.id.btn_back);
+
         plusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog();
+                openBottomSheet();
             }
         });
+
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchMenu();
+            }
+        });
+    }
+
+    private void openBottomSheet() {
+        bottomSheetDialog = new BottomSheetDialog(RestaurantDetailActivity.this, R.style.BottomSheetTheme);
+        View sheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_restaurant, null);
+        bottomSheetDialog.setContentView(sheetView);
+        bottomSheetDialog.show();
+
+        sheetView.findViewById(R.id.btn_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(RestaurantDetailActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        sheetView.findViewById(R.id.btn_review).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(RestaurantDetailActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void searchMenu() {
+        TabLayout.Tab tab = tabLayout.getTabAt(1);
+        if (tab != null) {
+            tab.select();
+        }
     }
 
     private void showDialog() {
