@@ -35,10 +35,10 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
+            style="@style/titleFont"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:fontFamily="@font/nunito_sans_bold"
             android:padding="@dimen/padding_10"
             android:text="@string/my_collection"
             android:textColor="@color/title_text"

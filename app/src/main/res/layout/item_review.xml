@@ -41,10 +41,10 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
+                style="@style/titleFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_5"
-                android:fontFamily="@font/nunito_sans_bold"
                 android:text="Name"
                 android:textColor="@color/title_text"
                 android:textSize="@dimen/text_16"
@@ -88,10 +88,10 @@
                 android:layout_weight="1" />
 
             <TextView
+                style="@style/textFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_10"
-                android:fontFamily="@font/nunito_sans_regular"
                 android:text="1h"
                 android:textColor="@color/content_text"
                 android:textSize="@dimen/text_12"
@@ -102,11 +102,11 @@
 
 
         <TextView
+            style="@style/textFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_10"
             android:ellipsize="end"
-            android:fontFamily="@font/nunito_sans_regular"
             android:maxLines="3"
             android:text="ffffffffffff"
             android:textSize="@dimen/text_14" />
@@ -154,6 +154,7 @@
                         android:src="@drawable/ic_plus" />
 
                 </androidx.cardview.widget.CardView>
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="@dimen/comment_img_size"
                     android:layout_height="@dimen/comment_img_size"
@@ -170,6 +171,7 @@
                         android:src="@drawable/ic_plus" />
 
                 </androidx.cardview.widget.CardView>
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="@dimen/comment_img_size"
                     android:layout_height="@dimen/comment_img_size"
@@ -186,6 +188,7 @@
                         android:src="@drawable/ic_plus" />
 
                 </androidx.cardview.widget.CardView>
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="@dimen/comment_img_size"
                     android:layout_height="@dimen/comment_img_size"
@@ -214,6 +217,7 @@
             android:orientation="horizontal">
 
             <Button
+                style="@style/titleFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_5"
@@ -222,7 +226,6 @@
                 android:drawableStart="@drawable/ic_reply"
                 android:drawablePadding="-15dp"
                 android:elevation="5dp"
-                android:fontFamily="@font/nunito_sans_bold"
                 android:paddingStart="@dimen/padding_20"
                 android:text="@string/reply"
                 android:textAllCaps="false"
@@ -231,6 +234,7 @@
                 tools:ignore="RtlSymmetry" />
 
             <Button
+                style="@style/titleFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_5"
@@ -239,7 +243,6 @@
                 android:drawableStart="@drawable/ic_thumb_up"
                 android:drawablePadding="-10dp"
                 android:elevation="5dp"
-                android:fontFamily="@font/nunito_sans_bold"
                 android:paddingStart="@dimen/padding_20"
                 android:text="@string/like"
                 android:textAllCaps="false"
@@ -248,6 +251,7 @@
                 tools:ignore="RtlSymmetry" />
 
             <Button
+                style="@style/titleFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_5"
@@ -256,7 +260,6 @@
                 android:drawableStart="@drawable/ic_thumb_down"
                 android:drawablePadding="0dp"
                 android:elevation="5dp"
-                android:fontFamily="@font/nunito_sans_bold"
                 android:paddingStart="@dimen/padding_20"
                 android:text="@string/dislike"
                 android:textAllCaps="false"

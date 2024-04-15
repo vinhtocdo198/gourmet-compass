@@ -14,17 +14,32 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="DialogAnimation">
+    <style name="dialogAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_in_bts</item>
         <item name="android:windowExitAnimation">@anim/slide_out_bts</item>
     </style>
 
-    <style name="BottomSheetTheme" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    <style name="bottomSheetTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/bottomSheetStyle</item>
     </style>
 
-    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+    <style name="bottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
     </style>
+
+    <style name="restaurantDetailTabBar" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:fontFamily">@font/nunito_sans_bold</item>
+    </style>
+
+    <!-- Font of the app -->
+    <style name="titleFont">
+        <item name="android:fontFamily">@font/nunito_sans_bold</item>
+    </style>
+
+    <style name="textFont">
+        <item name="android:fontFamily">@font/nunito_sans_regular</item>
+    </style>
+
 
 </resources>

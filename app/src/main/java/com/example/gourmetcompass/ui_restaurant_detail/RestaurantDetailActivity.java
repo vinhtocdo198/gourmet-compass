@@ -13,16 +13,12 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.gourmetcompass.R;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import java.util.Objects;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
 
@@ -73,7 +69,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     }
 
     private void openBottomSheet() {
-        bottomSheetDialog = new BottomSheetDialog(RestaurantDetailActivity.this, R.style.BottomSheetTheme);
+        bottomSheetDialog = new BottomSheetDialog(RestaurantDetailActivity.this, R.style.bottomSheetTheme);
         View sheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_restaurant, null);
         bottomSheetDialog.setContentView(sheetView);
         bottomSheetDialog.show();
@@ -108,7 +104,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         if (dialog.getWindow() != null) {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+            dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimation;
             dialog.getWindow().setGravity(Gravity.BOTTOM);
         }
     }

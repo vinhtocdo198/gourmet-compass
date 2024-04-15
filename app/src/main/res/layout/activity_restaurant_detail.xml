@@ -69,10 +69,10 @@
 
     <TextView
         android:id="@+id/res_name"
+        style="@style/titleFont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_20"
-        android:fontFamily="@font/nunito_sans_bold"
         android:text="Restaurant Name"
         android:textAlignment="center"
         android:textColor="@color/title_text"
@@ -98,7 +98,7 @@
         app:tabIndicatorGravity="stretch"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@color/option_chosen_text"
-        app:tabTextAppearance="@style/RestaurantDetailTabBar"
+        app:tabTextAppearance="@style/restaurantDetailTabBar"
         app:tabTextColor="@color/option_text">
 
         <com.google.android.material.tabs.TabItem

@@ -16,19 +16,20 @@
 
     <Button
         android:id="@+id/btn_add"
+        style="@style/titleFont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_20"
         android:layout_marginTop="@dimen/margin_20"
         android:background="@drawable/btn_bottom_sheet"
         android:elevation="5dp"
-        android:fontFamily="@font/nunito_sans_bold"
         android:text="@string/add_to_collection"
         android:textAllCaps="false"
         android:textSize="@dimen/text_16" />
 
     <Button
         android:id="@+id/btn_review"
+        style="@style/titleFont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_20"
@@ -36,7 +37,6 @@
         android:layout_marginBottom="@dimen/margin_20"
         android:background="@drawable/btn_bottom_sheet"
         android:elevation="5dp"
-        android:fontFamily="@font/nunito_sans_bold"
         android:text="@string/add_a_review"
         android:textAllCaps="false"
         android:textSize="@dimen/text_16" />

@@ -15,12 +15,12 @@
         android:background="@drawable/ic_drag_handle" />
 
     <TextView
+        style="@style/titleFont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin_20"
         android:layout_marginBottom="@dimen/margin_10"
-        android:fontFamily="@font/nunito_sans_bold"
         android:text="@string/create_new_coll"
         android:textColor="@color/title_text"
         android:textSize="@dimen/text_18" />
@@ -32,10 +32,10 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text"
+            style="@style/textFont"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@drawable/border_input_text"
-            android:fontFamily="@font/nunito_sans_regular"
             android:hint="@string/my_collection"
             android:padding="@dimen/padding_10"
             android:textColor="@color/title_text"
@@ -45,6 +45,7 @@
 
     <Button
         android:id="@+id/btn_review"
+        style="@style/titleFont"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -52,7 +53,6 @@
         android:layout_marginBottom="@dimen/margin_30"
         android:background="@drawable/btn_orange"
         android:elevation="5dp"
-        android:fontFamily="@font/nunito_sans_bold"
         android:text="@string/submit"
         android:textAllCaps="false"
         android:textColor="@color/white"

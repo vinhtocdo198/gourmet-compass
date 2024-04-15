@@ -11,8 +11,8 @@
         android:layout_height="match_parent"
         android:background="@color/app_bg"
         android:gravity="center_vertical"
-        android:paddingVertical="@dimen/padding_10"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingVertical="@dimen/padding_10">
 
 
         <androidx.cardview.widget.CardView
@@ -80,10 +80,10 @@
                     android:src="@drawable/ic_full_star" />
 
                 <TextView
+                    style="@style/titleFont"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_5"
-                    android:fontFamily="@font/nunito_sans_bold"
                     android:text="(0)"
                     android:textColor="@color/star"
                     android:textSize="@dimen/text_16"
@@ -92,20 +92,20 @@
             </LinearLayout>
 
             <TextView
+                style="@style/titleFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_5"
                 android:ellipsize="end"
-                android:fontFamily="@font/nunito_sans_bold"
                 android:maxLines="2"
                 android:text="fff"
                 android:textSize="@dimen/text_16" />
 
             <TextView
+                style="@style/textFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:fontFamily="@font/nunito_sans_regular"
                 android:maxLines="3"
                 android:text="ffffffffffff"
                 android:textSize="@dimen/text_14" />
