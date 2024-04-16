@@ -1,17 +1,16 @@
 package com.example.gourmetcompass.ui_restaurant_detail;
 
-import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -19,6 +18,9 @@ import com.example.gourmetcompass.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
 
@@ -33,8 +35,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     ImageButton searchBtn;
     ImageButton backBtn;
 
-    // Bottom sheet
-    BottomSheetDialog bottomSheetDialog;
+    // Bottom sheets
+    List<BottomSheetDialog> bottomSheets = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,22 +71,104 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     }
 
     private void openBottomSheet() {
-        bottomSheetDialog = new BottomSheetDialog(RestaurantDetailActivity.this, R.style.bottomSheetTheme);
-        View sheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_restaurant, null);
-        bottomSheetDialog.setContentView(sheetView);
-        bottomSheetDialog.show();
+        BottomSheetDialog outerBottomSheet = new BottomSheetDialog(RestaurantDetailActivity.this, R.style.BottomSheetTheme);
+        View outerSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_restaurant, findViewById(R.id.bottom_sheet_container));
+        outerBottomSheet.setContentView(outerSheetView);
+        outerBottomSheet.show();
+        bottomSheets.add(outerBottomSheet);
 
-        sheetView.findViewById(R.id.btn_add).setOnClickListener(new View.OnClickListener() {
+        // Bottom sheet buttons
+        Button addToCollBtn = outerSheetView.findViewById(R.id.btn_add);
+        Button addReviewBtn = outerSheetView.findViewById(R.id.btn_review);
+
+        addToCollBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(RestaurantDetailActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                // TODO: if a collection exists
+                // Open inner bottom sheet
+                BottomSheetDialog existCollBottomSheet = new BottomSheetDialog(RestaurantDetailActivity.this, R.style.BottomSheetTheme);
+                View existCollSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_exist_coll, findViewById(R.id.bottom_sheet_exist_coll_container));
+                existCollBottomSheet.setContentView(existCollSheetView);
+                existCollBottomSheet.show();
+                bottomSheets.add(existCollBottomSheet);
+
+                Button addNewCollBtn = existCollSheetView.findViewById(R.id.btn_add_new);
+                Button existDoneBtn = existCollSheetView.findViewById(R.id.btn_exist_done);
+
+                addNewCollBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BottomSheetDialog newCollBottomSheet = new BottomSheetDialog(RestaurantDetailActivity.this, R.style.BottomSheetTheme);
+                        View newCollSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_new_coll, findViewById(R.id.bottom_sheet_new_coll_container));
+                        newCollBottomSheet.setContentView(newCollSheetView);
+                        newCollBottomSheet.show();
+                        bottomSheets.add(newCollBottomSheet);
+
+                        Button newDoneBtn = newCollSheetView.findViewById(R.id.btn_new_done);
+
+                        newDoneBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dismissAllBottomSheets();
+                                // TODO: add to coll
+                                Toast.makeText(RestaurantDetailActivity.this, "Added to collection", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+
+                existDoneBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // TODO: error if no collection was chosen
+                        dismissAllBottomSheets();
+                        Toast.makeText(RestaurantDetailActivity.this, "Added to collection", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
-        sheetView.findViewById(R.id.btn_review).setOnClickListener(new View.OnClickListener() {
+        addReviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(RestaurantDetailActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                TabLayout.Tab tab = tabLayout.getTabAt(3);
+                if (tab != null) {
+                    tab.select();
+                }
+                outerBottomSheet.dismiss();
+
+                // Open add review dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(RestaurantDetailActivity.this);
+                View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_review, null);
+                builder.setView(dialogView);
+
+                // Create and show the dialog
+                AlertDialog dialog = builder.create();
+                WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+                if (dialog.getWindow() != null) {
+                    layoutParams.copyFrom(dialog.getWindow().getAttributes());
+                    layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.getWindow().setAttributes(layoutParams);
+                    dialog.show();
+                }
+
+                Button cancelBtn = dialogView.findViewById(R.id.btn_cancel);
+                Button submitBtn = dialogView.findViewById(R.id.btn_submit);
+
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                submitBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // TODO: submit review
+                    }
+                });
             }
         });
     }
@@ -96,17 +180,12 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void showDialog() {
-        Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.bottom_sheet_restaurant);
-        dialog.show();
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimation;
-            dialog.getWindow().setGravity(Gravity.BOTTOM);
+    private void dismissAllBottomSheets() {
+        for (BottomSheetDialog bottomSheet : bottomSheets) {
+            if (bottomSheet != null && bottomSheet.isShowing()) {
+                bottomSheet.dismiss();
+            }
         }
+        bottomSheets.clear();
     }
-
 }

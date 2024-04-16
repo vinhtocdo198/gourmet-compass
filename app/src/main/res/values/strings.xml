@@ -31,4 +31,7 @@
     <string name="new_collection">New collection</string>
     <string name="done">Done</string>
     <string name="map_key">AIzaSyBzwyjsKBQSDkVrJwKi20-fgaYrZmkFcMQ</string>
+    <string name="cancel">Cancel</string>
+    <string name="upload">Upload</string>
+    <string name="rate_this_restaurant">Rate this restaurant</string>
 </resources>

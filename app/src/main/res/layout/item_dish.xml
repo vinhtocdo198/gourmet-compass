@@ -53,34 +53,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/star"
-                    android:src="@drawable/ic_full_star" />
+                    android:src="@drawable/ic_star_full" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/star"
-                    android:src="@drawable/ic_full_star" />
+                    android:src="@drawable/ic_star_full" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/star"
-                    android:src="@drawable/ic_full_star" />
+                    android:src="@drawable/ic_star_full" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/star"
-                    android:src="@drawable/ic_full_star" />
+                    android:src="@drawable/ic_star_full" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/star"
-                    android:src="@drawable/ic_full_star" />
+                    android:src="@drawable/ic_star_full" />
 
                 <TextView
-                    style="@style/titleFont"
+                    style="@style/TitleFont"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_5"
@@ -92,7 +92,7 @@
             </LinearLayout>
 
             <TextView
-                style="@style/titleFont"
+                style="@style/TitleFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_5"
@@ -102,7 +102,7 @@
                 android:textSize="@dimen/text_16" />
 
             <TextView
-                style="@style/textFont"
+                style="@style/TextFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"

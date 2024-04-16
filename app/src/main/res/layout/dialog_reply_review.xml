@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialog_reply_review"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_20">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        style="@style/TitleFont"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/add_a_review"
+        android:textColor="@color/title_text"
+        android:textSize="@dimen/text_18" />
+
+    <RatingBar
+        android:id="@+id/rating_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_10"
+        android:numStars="5"
+        android:rating="5"
+        android:stepSize="0.5" />
+
+
+    <EditText
+        android:id="@+id/dialog_text"
+        style="@style/TextFont"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_10"
+        android:background="@drawable/border_input_text"
+        android:gravity="top|start"
+        android:hint="@string/add_a_review"
+        android:inputType="textMultiLine"
+        android:minLines="6"
+        android:padding="@dimen/padding_10"
+        android:textSize="@dimen/text_16"
+        tools:ignore="Autofill" />
+
+    <Button
+        android:id="@+id/btn_upload"
+        style="@style/TitleFont"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginHorizontal="@dimen/margin_10"
+        android:layout_marginTop="@dimen/margin_10"
+        android:background="@drawable/btn_upload"
+        android:drawableStart="@drawable/ic_upload"
+        android:drawablePadding="-10dp"
+        android:elevation="5dp"
+        android:paddingStart="@dimen/padding_10"
+        android:text="@string/upload"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_16"
+        tools:ignore="RtlSymmetry" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_40"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            style="@style/TitleFont"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/margin_10"
+            android:background="@drawable/btn_orange_alt"
+            android:elevation="5dp"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/button_orange"
+            android:textSize="@dimen/text_18" />
+
+        <Button
+            android:id="@+id/btn_submit"
+            style="@style/TitleFont"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/margin_10"
+            android:background="@drawable/btn_orange"
+            android:elevation="5dp"
+            android:text="@string/submit"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_18" />
+
+    </LinearLayout>
+
+</LinearLayout>

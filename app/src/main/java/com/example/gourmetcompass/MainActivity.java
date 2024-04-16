@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.gourmetcompass.ui_restaurant_detail.RestaurantDetailActivity;
 
 public class MainActivity extends AppCompatActivity {
-    Button btn;
+    Button detailBtn;
     Button mapBtn;
 
     @Override
@@ -19,12 +19,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Create a new Button
-        btn = findViewById(R.id.button5);
+        detailBtn = findViewById(R.id.detail_btn);
         mapBtn = findViewById(R.id.map_btn);
 
-        btn.setText("Go to Another Screen");
-
-        btn.setOnClickListener(new View.OnClickListener() {
+        detailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Start the AnotherActivity when the Button is clicked

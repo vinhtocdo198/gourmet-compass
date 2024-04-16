@@ -14,32 +14,35 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="dialogAnimation">
+    <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_in_bts</item>
         <item name="android:windowExitAnimation">@anim/slide_out_bts</item>
     </style>
 
-    <style name="bottomSheetTheme" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/bottomSheetStyle</item>
+    <style name="BottomSheetTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
     </style>
 
-    <style name="bottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="restaurantDetailTabBar" parent="TextAppearance.Design.Tab">
+    <style name="RestaurantDetailTabBar" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
         <item name="android:fontFamily">@font/nunito_sans_bold</item>
     </style>
 
     <!-- Font of the app -->
-    <style name="titleFont">
+    <style name="TitleFont">
         <item name="android:fontFamily">@font/nunito_sans_bold</item>
     </style>
 
-    <style name="textFont">
+    <style name="TextFont">
         <item name="android:fontFamily">@font/nunito_sans_regular</item>
     </style>
 
+    <style name="CustomRatingBar" parent="Widget.AppCompat.RatingBar">
+        <item name="android:progressDrawable">@drawable/rating_bar</item>
+    </style>
 
 </resources>

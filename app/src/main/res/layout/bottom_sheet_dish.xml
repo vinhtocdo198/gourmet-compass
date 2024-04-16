@@ -22,7 +22,7 @@
         android:layout_marginTop="@dimen/margin_20"
         android:background="@drawable/btn_bottom_sheet"
         android:elevation="5dp"
-        style="@style/titleFont"
+        style="@style/TitleFont"
         android:text="@string/add_to_collection"
         android:textAllCaps="false"
         android:textSize="@dimen/text_16" />
@@ -36,7 +36,7 @@
         android:layout_marginBottom="@dimen/margin_20"
         android:background="@drawable/btn_bottom_sheet"
         android:elevation="5dp"
-        style="@style/titleFont"
+        style="@style/TitleFont"
         android:text="@string/rate_this_dish"
         android:textAllCaps="false"
         android:textSize="@dimen/text_16" />

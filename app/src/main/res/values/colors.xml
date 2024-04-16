@@ -21,7 +21,11 @@
     <color name="filter_text">#79747E</color>
     <color name="app_bar">#E4871A</color>
     <color name="button_orange">#FF6600</color>
+    <color name="button_orange_alt">#FEF0E9</color>
     <color name="button_pressed_orange">#ED5F00</color>
+    <color name="button_pressed_orange_alt">#FFDFCF</color>
+    <color name="button_upload">#B4BAC4</color>
+    <color name="button_pressed_upload">#949AA4</color>
     <color name="divider">#CAC4D0</color>
     <color name="app_bg">#FFEDDC</color>
     <color name="like">#3DA000</color>
