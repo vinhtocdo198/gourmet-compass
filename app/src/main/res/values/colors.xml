@@ -33,5 +33,6 @@
     <color name="like">#3DA000</color>
     <color name="dislike">#E54151</color>
     <color name="input_text_border">#9BA3B1</color>
+    <color name="status_bar">#A4551B</color>
 
 </resources>
