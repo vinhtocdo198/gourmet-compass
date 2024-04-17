@@ -38,4 +38,7 @@
     <string name="reply_review">Reply to ...\'s review</string>
     <string name="description">Description</string>
     <string name="remove_from_collection">Remove from collection</string>
+    <string name="gourmet_s_choice" />
+    <string name="pizza">Pizza</string>
+
 </resources>

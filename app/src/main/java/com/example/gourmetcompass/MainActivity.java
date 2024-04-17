@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.gourmetcompass.ui_restaurant_detail.RestaurantDetailActivity;
 
 public class MainActivity extends AppCompatActivity {
+
     Button detailBtn;
     Button mapBtn;
 
