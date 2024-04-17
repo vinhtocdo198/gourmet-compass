@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/the_best_restaurant_for_you"
+    android:background="@drawable/splash_screen"
     tools:context=".SplashActivity">
 
 </RelativeLayout>
