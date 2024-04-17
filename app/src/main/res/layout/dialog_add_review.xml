@@ -39,7 +39,7 @@
         android:layout_marginHorizontal="@dimen/margin_10"
         android:background="@drawable/border_input_text"
         android:gravity="top|start"
-        android:hint="@string/add_a_review"
+        android:hint="@string/description"
         android:inputType="textMultiLine"
         android:minLines="6"
         android:padding="@dimen/padding_10"

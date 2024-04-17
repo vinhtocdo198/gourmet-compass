@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_sheet_bg"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/padding_20">
+
+    <View
+        android:id="@+id/drag_handle"
+        android:layout_width="50dp"
+        android:layout_height="5dp"
+        android:layout_gravity="center"
+        android:background="@drawable/ic_drag_handle" />
+
+    <Button
+        android:id="@+id/btn_review"
+        style="@style/TitleFont"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_20"
+        android:background="@drawable/btn_bottom_sheet"
+        android:elevation="5dp"
+        android:text="@string/remove_from_collection"
+        android:textAllCaps="false"
+        android:textSize="@dimen/text_16" />
+
+</LinearLayout>

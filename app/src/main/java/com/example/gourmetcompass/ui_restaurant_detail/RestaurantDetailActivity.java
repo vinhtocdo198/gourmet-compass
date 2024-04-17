@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -65,7 +68,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchMenu();
+                navigateToFragment(1);
             }
         });
     }
@@ -88,6 +91,13 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                 // Open inner bottom sheet
                 BottomSheetDialog existCollBottomSheet = new BottomSheetDialog(RestaurantDetailActivity.this, R.style.BottomSheetTheme);
                 View existCollSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_exist_coll, findViewById(R.id.bottom_sheet_exist_coll_container));
+
+                View itemColl = existCollSheetView.findViewById(R.id.item_collection);
+                TextView textView = itemColl.findViewById(R.id.coll_name);
+                CheckBox checkBox = itemColl.findViewById(R.id.checkbox);
+
+                textView.setText(R.string.favorites_restaurants);
+                checkBox.setChecked(true);
                 existCollBottomSheet.setContentView(existCollSheetView);
                 existCollBottomSheet.show();
                 bottomSheets.add(existCollBottomSheet);
@@ -104,14 +114,20 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                         newCollBottomSheet.show();
                         bottomSheets.add(newCollBottomSheet);
 
+
                         Button newDoneBtn = newCollSheetView.findViewById(R.id.btn_new_done);
+                        EditText textField = newCollBottomSheet.findViewById(R.id.text_field);
 
                         newDoneBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                dismissAllBottomSheets();
-                                // TODO: add to coll
-                                Toast.makeText(RestaurantDetailActivity.this, "Added to collection", Toast.LENGTH_SHORT).show();
+                                if (textField != null && textField.getText().toString().isEmpty()) {
+                                    Toast.makeText(RestaurantDetailActivity.this, "Collection must have a name", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    dismissAllBottomSheets();
+                                    // TODO: add to coll
+                                    Toast.makeText(RestaurantDetailActivity.this, "Added to collection", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
                     }
@@ -131,27 +147,15 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         addReviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TabLayout.Tab tab = tabLayout.getTabAt(3);
-                if (tab != null) {
-                    tab.select();
-                }
+                navigateToFragment(3);
                 outerBottomSheet.dismiss();
 
                 // Open add review dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(RestaurantDetailActivity.this);
                 View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_review, null);
                 builder.setView(dialogView);
-
-                // Create and show the dialog
-                AlertDialog dialog = builder.create();
-                WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-                if (dialog.getWindow() != null) {
-                    layoutParams.copyFrom(dialog.getWindow().getAttributes());
-                    layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    dialog.getWindow().setAttributes(layoutParams);
-                    dialog.show();
-                }
+                AlertDialog reviewDialog = builder.create();
+                showDialog(reviewDialog);
 
                 Button cancelBtn = dialogView.findViewById(R.id.btn_cancel);
                 Button submitBtn = dialogView.findViewById(R.id.btn_submit);
@@ -159,7 +163,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                 cancelBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialog.dismiss();
+                        reviewDialog.dismiss();
                     }
                 });
 
@@ -173,8 +177,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void searchMenu() {
-        TabLayout.Tab tab = tabLayout.getTabAt(1);
+    private void navigateToFragment(int index) {
+        TabLayout.Tab tab = tabLayout.getTabAt(index);
         if (tab != null) {
             tab.select();
         }
@@ -187,5 +191,16 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             }
         }
         bottomSheets.clear();
+    }
+
+    private void showDialog(AlertDialog dialog) {
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        if (dialog.getWindow() != null) {
+            layoutParams.copyFrom(dialog.getWindow().getAttributes());
+            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setAttributes(layoutParams);
+            dialog.show();
+        }
     }
 }

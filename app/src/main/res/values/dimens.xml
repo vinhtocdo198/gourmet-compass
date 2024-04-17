@@ -33,5 +33,5 @@
     <dimen name="comment_img_size">90dp</dimen>
     <dimen name="dish_ava_size">80dp</dimen>
     <dimen name="review_ava_size">20dp</dimen>
-    <dimen name="coll_ava_size">60dp</dimen>
+    <dimen name="coll_ava_size">50dp</dimen>
 </resources>

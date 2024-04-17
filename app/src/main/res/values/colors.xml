@@ -7,7 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="option_chosen_bg">#EAEEF6</color>
+    <color name="button_review">#EAEEF6</color>
+    <color name="button_pressed_review">#C9D2E3</color>
     <color name="option_chosen_text">#172D58</color>
     <color name="bottom_sheet_bg">#F8F8F8</color>
     <color name="option_text">#2951A0</color>

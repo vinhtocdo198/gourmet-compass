@@ -18,13 +18,13 @@
         tools:ignore="RtlSymmetry">
 
         <include
-            layout="@layout/item_dish"
+            layout="@layout/item_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_10" />
 
         <include
-            layout="@layout/item_dish"
+            layout="@layout/item_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_10" />

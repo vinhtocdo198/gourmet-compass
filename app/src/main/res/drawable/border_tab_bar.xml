@@ -4,5 +4,5 @@
     <corners android:radius="100dp" />
     <stroke
         android:width="3dp"
-        android:color="@color/option_chosen_bg" />
+        android:color="@color/button_review" />
 </shape>

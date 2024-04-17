@@ -30,6 +30,7 @@
         android:textSize="@dimen/text_18" />
 
     <include
+        android:id="@+id/item_collection"
         layout="@layout/item_collection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -36,7 +36,7 @@
                 android:id="@+id/btn_back"
                 android:layout_width="@dimen/round_btn_size"
                 android:layout_height="@dimen/round_btn_size"
-                android:background="@drawable/btn_round_with_icon"
+                android:background="@drawable/btn_icon_round"
                 android:contentDescription="@string/round_btn"
                 android:src="@drawable/ic_arrow_back" />
 
@@ -50,7 +50,7 @@
                 android:layout_width="@dimen/round_btn_size"
                 android:layout_height="@dimen/round_btn_size"
                 android:layout_marginEnd="@dimen/margin_10"
-                android:background="@drawable/btn_round_with_icon"
+                android:background="@drawable/btn_icon_round"
                 android:contentDescription="@string/round_btn"
                 android:src="@drawable/ic_search" />
 
@@ -58,7 +58,7 @@
                 android:id="@+id/btn_plus"
                 android:layout_width="@dimen/round_btn_size"
                 android:layout_height="@dimen/round_btn_size"
-                android:background="@drawable/btn_round_with_icon"
+                android:background="@drawable/btn_icon_round"
                 android:contentDescription="@string/round_btn"
                 android:src="@drawable/ic_plus" />
 
@@ -94,7 +94,7 @@
         app:layout_constraintTop_toBottomOf="@+id/res_name"
         app:tabIndicator="@drawable/item_tab_bar"
         app:tabIndicatorAnimationMode="elastic"
-        app:tabIndicatorColor="@color/option_chosen_bg"
+        app:tabIndicatorColor="@color/button_review"
         app:tabIndicatorGravity="stretch"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@color/option_chosen_text"

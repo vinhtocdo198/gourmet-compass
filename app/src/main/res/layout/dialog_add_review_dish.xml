@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/dialog_reply_review"
+    android:id="@+id/dialog_add_review"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg"
     android:orientation="vertical"
-    android:padding="@dimen/padding_20">
+    android:paddingHorizontal="@dimen/padding_5"
+    android:paddingVertical="@dimen/padding_20">
 
     <TextView
         android:id="@+id/dialog_title"
@@ -13,32 +14,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/reply_review"
+        android:text="@string/rate_this_dish"
         android:textColor="@color/title_text"
         android:textSize="@dimen/text_18" />
 
-
-    <EditText
-        android:id="@+id/dialog_text"
-        style="@style/TextFont"
-        android:layout_width="match_parent"
+    <RatingBar
+        android:id="@+id/rating_bar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_10"
-        android:layout_marginTop="@dimen/margin_10"
-        android:background="@drawable/border_input_text"
-        android:gravity="top|start"
-        android:hint="@string/description"
-        android:inputType="textMultiLine"
-        android:minLines="6"
-        android:padding="@dimen/padding_10"
-        android:textSize="@dimen/text_16"
-        tools:ignore="Autofill" />
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_10"
+        android:numStars="5"
+        android:progressTint="@color/star"
+        android:rating="5"
+        android:stepSize="0.5" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin_40"
+        android:layout_marginTop="@dimen/margin_30"
         android:orientation="horizontal">
 
         <Button
@@ -49,7 +44,6 @@
             android:layout_gravity="center"
             android:layout_marginHorizontal="@dimen/margin_10"
             android:background="@drawable/btn_orange_alt"
-            android:elevation="5dp"
             android:text="@string/cancel"
             android:textAllCaps="false"
             android:textColor="@color/button_orange"
@@ -63,7 +57,6 @@
             android:layout_gravity="center"
             android:layout_marginHorizontal="@dimen/margin_10"
             android:background="@drawable/btn_orange"
-            android:elevation="5dp"
             android:text="@string/submit"
             android:textAllCaps="false"
             android:textColor="@color/white"
