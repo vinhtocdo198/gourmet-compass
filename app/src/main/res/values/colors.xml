@@ -7,5 +7,31 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="button_review">#EAEEF6</color>
+    <color name="button_pressed_review">#C9D2E3</color>
+    <color name="option_chosen_text">#172D58</color>
+    <color name="bottom_sheet_bg">#F8F8F8</color>
+    <color name="option_text">#2951A0</color>
+    <color name="title_text">#2A2B2A</color>
+    <color name="content_text">#49454F</color>
+    <color name="address_text">#008ECA</color>
+    <color name="star">#FFE81A</color>
+    <color name="button_shape">#000000</color>
+    <color name="button_bg">#FFFFFF</color>
+    <color name="button_pressed_bg">#EAEEF6</color>
+    <color name="filter_text">#79747E</color>
+    <color name="app_bar">#E4871A</color>
+    <color name="button_orange">#FF6600</color>
+    <color name="button_orange_alt">#FEF0E9</color>
+    <color name="button_pressed_orange">#ED5F00</color>
+    <color name="button_pressed_orange_alt">#FFDFCF</color>
+    <color name="button_upload">#B4BAC4</color>
+    <color name="button_pressed_upload">#949AA4</color>
+    <color name="divider">#CAC4D0</color>
     <color name="app_bg">#FFEDDC</color>
+    <color name="like">#3DA000</color>
+    <color name="dislike">#E54151</color>
+    <color name="input_text_border">#9BA3B1</color>
+
 </resources>
