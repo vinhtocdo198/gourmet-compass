@@ -32,7 +32,7 @@
                     android:layout_width="409dp"
                     android:layout_height="223dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/enjoy"
+                    android:background="@drawable/home_bg"
                     android:contentDescription="@string/background_home_img"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
