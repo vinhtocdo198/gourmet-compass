@@ -14,6 +14,7 @@
     <string name="ratings_title">Ratings (4/5)</string>
     <string name="star">Star</string>
     <string name="res_bg_image">Restaurant bg image</string>
+    <string name="res_ava_image">Restaurant ava image</string>
     <string name="round_btn">Round white btn</string>
     <string name="restaurant_name">Restaurant Name</string>
     <string name="gallery_img">Gallery image</string>
@@ -40,7 +41,6 @@
     <string name="remove_from_collection">Remove from collection</string>
     <string name="pizza">Pizza</string>
     <string name="navigate_to_browse">Navigate_To_Browse</string>
-    <string name="restaurant_near_you">Restaurant near you</string>
     <string name="background_home_img">background_home_img</string>
     <string name="china_bar">China Bar</string>
     <string name="baking_duck">Baking Duck</string>
