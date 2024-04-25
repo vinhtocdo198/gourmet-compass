@@ -2,18 +2,21 @@ package com.example.gourmetcompass.general_ui;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.gourmetcompass.MainActivity;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.models.HomeRecyclerViewAdapter;
 import com.example.gourmetcompass.models.Restaurant;
@@ -28,6 +31,7 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment {
 
     FirebaseFirestore db;
+    ImageButton searchButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +44,8 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        searchButton = view.findViewById(R.id.search_bar_home);
+
         // Init db instance
         db = FirebaseFirestore.getInstance();
 
@@ -47,6 +53,22 @@ public class HomeFragment extends Fragment {
         initRecyclerView(view.findViewById(R.id.first_scroll));
         initRecyclerView(view.findViewById(R.id.second_scroll));
         initRecyclerView(view.findViewById(R.id.third_scroll));
+
+        // Navigate to browse fragment
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BrowseFragment browseFragment = new BrowseFragment();
+                FragmentManager fragmentManager = getParentFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frameLayout, browseFragment);
+                fragmentTransaction.commit();
+                if (getActivity() != null) {
+                    ((MainActivity) getActivity()).selectBottomNavItem(R.id.browse_fragment);
+                }
+            }
+        });
+
     }
 
     private void initRecyclerView(RecyclerView recyclerView) {
