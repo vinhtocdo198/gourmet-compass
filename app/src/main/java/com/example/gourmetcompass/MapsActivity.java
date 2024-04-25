@@ -44,7 +44,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Get map fragment
         SupportMapFragment mapFragment = new SupportMapFragment();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.map_fragment, mapFragment)
+                .replace(R.id.maps, mapFragment)
                 .commit();
 
         // Get current location

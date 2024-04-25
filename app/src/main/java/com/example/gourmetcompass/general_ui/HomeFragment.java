@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.models.HomeRecyclerViewAdapter;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment {
 
     FirebaseFirestore db;
+    ImageButton searchButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +42,8 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        searchButton = view.findViewById(R.id.search_bar_home);
+
         // Init db instance
         db = FirebaseFirestore.getInstance();
 
@@ -47,6 +51,15 @@ public class HomeFragment extends Fragment {
         initRecyclerView(view.findViewById(R.id.first_scroll));
         initRecyclerView(view.findViewById(R.id.second_scroll));
         initRecyclerView(view.findViewById(R.id.third_scroll));
+
+        // Navigate to browse fragment
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
+
     }
 
     private void initRecyclerView(RecyclerView recyclerView) {

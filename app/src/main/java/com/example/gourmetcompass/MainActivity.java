@@ -13,8 +13,6 @@ import com.example.gourmetcompass.general_ui.BrowseFragment;
 import com.example.gourmetcompass.general_ui.HomeFragment;
 import com.example.gourmetcompass.general_ui.MapFragment;
 import com.example.gourmetcompass.general_ui.NotificationFragment;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,19 +36,19 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             switch (item.getItemId()){
-                case R.id.home:
+                case R.id.home_fragment:
                     replaceFragment(new HomeFragment());
                     break;
-                case R.id.browse:
+                case R.id.browse_fragment:
                     replaceFragment(new BrowseFragment());
                     break;
-                case R.id.map:
+                case R.id.map_fragment:
                     replaceFragment(new MapFragment());
                     break;
-                case R.id.notification:
+                case R.id.noti_fragment:
                     replaceFragment(new NotificationFragment());
                     break;
-                case R.id.account:
+                case R.id.account_fragment:
                     replaceFragment(new AccountFragment());
                     break;
             }
