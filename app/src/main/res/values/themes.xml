@@ -14,6 +14,12 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="windowSplashScreenBackground">@color/app_bg</item>
+        <item name="postSplashScreenTheme">@style/Theme.GourmetCompass</item>
+    </style>
+
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_in_bts</item>
         <item name="android:windowExitAnimation">@anim/slide_out_bts</item>
