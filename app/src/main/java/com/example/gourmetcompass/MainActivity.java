@@ -38,25 +38,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         replaceFragment(new HomeFragment());
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment;
 
-            switch (item.getItemId()) {
-                case R.id.home_fragment:
-                    replaceFragment(new HomeFragment());
-                    break;
-                case R.id.browse_fragment:
-                    replaceFragment(new BrowseFragment());
-                    break;
-                case R.id.map_fragment:
-                    replaceFragment(new MapFragment());
-                    break;
-                case R.id.noti_fragment:
-                    replaceFragment(new NotificationFragment());
-                    break;
-                case R.id.account_fragment:
-                    replaceFragment(new AccountFragment());
-                    break;
+            if (item.getItemId() == R.id.home_fragment) {
+                selectedFragment = new HomeFragment();
+            } else if (item.getItemId() == R.id.browse_fragment) {
+                selectedFragment = new BrowseFragment();
+            } else if (item.getItemId() == R.id.map_fragment) {
+                selectedFragment = new MapFragment();
+            } else if (item.getItemId() == R.id.noti_fragment) {
+                selectedFragment = new NotificationFragment();
+            } else if (item.getItemId() == R.id.account_fragment) {
+                selectedFragment = new AccountFragment();
+            } else {
+                selectedFragment = new HomeFragment(); // Default fragment
             }
 
+            replaceFragment(selectedFragment);
             return true;
         });
 

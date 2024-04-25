@@ -100,7 +100,9 @@ public class HomeFragment extends Fragment {
                 if (value != null) {
                     for (DocumentChange dc : value.getDocumentChanges()) {
                         if (dc.getType() == DocumentChange.Type.ADDED) {
-                            list.add(dc.getDocument().toObject(Restaurant.class));
+                            Restaurant restaurant = dc.getDocument().toObject(Restaurant.class);
+                            restaurant.setId(dc.getDocument().getId()); // Set the ID
+                            list.add(restaurant);
                         }
                         adapter.notifyDataSetChanged();
                     }

@@ -3,6 +3,7 @@ package com.example.gourmetcompass.ui_restaurant_detail;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,19 +14,29 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.gourmetcompass.R;
+import com.example.gourmetcompass.models.Restaurant;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
+
+    private static final String TAG = "RestaurantDetailActivity";
+    Restaurant restaurant;
+    FirebaseFirestore db;
 
     // Tab layout
     ViewPagerAdapter viewPagerAdapter;
@@ -34,9 +45,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private final String[] titles = {"Detail", "Menu", "Gallery", "Review"};
 
     // Buttons
-    ImageButton plusBtn;
-    ImageButton searchBtn;
-    ImageButton backBtn;
+    ImageButton plusBtn, searchBtn, backBtn;
+    TextView resName;
 
     // Bottom sheets
     List<BottomSheetDialog> bottomSheets = new ArrayList<>();
@@ -45,6 +55,16 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_detail);
+
+        // Init db instance
+        db = FirebaseFirestore.getInstance();
+
+        // Get restaurant data
+        String restaurantId = getIntent().getStringExtra("restaurantId");
+        getRestaurantData(restaurantId);
+
+        resName = findViewById(R.id.res_name_detail);
+
 
         // Set tab layout
         viewPager2 = findViewById(R.id.view_pager);
@@ -57,6 +77,13 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         plusBtn = findViewById(R.id.btn_plus);
         searchBtn = findViewById(R.id.btn_search);
         backBtn = findViewById(R.id.btn_back);
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         plusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,4 +230,30 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             dialog.show();
         }
     }
+
+    private void getRestaurantData(String restaurantId) {
+        db.collection("restaurants").document(restaurantId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            restaurant = documentSnapshot.toObject(Restaurant.class);
+                            // Now you have the restaurant details, you can display them in your UI
+                            if (restaurant != null) {
+                                resName.setText(restaurant.getName());
+                            }
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error getting documents.", e);
+                    }
+                });
+    }
+
 }
