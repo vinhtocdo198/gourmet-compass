@@ -18,7 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gourmetcompass.MainActivity;
 import com.example.gourmetcompass.R;
-import com.example.gourmetcompass.models.HomeRecyclerViewAdapter;
+import com.example.gourmetcompass.adapters.HomeRVAdapter;
+import com.example.gourmetcompass.database.FirestoreUtil;
 import com.example.gourmetcompass.models.Restaurant;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment {
 
     FirebaseFirestore db;
-    ImageButton searchButton;
+    ImageButton searchImgBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,10 +45,10 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        searchButton = view.findViewById(R.id.search_bar_home);
+        searchImgBtn = view.findViewById(R.id.search_bar_home);
 
         // Init db instance
-        db = FirebaseFirestore.getInstance();
+        db = FirestoreUtil.getInstance();
 
         // Fetch data from db into 3 RecyclerViews
         initRecyclerView(view.findViewById(R.id.first_scroll));
@@ -55,7 +56,7 @@ public class HomeFragment extends Fragment {
         initRecyclerView(view.findViewById(R.id.third_scroll));
 
         // Navigate to browse fragment
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        searchImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BrowseFragment browseFragment = new BrowseFragment();
@@ -76,13 +77,13 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         ArrayList<Restaurant> list = new ArrayList<>();
-        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(getContext(), list);
+        HomeRVAdapter adapter = new HomeRVAdapter(getContext(), list);
         recyclerView.setAdapter(adapter);
 
         fetchRestaurantList(list, adapter);
     }
 
-    private void fetchRestaurantList(ArrayList<Restaurant> list, HomeRecyclerViewAdapter adapter) {
+    private void fetchRestaurantList(ArrayList<Restaurant> list, HomeRVAdapter adapter) {
         db.collection("restaurants").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override

@@ -2,17 +2,13 @@ package com.example.gourmetcompass.models;
 
 import java.io.Serializable;
 
-public class Restaurant implements Serializable {
-    String id, name, description, address, phoneNo, openingHours, ratings;
+public class Restaurant {
+    String id, name, description, address, phoneNo, openingHours, ratings, category, tag;
 
     public Restaurant() {
     }
 
-    public Restaurant(String name) {
-        this.name = name;
-    }
-
-    public Restaurant(String id, String name, String description, String address, String phoneNo, String openingHours, String ratings) {
+    public Restaurant(String id, String name, String description, String address, String phoneNo, String openingHours, String ratings, String category, String tag) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -20,6 +16,8 @@ public class Restaurant implements Serializable {
         this.phoneNo = phoneNo;
         this.openingHours = openingHours;
         this.ratings = ratings;
+        this.category = category;
+        this.tag = tag;
     }
 
     public String getId() {
@@ -77,4 +75,21 @@ public class Restaurant implements Serializable {
     public void setRatings(String ratings) {
         this.ratings = ratings;
     }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
 }

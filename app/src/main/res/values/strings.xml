@@ -20,9 +20,11 @@
     <string name="gallery_img">Gallery image</string>
     <string name="dish_ava">Dish avatar</string>
     <string name="icon">Icon</string>
-    <string name="reply">Reply (0)</string>
-    <string name="like">Like (0)</string>
-    <string name="dislike">Dislike (0)</string>
+    <string name="reply">Reply (%1$s)</string>
+    <string name="like">Like (%1$s)</string>
+    <string name="dislike">Dislike (%1$s)</string>
+    <string name="rating_count">(%1$d)</string>
+    <string name="ratings">%1$s</string>
     <string name="add_to_collection">Add to collection</string>
     <string name="add_a_review">Add a review</string>
     <string name="rate_this_dish">Rate this dish</string>

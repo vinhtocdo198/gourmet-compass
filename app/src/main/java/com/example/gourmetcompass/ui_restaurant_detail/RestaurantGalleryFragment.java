@@ -8,20 +8,24 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.example.gourmetcompass.R;
+import com.example.gourmetcompass.database.FirestoreUtil;
 import com.example.gourmetcompass.models.Restaurant;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class RestaurantGalleryFragment extends Fragment {
 
-    private static final String ARG_RESTAURANT = "restaurant";
-    Restaurant restaurant;
+    private static final String TAG = "RestaurantGalleryFragment";
+    FirebaseFirestore db;
+    String restaurantId;
+    // TODO: gallery model
 
-    public static RestaurantGalleryFragment newInstance(Restaurant restaurant) {
+    public static RestaurantGalleryFragment newInstance(String restaurantId) {
         RestaurantGalleryFragment fragment = new RestaurantGalleryFragment();
 
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_RESTAURANT, restaurant);
-        fragment.setArguments(args);
+        Bundle bundle = new Bundle();
+        bundle.putString("restaurantId", restaurantId);
+        fragment.setArguments(bundle);
 
         return fragment;
     }
@@ -31,9 +35,11 @@ public class RestaurantGalleryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_restaurant_gallery, container, false);
 
+        db = FirestoreUtil.getInstance();
+
         // Get the restaurant object from the arguments
         if (getArguments() != null) {
-            restaurant = (Restaurant) getArguments().getSerializable(ARG_RESTAURANT);
+            restaurantId = getArguments().getString("restaurantId");
         }
 
         // Init views

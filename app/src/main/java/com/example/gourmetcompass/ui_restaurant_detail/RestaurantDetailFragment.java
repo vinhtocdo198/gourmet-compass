@@ -1,29 +1,39 @@
 package com.example.gourmetcompass.ui_restaurant_detail;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.gourmetcompass.R;
+import com.example.gourmetcompass.database.FirestoreUtil;
 import com.example.gourmetcompass.models.Restaurant;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RestaurantDetailFragment extends Fragment {
 
-    private static final String ARG_RESTAURANT = "restaurant";
+    private static final String TAG = "RestaurantDetailFragment";
+    FirebaseFirestore db;
+    String restaurantId;
     Restaurant restaurant;
     TextView descContent, addressContent, phoneContent, openHrContent, ratingsTitle;
     TextView rate1, rate2, rate3, rate4, rate5;
 
-    public static RestaurantDetailFragment newInstance(Restaurant restaurant) {
+
+    public static RestaurantDetailFragment newInstance(String restaurantId) {
         RestaurantDetailFragment fragment = new RestaurantDetailFragment();
 
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_RESTAURANT, restaurant);
-        fragment.setArguments(args);
+        Bundle bundle = new Bundle();
+        bundle.putString("restaurantId", restaurantId);
+        fragment.setArguments(bundle);
 
         return fragment;
     }
@@ -33,29 +43,29 @@ public class RestaurantDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_restaurant_detail, container, false);
 
+        db = FirestoreUtil.getInstance();
+
         // Get the restaurant object from the arguments
         if (getArguments() != null) {
-            restaurant = (Restaurant) getArguments().getSerializable(ARG_RESTAURANT);
+            restaurantId = getArguments().getString("restaurantId");
         }
 
         // Init views
         initViews(view);
 
-        // Use the restaurant object to set data in views
-        setViews();
+        // Fetch restaurant details
+        fetchRestaurantDetail();
 
         return view;
     }
 
     private void setViews() {
-        if (restaurant != null) {
-            descContent.setText(restaurant.getDescription());
-            addressContent.setText(restaurant.getAddress());
-            phoneContent.setText(restaurant.getPhoneNo());
-            openHrContent.setText(restaurant.getOpeningHours());
-            ratingsTitle.setText(getString(R.string.ratings_title, restaurant.getRatings()));
-            // TODO: Set the ratings count for each star
-        }
+        descContent.setText(restaurant.getDescription());
+        addressContent.setText(restaurant.getAddress());
+        phoneContent.setText(restaurant.getPhoneNo());
+        openHrContent.setText(restaurant.getOpeningHours());
+        ratingsTitle.setText(getString(R.string.ratings_title, restaurant.getRatings()));
+        // TODO: Set the ratings count for each star
     }
 
     private void initViews(View view) {
@@ -69,5 +79,23 @@ public class RestaurantDetailFragment extends Fragment {
         rate3 = view.findViewById(R.id.rate_count_3);
         rate4 = view.findViewById(R.id.rate_count_4);
         rate5 = view.findViewById(R.id.rate_count_5);
+    }
+
+    private void fetchRestaurantDetail() {
+        db.collection("restaurants").document(restaurantId).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            if (documentSnapshot.exists()) {
+                                restaurant = documentSnapshot.toObject(Restaurant.class);
+                                setViews();
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
     }
 }
