@@ -44,9 +44,12 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             @Override
             public void onClick(View v) {
                 // Navigate to RestaurantDetailActivity
-                Intent intent = new Intent(context, RestaurantDetailActivity.class);
-                intent.putExtra("restaurantId", restaurantArrayList.get(position).getId());
-                context.startActivity(intent);
+                int pos = holder.getAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION) {
+                    Intent intent = new Intent(context, RestaurantDetailActivity.class);
+                    intent.putExtra("restaurantId", restaurantArrayList.get(pos).getId());
+                    context.startActivity(intent);
+                }
             }
         });
     }

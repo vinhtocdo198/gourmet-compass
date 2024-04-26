@@ -11,7 +11,7 @@
     <string name="address_title">Address</string>
     <string name="phone_title">Phone Number</string>
     <string name="open_hr_title">Opening Hours</string>
-    <string name="ratings_title">Ratings (4/5)</string>
+    <string name="ratings_title">Ratings (%1$s/5)</string>
     <string name="star">Star</string>
     <string name="res_bg_image">Restaurant bg image</string>
     <string name="res_ava_image">Restaurant ava image</string>

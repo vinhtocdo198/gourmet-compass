@@ -73,6 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_20"
+        android:maxLines="3"
         android:text="@string/restaurant_name"
         android:textAlignment="center"
         android:textColor="@color/title_text"

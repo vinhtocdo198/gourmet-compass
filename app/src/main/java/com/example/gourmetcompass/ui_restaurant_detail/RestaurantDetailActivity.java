@@ -21,8 +21,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.models.Restaurant;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -35,7 +35,6 @@ import java.util.List;
 public class RestaurantDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "RestaurantDetailActivity";
-    Restaurant restaurant;
     FirebaseFirestore db;
 
     // Tab layout
@@ -59,24 +58,26 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         // Init db instance
         db = FirebaseFirestore.getInstance();
 
-        // Get restaurant data
-        String restaurantId = getIntent().getStringExtra("restaurantId");
-        getRestaurantData(restaurantId);
-
+        // Init views
         resName = findViewById(R.id.res_name_detail);
-
-
-        // Set tab layout
-        viewPager2 = findViewById(R.id.view_pager);
-        tabLayout = findViewById(R.id.tab_layout);
-        viewPagerAdapter = new ViewPagerAdapter(this);
-        viewPager2.setAdapter(viewPagerAdapter);
-        new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> tab.setText(titles[position])).attach();
-
-
         plusBtn = findViewById(R.id.btn_plus);
         searchBtn = findViewById(R.id.btn_search);
         backBtn = findViewById(R.id.btn_back);
+        viewPager2 = findViewById(R.id.view_pager);
+        tabLayout = findViewById(R.id.tab_layout);
+
+        // Fetch restaurant data
+        String restaurantId = getIntent().getStringExtra("restaurantId");
+        getRestaurantData(restaurantId, new RestaurantDataCallback() {
+            @Override
+            public void onDataReceived(Restaurant restaurant) {
+                // Use the restaurant object here
+                resName.setText(restaurant.getName());
+                viewPagerAdapter = new ViewPagerAdapter(RestaurantDetailActivity.this, restaurant);
+                viewPager2.setAdapter(viewPagerAdapter);
+                new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> tab.setText(titles[position])).attach();
+            }
+        });
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +96,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navigateToFragment(1);
+                switchFragment(1);
             }
         });
     }
@@ -174,7 +175,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         addReviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navigateToFragment(3);
+                switchFragment(3);
                 outerBottomSheet.dismiss();
 
                 // Open add review dialog
@@ -204,7 +205,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void navigateToFragment(int index) {
+    private void switchFragment(int index) {
         TabLayout.Tab tab = tabLayout.getTabAt(index);
         if (tab != null) {
             tab.select();
@@ -231,27 +232,28 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void getRestaurantData(String restaurantId) {
+    // Pass the Restaurant object once it is fetched from db
+    public interface RestaurantDataCallback {
+        void onDataReceived(Restaurant restaurant);
+    }
+
+    private void getRestaurantData(String restaurantId, final RestaurantDataCallback callback) {
         db.collection("restaurants").document(restaurantId)
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()) {
-                            restaurant = documentSnapshot.toObject(Restaurant.class);
-                            // Now you have the restaurant details, you can display them in your UI
-                            if (restaurant != null) {
-                                resName.setText(restaurant.getName());
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            if (documentSnapshot.exists()) {
+                                Restaurant restaurant = documentSnapshot.toObject(Restaurant.class);
+                                callback.onDataReceived(restaurant);
+                            } else {
+                                Log.d(TAG, "No such document");
                             }
                         } else {
-                            Log.d(TAG, "No such document");
+                            Log.w(TAG, "Error getting documents.", task.getException());
                         }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error getting documents.", e);
                     }
                 });
     }
