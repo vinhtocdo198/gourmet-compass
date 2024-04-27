@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment {
         searchImgBtn = view.findViewById(R.id.search_bar_home);
 
         // Init db instance
-        db = FirestoreUtil.getInstance();
+        db = FirestoreUtil.getInstance().getFirestore();
 
         // Fetch data from db into 3 RecyclerViews
         initRecyclerView(view.findViewById(R.id.first_scroll));

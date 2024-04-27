@@ -34,7 +34,7 @@ public class RestaurantReviewFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_restaurant_review, container, false);
 
-        db = FirestoreUtil.getInstance();
+        db = FirestoreUtil.getInstance().getFirestore();
 
         // Get the restaurant object from the arguments
         if (getArguments() != null) {

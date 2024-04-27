@@ -52,7 +52,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_restaurant_detail);
 
         // Init db instance
-        db = FirestoreUtil.getInstance();
+        db = FirestoreUtil.getInstance().getFirestore();
 
         // Init views
         initViews();

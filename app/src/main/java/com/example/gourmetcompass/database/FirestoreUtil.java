@@ -1,21 +1,20 @@
 package com.example.gourmetcompass.database;
 
-import android.annotation.SuppressLint;
-
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class FirestoreUtil {
-    @SuppressLint("StaticFieldLeak")
-    private static FirebaseFirestore instance;
+    private static final FirestoreUtil instance = new FirestoreUtil();
+    private final FirebaseFirestore firestore;
 
-    // Singleton pattern for database
     private FirestoreUtil() {
+        firestore = FirebaseFirestore.getInstance();
     }
 
-    public static FirebaseFirestore getInstance() {
-        if (instance == null) {
-            instance = FirebaseFirestore.getInstance();
-        }
+    public static FirestoreUtil getInstance() {
         return instance;
+    }
+
+    public FirebaseFirestore getFirestore() {
+        return firestore;
     }
 }

@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GourmetCompass">
         <activity
+            android:name=".ui_restaurant_detail.FullScreenImageActivity"
+            android:exported="false" />
+        <activity
             android:name=".MapsActivity"
             android:exported="false" />
         <activity
@@ -30,22 +33,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!--        <activity-->
-        <!--            android:name=".SplashActivity"-->
-        <!--            android:theme="@style/Theme.Design.NoActionBar"-->
-        <!--            android:exported="true">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.intent.action.MAIN" />-->
-
-        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-        <!--            </intent-filter>-->
-        <!--        </activity>-->
-
+        </activity> <!-- <activity -->
+        <!-- android:name=".SplashActivity" -->
+        <!-- android:theme="@style/Theme.Design.NoActionBar" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_key" />
-
     </application>
 
 </manifest>
