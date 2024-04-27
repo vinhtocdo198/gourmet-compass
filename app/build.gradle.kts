@@ -46,10 +46,11 @@ dependencies {
     implementation(libs.play.services.location)
     implementation(libs.core.splashscreen)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
+    implementation(libs.firebase.analytics)
+    implementation(platform(libs.firebase.bom))
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
-    implementation("com.google.firebase:firebase-analytics")
 }
