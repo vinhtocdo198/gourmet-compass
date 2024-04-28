@@ -25,19 +25,33 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="200dp">
+
+                <TextView
+                    android:id="@+id/search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="44dp"
+                    android:text="@string/search"
+                    android:textColor="@color/black"
+                    android:textSize="30sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <!-- Change this to edit text -->
                 <ImageButton
-                    android:id="@+id/search_bar"
+                    android:id="@+id/browse_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/navigate_to_browse"
+                    android:layout_marginTop="104dp"
+                    android:src="@drawable/browsebar"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.494"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_search_bar" /> <!-- Change this line -->
+                    android:contentDescription="@string/go_to_search_view"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -57,17 +71,17 @@
                         android:layout_marginTop="10dp">
 
                         <TextView
-                            android:id="@+id/gourmet_res4"
+                            android:id="@+id/recent_res4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/baking_duck"
                             android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/gourmet_img4"
-                            app:layout_constraintStart_toStartOf="@+id/gourmet_img4"
-                            app:layout_constraintTop_toBottomOf="@+id/gourmet_img4" />
+                            app:layout_constraintEnd_toEndOf="@+id/recent_img4"
+                            app:layout_constraintStart_toStartOf="@+id/recent_img4"
+                            app:layout_constraintTop_toBottomOf="@+id/recent_img4" />
 
                         <ImageButton
-                            android:id="@+id/gourmet_img4"
+                            android:id="@+id/recent_img4"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:layout_marginTop="32dp"
@@ -79,17 +93,17 @@
                             app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
-                            android:id="@+id/gourmet_res3"
+                            android:id="@+id/recent_res3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/burger"
                             android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/gourmet_img3"
-                            app:layout_constraintStart_toStartOf="@+id/gourmet_img3"
-                            app:layout_constraintTop_toBottomOf="@+id/gourmet_img3" />
+                            app:layout_constraintEnd_toEndOf="@+id/recent_img3"
+                            app:layout_constraintStart_toStartOf="@+id/recent_img3"
+                            app:layout_constraintTop_toBottomOf="@+id/recent_img3" />
 
                         <ImageButton
-                            android:id="@+id/gourmet_img3"
+                            android:id="@+id/recent_img3"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:layout_marginTop="32dp"
@@ -101,17 +115,17 @@
                             app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
-                            android:id="@+id/gourmet_res1"
+                            android:id="@+id/recent_res1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/pizza"
                             android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/gourmet_img1"
-                            app:layout_constraintStart_toStartOf="@+id/gourmet_img1"
-                            app:layout_constraintTop_toBottomOf="@+id/gourmet_img1" />
+                            app:layout_constraintEnd_toEndOf="@+id/recen_img1"
+                            app:layout_constraintStart_toStartOf="@+id/recen_img1"
+                            app:layout_constraintTop_toBottomOf="@+id/recen_img1" />
 
                         <ImageButton
-                            android:id="@+id/gourmet_img1"
+                            android:id="@+id/recen_img1"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:layout_marginTop="32dp"
@@ -123,10 +137,10 @@
                             app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
-                            android:id="@+id/gourmet_choice"
+                            android:id="@+id/recent_seach"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/gourmet_s_choice"
+                            android:text="@string/recent_searches"
                             android:textColor="@color/black"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.054"
@@ -134,7 +148,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageButton
-                            android:id="@+id/gourmet_img2"
+                            android:id="@+id/recent_img2"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:layout_marginTop="32dp"
@@ -146,14 +160,15 @@
                             app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
-                            android:id="@+id/gourmet_res2"
+                            android:id="@+id/recent_res2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/pasta"
                             android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/gourmet_img2"
-                            app:layout_constraintStart_toStartOf="@+id/gourmet_img2"
-                            app:layout_constraintTop_toBottomOf="@+id/gourmet_img2" />
+                            app:layout_constraintEnd_toEndOf="@+id/recent_img2"
+                            app:layout_constraintStart_toStartOf="@+id/recent_img2"
+                            app:layout_constraintTop_toBottomOf="@+id/recent_img2" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
@@ -166,14 +181,14 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="30dp">
 
                         <TextView
-                            android:id="@+id/near_res"
+                            android:id="@+id/popular_search"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="@string/restaurants_near_you"
+                            android:text="@string/popular_searches"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.057"
                             app:layout_constraintStart_toStartOf="parent"
@@ -181,7 +196,7 @@
                             tools:textColor="@color/black" />
 
                         <ImageButton
-                            android:id="@+id/near_res_img2"
+                            android:id="@+id/popular_img2"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:layout_marginTop="32dp"
@@ -193,17 +208,17 @@
                             app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
-                            android:id="@+id/near_res2"
+                            android:id="@+id/popular_res2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/banh_hoi"
                             android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/near_res_img2"
-                            app:layout_constraintStart_toStartOf="@+id/near_res_img2"
-                            app:layout_constraintTop_toBottomOf="@+id/near_res_img2" />
+                            app:layout_constraintEnd_toEndOf="@+id/popular_img2"
+                            app:layout_constraintStart_toStartOf="@+id/popular_img2"
+                            app:layout_constraintTop_toBottomOf="@+id/popular_img2" />
 
                         <ImageButton
-                            android:id="@+id/near_res_img1"
+                            android:id="@+id/popular_img1"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:layout_marginTop="32dp"
@@ -215,17 +230,17 @@
                             app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
-                            android:id="@+id/near_res1"
+                            android:id="@+id/popular_res1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/banh_mi"
                             android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/near_res_img1"
-                            app:layout_constraintStart_toStartOf="@+id/near_res_img1"
-                            app:layout_constraintTop_toBottomOf="@+id/near_res_img1" />
+                            app:layout_constraintEnd_toEndOf="@+id/popular_img1"
+                            app:layout_constraintStart_toStartOf="@+id/popular_img1"
+                            app:layout_constraintTop_toBottomOf="@+id/popular_img1" />
 
                         <ImageButton
-                            android:id="@+id/near_res_img3"
+                            android:id="@+id/popular_img3"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:layout_marginTop="32dp"
@@ -237,17 +252,17 @@
                             app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
-                            android:id="@+id/near_res3"
+                            android:id="@+id/popular_res3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/banh_trang"
                             android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/near_res_img3"
-                            app:layout_constraintStart_toStartOf="@+id/near_res_img3"
-                            app:layout_constraintTop_toBottomOf="@+id/near_res_img3" />
+                            app:layout_constraintEnd_toEndOf="@+id/popular_img3"
+                            app:layout_constraintStart_toStartOf="@+id/popular_img3"
+                            app:layout_constraintTop_toBottomOf="@+id/popular_img3" />
 
                         <ImageButton
-                            android:id="@+id/near_res_img4"
+                            android:id="@+id/popular_img4"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:layout_marginTop="32dp"
@@ -259,14 +274,14 @@
                             app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
-                            android:id="@+id/near_res4"
+                            android:id="@+id/popular_res4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/pancake"
                             android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/near_res_img4"
-                            app:layout_constraintStart_toStartOf="@+id/near_res_img4"
-                            app:layout_constraintTop_toBottomOf="@+id/near_res_img4" />
+                            app:layout_constraintEnd_toEndOf="@+id/popular_img4"
+                            app:layout_constraintStart_toStartOf="@+id/popular_img4"
+                            app:layout_constraintTop_toBottomOf="@+id/popular_img4" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
 
@@ -278,20 +293,20 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="30dp">
 
                         <TextView
-                            android:id="@+id/new_res1"
+                            android:id="@+id/recom_res1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/kfc"
                             android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/new_res_img1"
-                            app:layout_constraintStart_toStartOf="@+id/new_res_img1"
-                            app:layout_constraintTop_toBottomOf="@+id/new_res_img1" />
+                            app:layout_constraintEnd_toEndOf="@+id/recom_img1"
+                            app:layout_constraintStart_toStartOf="@+id/recom_img1"
+                            app:layout_constraintTop_toBottomOf="@+id/recom_img1" />
 
                         <ImageButton
-                            android:id="@+id/new_res_img1"
+                            android:id="@+id/recom_img1"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:layout_marginTop="32dp"
@@ -303,11 +318,11 @@
                             app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
-                            android:id="@+id/newly_res"
+                            android:id="@+id/recommended"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="@string/newly_opened"
+                            android:text="@string/recommended"
                             android:textColor="@color/black"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.049"
@@ -315,7 +330,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageButton
-                            android:id="@+id/new_res_img2"
+                            android:id="@+id/recom_img2"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:layout_marginTop="32dp"
@@ -327,17 +342,17 @@
                             app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
-                            android:id="@+id/new_res2"
+                            android:id="@+id/recom_res2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/mc_donals"
                             android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/new_res_img2"
-                            app:layout_constraintStart_toStartOf="@+id/new_res_img2"
-                            app:layout_constraintTop_toBottomOf="@+id/new_res_img2" />
+                            app:layout_constraintEnd_toEndOf="@+id/recom_img2"
+                            app:layout_constraintStart_toStartOf="@+id/recom_img2"
+                            app:layout_constraintTop_toBottomOf="@+id/recom_img2" />
 
                         <ImageButton
-                            android:id="@+id/new_res_img3"
+                            android:id="@+id/recom_img3"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:layout_marginTop="32dp"
@@ -349,17 +364,17 @@
                             app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
-                            android:id="@+id/new_res3"
+                            android:id="@+id/recom_res3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/bun_cha"
                             android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/new_res_img3"
-                            app:layout_constraintStart_toStartOf="@+id/new_res_img3"
-                            app:layout_constraintTop_toBottomOf="@+id/new_res_img3" />
+                            app:layout_constraintEnd_toEndOf="@+id/recom_img3"
+                            app:layout_constraintStart_toStartOf="@+id/recom_img3"
+                            app:layout_constraintTop_toBottomOf="@+id/recom_img3" />
 
                         <ImageButton
-                            android:id="@+id/new_res_img4"
+                            android:id="@+id/recom_img4"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:layout_marginTop="32dp"
@@ -371,14 +386,14 @@
                             app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
-                            android:id="@+id/new_res4"
+                            android:id="@+id/recom_res4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/mi_quang"
                             android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/new_res_img4"
-                            app:layout_constraintStart_toStartOf="@+id/new_res_img4"
-                            app:layout_constraintTop_toBottomOf="@+id/new_res_img4" />
+                            app:layout_constraintEnd_toEndOf="@+id/recom_img4"
+                            app:layout_constraintStart_toStartOf="@+id/recom_img4"
+                            app:layout_constraintTop_toBottomOf="@+id/recom_img4" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
 
