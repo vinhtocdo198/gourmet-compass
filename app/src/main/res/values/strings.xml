@@ -76,4 +76,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="gourmet_s_choice">Gourmet\'s choice</string>
+    <string name="restaurants">Restaurants</string>
+    <string name="dishes">Dishes</string>
+    <string name="restaurant_description">Description</string>
 </resources>
