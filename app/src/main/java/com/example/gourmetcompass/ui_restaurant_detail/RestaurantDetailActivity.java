@@ -1,11 +1,14 @@
 package com.example.gourmetcompass.ui_restaurant_detail;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -172,31 +175,51 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                 switchFragment(3);
                 outerBottomSheet.dismiss();
 
-                // Open add review dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(RestaurantDetailActivity.this);
-                View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_review, null);
-                builder.setView(dialogView);
-                AlertDialog reviewDialog = builder.create();
-                showDialog(reviewDialog);
-
-                Button cancelBtn = dialogView.findViewById(R.id.btn_cancel);
-                Button submitBtn = dialogView.findViewById(R.id.btn_submit);
-
-                cancelBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        reviewDialog.dismiss();
-                    }
-                });
-
-                submitBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // TODO: submit review
-                    }
-                });
+                addAReview();
             }
         });
+    }
+
+    private void addAReview() {
+        // Create a dialog for adding a review
+        Dialog reviewDialog = new Dialog(RestaurantDetailActivity.this);
+        reviewDialog.setContentView(R.layout.dialog_add_review);
+
+        // Set the dialog width and height
+        Window window = reviewDialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(window.getAttributes());
+            DisplayMetrics metrics = getResources().getDisplayMetrics();
+            layoutParams.width = (int) (metrics.widthPixels * 0.9); // 90% of screen width
+            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            window.setAttributes(layoutParams);
+        }
+        reviewDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        Button cancelBtn = reviewDialog.findViewById(R.id.btn_cancel_add_review);
+        Button submitBtn = reviewDialog.findViewById(R.id.btn_submit_add_review);
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Dismiss the dialog when the cancel button is clicked
+                reviewDialog.dismiss();
+            }
+        });
+
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: Handle the submit action
+                // For example, you can get the text from the EditText and use it to add a review
+
+                // Dismiss the dialog when the submit action is done
+                reviewDialog.dismiss();
+            }
+        });
+
+        reviewDialog.show();
     }
 
     private void switchFragment(int index) {
@@ -213,17 +236,6 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             }
         }
         bottomSheets.clear();
-    }
-
-    private void showDialog(@NonNull AlertDialog dialog) {
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-        if (dialog.getWindow() != null) {
-            layoutParams.copyFrom(dialog.getWindow().getAttributes());
-            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().setAttributes(layoutParams);
-            dialog.show();
-        }
     }
 
     private void getRestaurantDetail(String restaurantId) {

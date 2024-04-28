@@ -45,43 +45,25 @@
                 style="@style/TitleFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_5"
-                android:text="Name"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:text="@string/name"
                 android:textColor="@color/title_text"
-                android:textSize="@dimen/text_16"
-                tools:ignore="HardcodedText" />
+                android:textSize="@dimen/text_16" />
 
-            <ImageView
-                android:id="@+id/first_star"
+            <TextView
+                android:id="@+id/review_ratings"
+                style="@style/TitleFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/star"
-                android:src="@drawable/ic_star_full" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/star"
-                android:src="@drawable/ic_star_full" />
+                android:text="@string/ratings"
+                android:textColor="@color/star"
+                android:textSize="@dimen/text_16" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/star"
                 android:src="@drawable/ic_star_full" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/star"
-                android:src="@drawable/ic_star_full" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/star"
-                android:src="@drawable/ic_star_full" />
-
 
             <Space
                 android:layout_width="0dp"
@@ -94,10 +76,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_10"
-                android:text="1h"
+                android:text="@string/_1h"
                 android:textColor="@color/content_text"
-                android:textSize="@dimen/text_12"
-                tools:ignore="HardcodedText" />
+                android:textSize="@dimen/text_12" />
 
 
         </LinearLayout>
@@ -109,10 +90,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_10"
+            android:layout_marginVertical="@dimen/margin_5"
             android:ellipsize="end"
             android:maxLines="3"
             android:text="desc"
-            android:textSize="@dimen/text_14" />
+            android:textSize="@dimen/text_14"
+            tools:ignore="HardcodedText" />
 
         <HorizontalScrollView
             android:layout_width="match_parent"

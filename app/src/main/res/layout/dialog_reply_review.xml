@@ -4,8 +4,10 @@
     android:id="@+id/dialog_reply_review"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg"
     android:orientation="vertical"
-    android:padding="@dimen/padding_20">
+    android:paddingHorizontal="@dimen/padding_15"
+    android:paddingVertical="@dimen/padding_20">
 
     <TextView
         android:id="@+id/dialog_title"
@@ -23,7 +25,6 @@
         style="@style/TextFont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_10"
         android:layout_marginTop="@dimen/margin_10"
         android:background="@drawable/border_input_text"
         android:gravity="top|start"
@@ -42,7 +43,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_cancel"
+            android:id="@+id/btn_cancel_reply"
             style="@style/TitleFont"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
@@ -56,7 +57,7 @@
             android:textSize="@dimen/text_18" />
 
         <Button
-            android:id="@+id/btn_submit"
+            android:id="@+id/btn_submit_reply"
             style="@style/TitleFont"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
