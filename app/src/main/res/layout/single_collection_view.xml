@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    >
+
+    <TextView
+        android:id="@+id/CollectionName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Collection Name"
+        android:textSize="18sp"
+        android:padding="7dp"
+        android:textColor="@android:color/black"
+        android:fontFamily="sans-serif"
+        android:layout_gravity="center_vertical"
+        android:layout_marginHorizontal="25dp"
+        android:drawableEnd="@drawable/arrow_img"
+        android:background="@drawable/restaurant_single_collection_structure"
+        />
+
+
+
+</RelativeLayout>

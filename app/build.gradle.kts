@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.play.services.location)
     implementation(libs.core.splashscreen)
     implementation(libs.firebase.firestore)
+    implementation(libs.recyclerview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
