@@ -90,7 +90,7 @@
                             app:layout_constraintHorizontal_bias="0.9"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/untitled_design" />
+                            app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
                             android:id="@+id/recent_res3"
@@ -112,7 +112,7 @@
                             app:layout_constraintHorizontal_bias="0.624"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/untitled_design" />
+                            app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
                             android:id="@+id/recent_res1"
@@ -134,7 +134,7 @@
                             app:layout_constraintHorizontal_bias="0.076"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/untitled_design" />
+                            app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
                             android:id="@+id/recent_seach"
@@ -157,7 +157,7 @@
                             app:layout_constraintHorizontal_bias="0.348"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/untitled_design" />
+                            app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
                             android:id="@+id/recent_res2"
@@ -205,7 +205,7 @@
                             app:layout_constraintHorizontal_bias="0.357"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/untitled_design" />
+                            app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
                             android:id="@+id/popular_res2"
@@ -227,7 +227,7 @@
                             app:layout_constraintHorizontal_bias="0.085"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/untitled_design" />
+                            app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
                             android:id="@+id/popular_res1"
@@ -249,7 +249,7 @@
                             app:layout_constraintHorizontal_bias="0.636"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/untitled_design" />
+                            app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
                             android:id="@+id/popular_res3"
@@ -271,7 +271,7 @@
                             app:layout_constraintHorizontal_bias="0.92"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/untitled_design" />
+                            app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
                             android:id="@+id/popular_res4"
@@ -315,7 +315,7 @@
                             app:layout_constraintHorizontal_bias="0.076"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/untitled_design" />
+                            app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
                             android:id="@+id/recommended"
@@ -339,7 +339,7 @@
                             app:layout_constraintHorizontal_bias="0.36"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/untitled_design" />
+                            app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
                             android:id="@+id/recom_res2"
@@ -361,7 +361,7 @@
                             app:layout_constraintHorizontal_bias="0.636"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/untitled_design" />
+                            app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
                             android:id="@+id/recom_res3"
@@ -383,7 +383,7 @@
                             app:layout_constraintHorizontal_bias="0.912"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/untitled_design" />
+                            app:srcCompat="@drawable/sample_ava" />
 
                         <TextView
                             android:id="@+id/recom_res4"

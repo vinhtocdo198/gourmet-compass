@@ -1,10 +1,14 @@
 package com.example.gourmetcompass.ui_restaurant_detail;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -13,32 +17,36 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.gourmetcompass.R;
+import com.example.gourmetcompass.adapters.ViewPagerAdapter;
+import com.example.gourmetcompass.firebase.FirestoreUtil;
+import com.example.gourmetcompass.models.Restaurant;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
 
-    // Tab layout
+    private static final String TAG = "RestaurantDetailActivity";
+    private final String[] titles = {"Detail", "Menu", "Gallery", "Review"};
+    FirebaseFirestore db;
     ViewPagerAdapter viewPagerAdapter;
     TabLayout tabLayout;
     ViewPager2 viewPager2;
-    private final String[] titles = {"Detail", "Menu", "Gallery", "Review"};
-
-    // Buttons
-    ImageButton plusBtn;
-    ImageButton searchBtn;
-    ImageButton backBtn;
-
-    // Bottom sheets
+    ImageButton plusBtn, searchBtn, backBtn;
+    TextView resName;
     List<BottomSheetDialog> bottomSheets = new ArrayList<>();
 
     @Override
@@ -46,17 +54,18 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_detail);
 
-        // Set tab layout
-        viewPager2 = findViewById(R.id.view_pager);
-        tabLayout = findViewById(R.id.tab_layout);
-        viewPagerAdapter = new ViewPagerAdapter(this);
-        viewPager2.setAdapter(viewPagerAdapter);
-        new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> tab.setText(titles[position])).attach();
+        // Init db instance
+        db = FirestoreUtil.getInstance().getFirestore();
 
+        // Init views
+        initViews();
 
-        plusBtn = findViewById(R.id.btn_plus);
-        searchBtn = findViewById(R.id.btn_search);
-        backBtn = findViewById(R.id.btn_back);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         plusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,9 +77,25 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navigateToFragment(1);
+                switchFragment(1);
             }
         });
+
+        // Get restaurant id from intent
+        String restaurantId = getIntent().getStringExtra("restaurantId");
+
+        // Fetch details of the restaurant
+        getRestaurantDetail(restaurantId);
+
+    }
+
+    private void initViews() {
+        resName = findViewById(R.id.res_name_detail);
+        plusBtn = findViewById(R.id.btn_plus);
+        searchBtn = findViewById(R.id.btn_search);
+        backBtn = findViewById(R.id.btn_back);
+        viewPager2 = findViewById(R.id.view_pager);
+        tabLayout = findViewById(R.id.tab_layout);
     }
 
     private void openBottomSheet() {
@@ -147,37 +172,57 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         addReviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navigateToFragment(3);
+                switchFragment(3);
                 outerBottomSheet.dismiss();
 
-                // Open add review dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(RestaurantDetailActivity.this);
-                View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_review, null);
-                builder.setView(dialogView);
-                AlertDialog reviewDialog = builder.create();
-                showDialog(reviewDialog);
-
-                Button cancelBtn = dialogView.findViewById(R.id.btn_cancel);
-                Button submitBtn = dialogView.findViewById(R.id.btn_submit);
-
-                cancelBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        reviewDialog.dismiss();
-                    }
-                });
-
-                submitBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // TODO: submit review
-                    }
-                });
+                addAReview();
             }
         });
     }
 
-    private void navigateToFragment(int index) {
+    private void addAReview() {
+        // Create a dialog for adding a review
+        Dialog reviewDialog = new Dialog(RestaurantDetailActivity.this);
+        reviewDialog.setContentView(R.layout.dialog_add_review);
+
+        // Set the dialog width and height
+        Window window = reviewDialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(window.getAttributes());
+            DisplayMetrics metrics = getResources().getDisplayMetrics();
+            layoutParams.width = (int) (metrics.widthPixels * 0.9); // 90% of screen width
+            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            window.setAttributes(layoutParams);
+        }
+        reviewDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        Button cancelBtn = reviewDialog.findViewById(R.id.btn_cancel_add_review);
+        Button submitBtn = reviewDialog.findViewById(R.id.btn_submit_add_review);
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Dismiss the dialog when the cancel button is clicked
+                reviewDialog.dismiss();
+            }
+        });
+
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: Handle the submit action
+                // For example, you can get the text from the EditText and use it to add a review
+
+                // Dismiss the dialog when the submit action is done
+                reviewDialog.dismiss();
+            }
+        });
+
+        reviewDialog.show();
+    }
+
+    private void switchFragment(int index) {
         TabLayout.Tab tab = tabLayout.getTabAt(index);
         if (tab != null) {
             tab.select();
@@ -193,14 +238,32 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         bottomSheets.clear();
     }
 
-    private void showDialog(AlertDialog dialog) {
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-        if (dialog.getWindow() != null) {
-            layoutParams.copyFrom(dialog.getWindow().getAttributes());
-            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().setAttributes(layoutParams);
-            dialog.show();
-        }
+    private void getRestaurantDetail(String restaurantId) {
+        db.collection("restaurants").document(restaurantId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            if (documentSnapshot.exists()) {
+                                Restaurant restaurant = documentSnapshot.toObject(Restaurant.class);
+
+                                if (restaurant != null) {
+                                    resName.setText(restaurant.getName());
+                                }
+                                viewPagerAdapter = new ViewPagerAdapter(RestaurantDetailActivity.this, restaurantId);
+                                viewPager2.setAdapter(viewPagerAdapter);
+                                new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> tab.setText(titles[position])).attach();
+
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
     }
+
 }

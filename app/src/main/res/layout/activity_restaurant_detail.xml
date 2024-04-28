@@ -68,12 +68,13 @@
 
 
     <TextView
-        android:id="@+id/res_name"
+        android:id="@+id/res_name_detail"
         style="@style/TitleFont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_20"
-        android:text="Restaurant Name"
+        android:maxLines="3"
+        android:text="@string/restaurant_name"
         android:textAlignment="center"
         android:textColor="@color/title_text"
         android:textSize="@dimen/text_20"
@@ -91,7 +92,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/res_name"
+        app:layout_constraintTop_toBottomOf="@+id/res_name_detail"
         app:tabIndicator="@drawable/btn_tab_bar"
         app:tabIndicatorAnimationMode="elastic"
         app:tabIndicatorColor="@color/button_review"

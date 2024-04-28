@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/margin_5">
@@ -11,26 +10,25 @@
         android:layout_height="match_parent"
         android:background="@color/app_bg"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingVertical="@dimen/padding_10">
+        android:orientation="horizontal">
 
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_20"
+            android:layout_marginVertical="@dimen/margin_10"
+            android:layout_marginStart="@dimen/margin_15"
             android:layout_marginEnd="@dimen/margin_10"
             android:elevation="10dp"
             app:cardCornerRadius="20dp">
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/dish_img"
                 android:layout_width="@dimen/dish_ava_size"
                 android:layout_height="@dimen/dish_ava_size"
-                android:background="@drawable/ava_dish"
+                android:background="@drawable/sample_ava"
                 android:contentDescription="@string/dish_ava"
-                android:scaleType="centerCrop"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:scaleType="centerCrop" />
 
         </androidx.cardview.widget.CardView>
 
@@ -38,86 +36,76 @@
             android:id="@+id/outer_container"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginVertical="@dimen/margin_5"
             android:layout_weight="1"
-            android:gravity="center_vertical"
+            android:gravity="start"
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/margin_5"
+                android:gravity="start"
                 android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/dish_title"
+                    style="@style/TitleFont"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="@string/desc_title"
+                    android:textSize="@dimen/text_16" />
 
-                <ImageView
-                    android:id="@+id/first_star"
+                <TextView
+                    android:id="@+id/dish_ratings"
+                    style="@style/TitleFont"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/star"
-                    android:src="@drawable/ic_star_full" />
+                    android:text="@string/ratings"
+                    android:textColor="@color/star"
+                    android:textSize="@dimen/text_16" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/star"
-                    android:src="@drawable/ic_star_full" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/star"
-                    android:src="@drawable/ic_star_full" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/star"
-                    android:src="@drawable/ic_star_full" />
-
-                <ImageView
+                    android:id="@+id/dish_star"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/star"
                     android:src="@drawable/ic_star_full" />
 
                 <TextView
+                    android:id="@+id/dish_rating_count"
                     style="@style/TitleFont"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_5"
-                    android:text="(0)"
+                    android:text="@string/rating_count"
                     android:textColor="@color/star"
                     android:textSize="@dimen/text_16"
-                    tools:ignore="HardcodedText" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </LinearLayout>
 
-            <TextView
-                style="@style/TitleFont"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="fff"
-                android:textSize="@dimen/text_16" />
 
             <TextView
+                android:id="@+id/dish_desc"
                 style="@style/TextFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="3"
-                android:text="ffffffffffff"
+                android:text="@string/description"
                 android:textSize="@dimen/text_14" />
 
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/iconButton1"
+            android:id="@+id/dish_btn_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_10"
             android:background="@android:color/transparent"
             android:contentDescription="@string/icon"
             android:src="@drawable/ic_more" />

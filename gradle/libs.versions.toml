@@ -16,6 +16,12 @@ playServicesLocation = "21.2.0"
 coreSplashscreen = "1.0.1"
 googleServices = "4.4.1"
 firebaseFirestore = "24.11.1"
+firebaseStorage = "20.3.0"
+firebaseAnalytics = "21.6.2"
+firebaseBom = "32.8.1"
+firebaseAuth = "22.3.1"
+glide = "5.0.0-rc01"
+playServicesAuth = "21.1.0"
 recyclerview = "1.4.0-alpha01"
 
 [libraries]
@@ -35,7 +41,14 @@ activity = { group = "androidx.activity", name = "activity", version.ref = "acti
 core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
 google-services = { group = "com.google.gms", name = "google-services", version.ref = "googleServices" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

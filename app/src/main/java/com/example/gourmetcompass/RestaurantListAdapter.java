@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.gourmetcompass.models.HomeRecyclerViewAdapter;
 import com.example.gourmetcompass.models.Restaurant;
 
 import java.util.List;

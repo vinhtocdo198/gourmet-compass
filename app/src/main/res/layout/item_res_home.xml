@@ -15,13 +15,12 @@
         app:cardCornerRadius="20dp">
 
         <ImageButton
-            android:id="@+id/imageView2"
+            android:id="@+id/res_img_home"
             android:layout_width="@dimen/res_img_home_size"
             android:layout_height="@dimen/res_img_home_size"
-            android:background="@drawable/ava_dish"
+            android:background="@drawable/sample_ava"
             android:contentDescription="@string/dish_ava"
-            android:scaleType="centerCrop"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:scaleType="centerCrop" />
 
     </androidx.cardview.widget.CardView>
 

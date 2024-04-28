@@ -36,7 +36,7 @@
                 style="@style/TextFont"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="abc"
+                android:text="Content"
                 android:textColor="@color/content_text"
                 android:textSize="@dimen/text_16" />
         </LinearLayout>
@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Content"
-                android:textColor="@color/address_text"
+                android:textColor="@color/content_text"
                 android:textSize="@dimen/text_16" />
         </LinearLayout>
 
