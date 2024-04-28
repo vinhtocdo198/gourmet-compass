@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_bg"
+    android:orientation="vertical"
     tools:context=".general_ui.HomeFragment">
 
-    <ScrollView
-        android:id="@+id/scrollView2"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -48,8 +42,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.755"
-                    app:srcCompat="@drawable/search_bar" />
+                    app:layout_constraintVertical_bias="0.755" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -394,10 +387,81 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
 
-            </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_10"
+            android:background="@drawable/ic_app_name"
+            android:contentDescription="@string/background_home_img" />
+
+        <ImageButton
+            android:id="@+id/search_bar_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="140dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/navigate_to_browse"
+            app:srcCompat="@drawable/ic_search_bar" />
+
+    </FrameLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/padding_30">
+
+            <TextView
+                style="@style/TitleFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:text="@string/gourmet_s_choice"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_18" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/first_scroll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                style="@style/TitleFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:text="@string/restaurants_near_you"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_18" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/second_scroll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                style="@style/TitleFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:text="@string/newly_opened"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_18" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/third_scroll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
+
     </ScrollView>
 
-
-</FrameLayout>
+</LinearLayout>

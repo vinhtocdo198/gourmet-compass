@@ -1,66 +1,111 @@
 package com.example.gourmetcompass.general_ui;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.gourmetcompass.MainActivity;
 import com.example.gourmetcompass.R;
+import com.example.gourmetcompass.models.HomeRecyclerViewAdapter;
+import com.example.gourmetcompass.models.Restaurant;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
 public class HomeFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    FirebaseFirestore db;
+    ImageButton searchButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        searchButton = view.findViewById(R.id.search_bar_home);
+
+        // Init db instance
+        db = FirebaseFirestore.getInstance();
+
+        // Fetch data from db into 3 RecyclerViews
+        initRecyclerView(view.findViewById(R.id.first_scroll));
+        initRecyclerView(view.findViewById(R.id.second_scroll));
+        initRecyclerView(view.findViewById(R.id.third_scroll));
+
+        // Navigate to browse fragment
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BrowseFragment browseFragment = new BrowseFragment();
+                FragmentManager fragmentManager = getParentFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frameLayout, browseFragment);
+                fragmentTransaction.commit();
+                if (getActivity() != null) {
+                    ((MainActivity) getActivity()).selectBottomNavItem(R.id.browse_fragment);
+                }
+            }
+        });
+
+    }
+
+    private void initRecyclerView(RecyclerView recyclerView) {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        ArrayList<Restaurant> list = new ArrayList<>();
+        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(getContext(), list);
+        recyclerView.setAdapter(adapter);
+
+        fetchRestaurantList(list, adapter);
+    }
+
+    private void fetchRestaurantList(ArrayList<Restaurant> list, HomeRecyclerViewAdapter adapter) {
+        db.collection("restaurants").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    String errorMessage = error.getMessage();
+                    if (errorMessage != null) {
+                        Log.e("Firestore error", errorMessage);
+                    } else {
+                        Log.e("Firestore error", "An unknown error occurred");
+                    }
+                    return;
+                }
+
+                if (value != null) {
+                    for (DocumentChange dc : value.getDocumentChanges()) {
+                        if (dc.getType() == DocumentChange.Type.ADDED) {
+                            list.add(dc.getDocument().toObject(Restaurant.class));
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        });
     }
 }

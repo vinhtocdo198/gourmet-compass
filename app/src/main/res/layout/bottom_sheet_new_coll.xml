@@ -4,7 +4,7 @@
     android:id="@+id/bottom_sheet_new_coll_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bottom_sheet_bg"
+    android:background="@drawable/bg_bottom_sheet"
     android:orientation="vertical"
     android:paddingTop="@dimen/padding_20">
 

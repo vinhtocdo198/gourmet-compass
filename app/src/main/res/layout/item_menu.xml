@@ -31,6 +31,7 @@
                 android:contentDescription="@string/dish_ava"
                 android:scaleType="centerCrop"
                 tools:srcCompat="@tools:sample/avatars" />
+
         </androidx.cardview.widget.CardView>
 
         <LinearLayout

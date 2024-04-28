@@ -92,7 +92,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/res_name"
-        app:tabIndicator="@drawable/item_tab_bar"
+        app:tabIndicator="@drawable/btn_tab_bar"
         app:tabIndicatorAnimationMode="elastic"
         app:tabIndicatorColor="@color/button_review"
         app:tabIndicatorGravity="stretch"
