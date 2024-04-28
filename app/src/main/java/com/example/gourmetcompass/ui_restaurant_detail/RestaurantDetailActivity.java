@@ -21,7 +21,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.ViewPagerAdapter;
-import com.example.gourmetcompass.database.FirestoreUtil;
+import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.models.Restaurant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

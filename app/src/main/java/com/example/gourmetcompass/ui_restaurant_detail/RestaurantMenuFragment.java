@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.MenuRVAdapter;
-import com.example.gourmetcompass.database.FirestoreUtil;
+import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.models.Dish;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,6 +33,8 @@ public class RestaurantMenuFragment extends Fragment {
     String restaurantId;
     ArrayList<Dish> menu;
     RecyclerView recyclerView;
+    MenuRVAdapter adapter;
+    ProgressBar progressBar;
 
     public static RestaurantMenuFragment newInstance(String restaurantId) {
         RestaurantMenuFragment fragment = new RestaurantMenuFragment();
@@ -55,6 +58,7 @@ public class RestaurantMenuFragment extends Fragment {
             restaurantId = getArguments().getString("restaurantId");
         }
 
+        progressBar = view.findViewById(R.id.menu_progress_bar);
         recyclerView = view.findViewById(R.id.menu_layout);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
@@ -66,6 +70,9 @@ public class RestaurantMenuFragment extends Fragment {
     }
 
     private void fetchRestaurantMenu() {
+
+        progressBar.setVisibility(View.VISIBLE);
+
         db.collection("restaurants").document(restaurantId).collection("dishes")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -78,9 +85,10 @@ public class RestaurantMenuFragment extends Fragment {
                                 Dish dish = document.toObject(Dish.class);
                                 menu.add(dish);
                             }
-                            MenuRVAdapter adapter = new MenuRVAdapter(getContext(), menu);
+                            adapter = new MenuRVAdapter(getContext(), menu);
                             recyclerView.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
+                            progressBar.setVisibility(View.GONE);
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }

@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gourmetcompass.MainActivity;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.HomeRVAdapter;
-import com.example.gourmetcompass.database.FirestoreUtil;
+import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.models.Restaurant;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;

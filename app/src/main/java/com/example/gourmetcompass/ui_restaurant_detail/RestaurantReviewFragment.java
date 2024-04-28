@@ -8,8 +8,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.example.gourmetcompass.R;
-import com.example.gourmetcompass.database.FirestoreUtil;
-import com.example.gourmetcompass.models.Restaurant;
+import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RestaurantReviewFragment extends Fragment {
