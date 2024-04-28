@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:padding="15dp">
+
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/restaurant_img"
+        android:layout_marginRight="5dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/restaurant_name"
+        android:text="Restaurant"
+        android:textSize="18sp"
+        android:padding="7dp"
+        android:textColor="@android:color/black"
+        android:fontFamily="sans-serif"
+        android:layout_toEndOf="@id/restaurant_img"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:id="@+id/restaurant_description"
+        android:textSize="18sp"
+        android:padding="7dp"
+        android:textColor="@android:color/black"
+        android:fontFamily="sans-serif"
+        android:layout_below="@id/restaurant_name"
+        android:layout_toEndOf="@id/restaurant_img"
+        />
+
+    <RatingBar
+        android:id="@+id/rating_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/restaurant_description"
+        android:layout_toEndOf="@id/restaurant_name"
+        android:scaleX="0.5"
+        android:scaleY="0.5" />
+
+</RelativeLayout>

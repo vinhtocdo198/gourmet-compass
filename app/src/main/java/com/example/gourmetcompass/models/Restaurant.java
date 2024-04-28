@@ -1,7 +1,5 @@
 package com.example.gourmetcompass.models;
 
-import java.io.Serializable;
-
 public class Restaurant {
     String id, name, description, address, phoneNo, openingHours, ratings, category, tag;
 
