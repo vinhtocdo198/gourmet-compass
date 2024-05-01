@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/app_bar"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/padding_15">
+
+        <ImageButton
+            android:id="@+id/btn_back_request_add_res"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/margin_15"
+            android:background="@drawable/ic_arrow_back"
+            android:contentDescription="Check noti"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            style="@style/TitleFont"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="Request to add/edit \na restaurant"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_20"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_20"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/padding_30">
+
+            <TextView
+                style="@style/TextFont"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:text="Restaurant name:"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_18"
+                tools:ignore="HardcodedText" />
+
+            <EditText
+                android:id="@+id/request_res_name"
+                style="@style/TextFont"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_15"
+                android:autofillHints="name"
+                android:background="@drawable/input_text_field"
+                android:hint="Enter restaurant name"
+                android:inputType="text"
+                android:padding="12dp"
+                android:selectAllOnFocus="true"
+                android:textColor="@color/black"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                style="@style/TextFont"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:text="Address:"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_18"
+                tools:ignore="HardcodedText" />
+
+            <EditText
+                android:id="@+id/request_res_address"
+                style="@style/TextFont"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_15"
+                android:autofillHints="postalAddress"
+                android:background="@drawable/input_text_field"
+                android:hint="Enter address"
+                android:inputType="textPostalAddress"
+                android:padding="12dp"
+                android:selectAllOnFocus="true"
+                android:textColor="@color/black"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                style="@style/TextFont"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:text="Phone number:"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_18"
+                tools:ignore="HardcodedText" />
+
+            <EditText
+                android:id="@+id/request_res_phone_number"
+                style="@style/TextFont"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_15"
+                android:autofillHints="phone"
+                android:background="@drawable/input_text_field"
+                android:hint="Enter phone number"
+                android:inputType="phone"
+                android:padding="12dp"
+                android:selectAllOnFocus="true"
+                android:textColor="@color/black"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                style="@style/TextFont"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:text="Opening Hours:"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_18"
+                tools:ignore="HardcodedText" />
+
+            <EditText
+                android:id="@+id/request_res_opening_hours"
+                style="@style/TextFont"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_15"
+                android:autofillHints="text"
+                android:background="@drawable/input_text_field"
+                android:hint="Enter opening hours"
+                android:inputType="text"
+                android:padding="12dp"
+                android:selectAllOnFocus="true"
+                android:textColor="@color/black"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                style="@style/TextFont"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:text="Menu:"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_18"
+                tools:ignore="HardcodedText" />
+
+            <EditText
+                android:id="@+id/cf_new_password"
+                style="@style/TextFont"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_15"
+                android:autofillHints="phone"
+                android:background="@drawable/input_text_field"
+                android:hint="Temp menu"
+                android:inputType="textPassword"
+                android:padding="12dp"
+                android:selectAllOnFocus="true"
+                android:textColor="@color/black"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                style="@style/TextFont"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:text="Gallery:"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_18"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/uploadButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/regular_button_structure"
+                android:backgroundTint="@color/button_pressed_upload"
+                android:drawableStart="@drawable/upload_img"
+                android:fontFamily="serif"
+                android:text="Upload"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+
+                />
+
+
+            <Button
+                android:id="@+id/btn_submit_request"
+                style="@style/TitleFont"
+                android:layout_width="130dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/btn_orange"
+                android:elevation="5dp"
+                android:text="@string/submit"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_18" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

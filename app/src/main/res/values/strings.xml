@@ -87,7 +87,7 @@
     <string name="my_collections">My Collections</string>
     <string name="my_reviews">My Reviews</string>
     <string name="change_password">Change Password</string>
-    <string name="reques_to_add_edit_a_restaurant">Reques to add/edit a restaurant</string>
+    <string name="request_to_add_edit_a_restaurant">Request to add/edit a restaurant</string>
     <string name="log_out">Log Out</string>
     <string name="back_to_previous_page">Back to previous page</string>
     <string name="highest_rated_restaurant">Highest Rated Restaurant</string>
@@ -98,5 +98,7 @@
     <string name="restaurant_description">Description</string>
     <string name="name">Name</string>
     <string name="_1h">1h</string>
+    <string name="save">Save</string>
+    <string name="account_ava">Account ava</string>
 
 </resources>
