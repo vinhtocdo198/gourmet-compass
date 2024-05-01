@@ -1,4 +1,4 @@
-package com.example.gourmetcompass.general_ui;
+package com.example.gourmetcompass.ui_general;
 
 import android.os.Bundle;
 

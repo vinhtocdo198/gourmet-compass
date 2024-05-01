@@ -18,9 +18,30 @@
         <activity
             android:name=".MapsActivity"
             android:exported="false" />
+
+        <!-- Restaurant details -->
         <activity
             android:name=".ui_restaurant_detail.RestaurantDetailActivity"
             android:exported="false" />
+
+        <!-- Personal information -->
+        <activity
+            android:name=".ui_personal.PersonalInformationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui_personal.MyCollectionsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui_personal.MyReviewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui_personal.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui_personal.RequestAddRestaurantActivity"
+            android:exported="false" />
+
+        <!-- Main -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
