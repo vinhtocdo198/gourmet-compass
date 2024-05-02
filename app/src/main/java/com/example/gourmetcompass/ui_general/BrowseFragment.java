@@ -1,6 +1,7 @@
 package com.example.gourmetcompass.ui_general;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -26,25 +27,37 @@ public class BrowseFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_browse, container, false);
 
         searchBar = view.findViewById(R.id.search_bar_browse);
+
+        searchBar.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                // TODO: hide icon
+            }
+        });
+
         searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_SEARCH
-                        || (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-
-                    // The user has clicked "Enter", start the new activity
-                    Intent intent = new Intent(getActivity(), RestaurantSearchListActivity.class);
-                    intent.putExtra("searchQuery", v.getText().toString());
-                    startActivity(intent);
-                    if (getActivity() != null) {
-                        getActivity().overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
-                    }
-                    return true; // Consume the event
-                }
-                return false; // Pass the event along
+                return showSearchResults(v, actionId, event);
             }
         });
 
         return view;
+    }
+
+    private boolean showSearchResults(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_SEARCH
+                || (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+
+            // The user has clicked "Enter", start the new activity
+            Intent intent = new Intent(getActivity(), RestaurantSearchListActivity.class);
+            intent.putExtra("searchQuery", v.getText().toString());
+            startActivity(intent);
+            if (getActivity() != null) {
+                getActivity().overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
+            }
+            return true;
+        }
+        return false;
     }
 }

@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment {
                 BrowseFragment browseFragment = new BrowseFragment();
                 FragmentManager fragmentManager = getParentFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayout, browseFragment);
+                fragmentTransaction.replace(R.id.main_frame_layout, browseFragment);
                 fragmentTransaction.commit();
                 if (getActivity() != null) {
                     ((MainActivity) getActivity()).selectBottomNavItem(R.id.browse_fragment);
