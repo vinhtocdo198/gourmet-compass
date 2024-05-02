@@ -35,8 +35,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Open personal information activity
-                Intent intent = new Intent(getActivity(), PersonalInformationActivity.class);
-                startActivity(intent);
+                startActivitySlideIn(PersonalInformationActivity.class);
             }
         });
 
@@ -44,8 +43,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Open my collections activity
-                Intent intent = new Intent(getActivity(), MyCollectionsActivity.class);
-                startActivity(intent);
+                startActivitySlideIn(MyCollectionsActivity.class);
             }
         });
 
@@ -53,8 +51,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Open my reviews activity
-                Intent intent = new Intent(getActivity(), MyReviewsActivity.class);
-                startActivity(intent);
+                startActivitySlideIn(MyReviewsActivity.class);
             }
         });
 
@@ -62,8 +59,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Open change password activity
-                Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
-                startActivity(intent);
+                startActivitySlideIn(ChangePasswordActivity.class);
             }
         });
 
@@ -71,17 +67,15 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Open request activity
-                Intent intent = new Intent(getActivity(), RequestAddRestaurantActivity.class);
-                startActivity(intent);
+                startActivitySlideIn(RequestAddRestaurantActivity.class);
             }
         });
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Open login activity
-                // Intent intent = new Intent(getActivity(), LoginActivity.class);
-                // startActivity(intent);
+                // Log out of the account
+
             }
         });
 
@@ -95,5 +89,13 @@ public class AccountFragment extends Fragment {
         changePasswordBtn = view.findViewById(R.id.change_password_btn);
         requestBtn = view.findViewById(R.id.add_edit_res_btn);
         logoutBtn = view.findViewById(R.id.log_out_btn);
+    }
+
+    private void startActivitySlideIn(Class<?> activityClass) {
+        Intent intent = new Intent(getActivity(), activityClass);
+        startActivity(intent);
+        if (getActivity() != null) {
+            getActivity().overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
+        }
     }
 }

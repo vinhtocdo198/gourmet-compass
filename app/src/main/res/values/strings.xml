@@ -100,5 +100,6 @@
     <string name="_1h">1h</string>
     <string name="save">Save</string>
     <string name="account_ava">Account ava</string>
+    <string name="type">Type</string>
 
 </resources>

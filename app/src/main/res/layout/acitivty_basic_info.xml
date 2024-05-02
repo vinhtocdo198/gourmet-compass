@@ -122,7 +122,7 @@
             android:autofillHints="phone"
             android:background="@drawable/input_text_field"
             android:drawableEnd="@drawable/ic_edit_text"
-            android:hint="Enter Phone Number"
+            android:hint="Enter phone number"
             android:inputType="phone"
             android:padding="12dp"
             android:selectAllOnFocus="true"
@@ -132,7 +132,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_save_personal_info"
+        android:id="@+id/btn_save_basic_info"
         style="@style/TitleFont"
         android:layout_width="130dp"
         android:layout_height="48dp"

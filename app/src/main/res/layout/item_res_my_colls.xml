@@ -23,7 +23,7 @@
             app:cardCornerRadius="20dp">
 
             <ImageView
-                android:id="@+id/dish_img"
+                android:id="@+id/res_my_colls_res_img"
                 android:layout_width="@dimen/dish_ava_size"
                 android:layout_height="@dimen/dish_ava_size"
                 android:background="@drawable/sample_ava"
@@ -49,7 +49,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/dish_title"
+                    android:id="@+id/res_my_colls_res_title"
                     style="@style/TitleFont"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
 
 
             <TextView
-                android:id="@+id/dish_desc"
+                android:id="@+id/res_my_colls_res_desc"
                 style="@style/TextFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/dish_btn_more"
+            android:id="@+id/res_my_colls_btn_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
