@@ -5,11 +5,10 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="top"
-    android:padding="15dp"
     android:background="@color/app_bg"
-    >
+    android:gravity="top"
+    android:orientation="vertical"
+    android:padding="15dp">
 
     <ImageView
         android:id="@+id/account_icon"
@@ -24,63 +23,63 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="26dp"
-            android:text="Username:"
             android:fontFamily="serif"
+            android:text="Username:"
             android:textColor="@color/black"
-            android:textSize="18sp"
-            ></TextView>
+            android:textSize="18sp"></TextView>
+
         <EditText
             android:id="@+id/user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_marginHorizontal="25dp"
-            android:hint="Enter username"
+            android:layout_marginTop="5dp"
             android:background="@drawable/edit_text_rectangle_shape"
-            android:padding="12dp"
             android:fontFamily="serif"
-            android:textColor="@color/black"
+            android:hint="Enter username"
             android:inputType="text"
+            android:padding="12dp"
             android:selectAllOnFocus="true"
-            />
+            android:textColor="@color/black" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="26dp"
             android:layout_marginTop="7dp"
-            android:text="Email:"
             android:fontFamily="serif"
+            android:text="Email:"
             android:textColor="@color/black"
-            android:textSize="18sp"
-            ></TextView>
+            android:textSize="18sp"></TextView>
+
         <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_marginHorizontal="25dp"
-            android:hint="Enter email"
+            android:layout_marginTop="5dp"
             android:background="@drawable/edit_text_rectangle_shape"
-            android:padding="12dp"
             android:fontFamily="serif"
-            android:textColor="@color/black"
+            android:hint="Enter email"
             android:inputType="textEmailAddress"
+            android:padding="12dp"
             android:selectAllOnFocus="true"
-            />
+            android:textColor="@color/black" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="26dp"
             android:layout_marginTop="7dp"
-            android:text="Phone Number:"
             android:fontFamily="serif"
+            android:text="Phone Number:"
             android:textColor="@color/black"
-            android:textSize="18sp"
-            ></TextView>
+            android:textSize="18sp"></TextView>
 
         <EditText
             android:id="@+id/phone_number"
@@ -88,14 +87,13 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="25dp"
             android:layout_marginTop="5dp"
-            android:hint="Enter Phone Number"
             android:background="@drawable/edit_text_rectangle_shape"
-            android:padding="12dp"
             android:fontFamily="serif"
+            android:hint="Enter Phone Number"
             android:inputType="phone"
-            android:textColor="@color/black"
+            android:padding="12dp"
             android:selectAllOnFocus="true"
-            />
+            android:textColor="@color/black" />
 
     </LinearLayout>
 
@@ -105,13 +103,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
+        android:background="@drawable/regular_button_structure"
         android:fontFamily="serif"
         android:text="Save"
-        android:textSize="17sp"
-        android:textColor="@color/white"
-        android:background="@drawable/regular_button_structure"
         android:textAllCaps="false"
-        app:backgroundTint="@color/button_orange"
-        />
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        app:backgroundTint="@color/button_orange" />
 
 </LinearLayout>
