@@ -3,10 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/app_bg"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="15dp">
+    android:padding="15dp"
+    tools:context = ".Sign_In">
 
     <ImageView
         android:id="@+id/account_icon"
@@ -29,7 +31,7 @@
             android:fontFamily="serif"
             android:text="Username:"
             android:textColor="@color/black"
-            android:textSize="18sp"></TextView>
+            android:textSize="18sp"/>
 
         <EditText
             android:id="@+id/user_name"
@@ -53,7 +55,7 @@
             android:fontFamily="serif"
             android:text="Password:"
             android:textColor="@color/black"
-            android:textSize="18sp"></TextView>
+            android:textSize="18sp"/>
 
         <EditText
             android:id="@+id/user_password"
@@ -80,7 +82,7 @@
         android:fontFamily="serif"
         android:text="Forgot password?"
         android:textColor="@color/black"
-        android:textSize="17sp"></TextView>
+        android:textSize="17sp"/>
 
     <Button
         android:id="@+id/sign_in_button"

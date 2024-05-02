@@ -36,6 +36,7 @@
 
     </LinearLayout>
 
+
     <ImageView
         android:id="@+id/account_icon"
         android:layout_width="120dp"
@@ -112,6 +113,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_18"
             tools:ignore="HardcodedText" />
+
 
         <EditText
             android:id="@+id/phone_number"
