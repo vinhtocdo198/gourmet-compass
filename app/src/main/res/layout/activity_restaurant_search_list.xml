@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/app_bg"
     android:orientation="vertical"
-    tools:context=".ui_general.RestaurantListFragment">
+    tools:context=".ui_general.RestaurantSearchListActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         android:paddingHorizontal="@dimen/padding_15">
 
         <ImageButton
-            android:id="@+id/btn_back_basic_info"
+            android:id="@+id/btn_back_res_search_list"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
@@ -25,6 +25,7 @@
             tools:ignore="HardcodedText" />
 
         <TextView
+            android:id="@+id/search_text_result"
             style="@style/TitleFont"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -103,11 +104,12 @@
     </HorizontalScrollView>
 
     <TextView
+        android:id="@+id/result_quantity"
         style="@style/TitleFont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginHorizontal="@dimen/margin_20"
+        android:layout_marginHorizontal="@dimen/margin_30"
         android:text="@string/n_results"
         android:textColor="@color/black"
         android:textSize="@dimen/text_20" />
