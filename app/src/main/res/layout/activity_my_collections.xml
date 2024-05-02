@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/app_bar"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/padding_15">
+
+        <ImageButton
+            android:id="@+id/btn_back_my_collections"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/margin_15"
+            android:background="@drawable/ic_arrow_back"
+            android:contentDescription="Go back"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            style="@style/TitleFont"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="My Collections"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_20"
+            tools:ignore="HardcodedText" />
+
+        <ImageButton
+            android:id="@+id/btn_search_my_collections"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="@dimen/margin_5"
+            android:background="@drawable/ic_search"
+            android:contentDescription="Search collection"
+            tools:ignore="HardcodedText" />
+
+        <ImageButton
+            android:id="@+id/btn_add_my_collections"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/ic_plus"
+            android:contentDescription="Open bottom sheet"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/padding_20">
+
+        <TextView
+            style="@style/TitleFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_30"
+            android:text="@string/restaurants"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_20" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/my_coll_res_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_15" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/padding_20">
+
+        <TextView
+            style="@style/TitleFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_30"
+            android:text="@string/dishes"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_20" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/my_coll_dish_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_15" />
+
+    </LinearLayout>
+
+</LinearLayout>

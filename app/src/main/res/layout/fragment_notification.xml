@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/app_bg"
     android:orientation="vertical"
-    tools:context=".general_ui.NotificationFragment">
+    tools:context=".ui_general.NotificationFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gourmetcompass.MainActivity;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.models.Restaurant;
 import com.example.gourmetcompass.ui_restaurant_detail.RestaurantDetailActivity;
@@ -47,6 +48,9 @@ public class HomeRVAdapter extends RecyclerView.Adapter<HomeRVAdapter.MyViewHold
                     Intent intent = new Intent(context, RestaurantDetailActivity.class);
                     intent.putExtra("restaurantId", restaurantList.get(pos).getId());
                     context.startActivity(intent);
+                    if (context instanceof MainActivity) {
+                        ((MainActivity) context).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
+                    }
                 }
             }
         });

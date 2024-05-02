@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    android:orientation="vertical"
+    tools:context=".ui_general.RestaurantSearchListActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/app_bar"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/padding_15">
+
+        <ImageButton
+            android:id="@+id/btn_back_res_search_list"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/margin_15"
+            android:background="@drawable/ic_arrow_back"
+            android:contentDescription="Go back"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/search_text_result"
+            style="@style/TitleFont"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="Search text"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_20"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_15">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/highest_rated_filter"
+                style="@style/TitleFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_5"
+                android:background="@drawable/border_filter"
+                android:drawableStart="@drawable/ic_star_selector"
+                android:drawablePadding="@dimen/padding_5"
+                android:elevation="5dp"
+                android:paddingHorizontal="@dimen/padding_10"
+                android:text="@string/highest_rated"
+                android:textAllCaps="false"
+                android:textColor="@color/content_text"
+                android:textSize="@dimen/text_14"
+                tools:ignore="RtlSymmetry" />
+
+            <Button
+                android:id="@+id/most_reviewed_filter"
+                style="@style/TitleFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_5"
+                android:background="@drawable/border_filter"
+                android:drawableStart="@drawable/ic_edit_selector"
+                android:drawablePadding="@dimen/padding_5"
+                android:elevation="5dp"
+                android:paddingHorizontal="@dimen/padding_10"
+                android:text="@string/most_reviewed"
+                android:textAllCaps="false"
+                android:textColor="@color/content_text"
+                android:textSize="@dimen/text_14"
+                tools:ignore="RtlSymmetry" />
+
+            <Button
+                android:id="@+id/nearest_filter"
+                style="@style/TitleFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_5"
+                android:background="@drawable/border_filter"
+                android:drawableStart="@drawable/ic_location_selector"
+                android:drawablePadding="@dimen/padding_5"
+                android:elevation="5dp"
+                android:paddingHorizontal="@dimen/padding_10"
+                android:text="@string/nearest"
+                android:textAllCaps="false"
+                android:textColor="@color/content_text"
+                android:textSize="@dimen/text_14"
+                tools:ignore="RtlSymmetry" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/result_quantity"
+        style="@style/TitleFont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginHorizontal="@dimen/margin_30"
+        android:text="@string/n_results"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_20" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginVertical="@dimen/margin_15">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/res_search_list_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/padding_5" />
+
+        <ProgressBar
+            android:id="@+id/res_search_list_progress_bar"
+            android:layout_width="@dimen/progress_bar_size"
+            android:layout_height="@dimen/progress_bar_size"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+</LinearLayout>

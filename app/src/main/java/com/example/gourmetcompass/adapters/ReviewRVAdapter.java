@@ -3,7 +3,6 @@ package com.example.gourmetcompass.adapters;
 import android.app.Dialog;
 import android.content.Context;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +37,7 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
     @NonNull
     @Override
     public ReviewRVAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_review, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_review_res, parent, false);
         return new ReviewRVAdapter.MyViewHolder(view);
     }
 

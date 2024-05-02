@@ -111,4 +111,5 @@
             android:src="@drawable/ic_more" />
 
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

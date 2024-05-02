@@ -47,7 +47,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     ViewPager2 viewPager2;
     ImageButton plusBtn, searchBtn, backBtn;
     TextView resName;
-    List<BottomSheetDialog> bottomSheets = new ArrayList<>();
+    List<BottomSheetDialog> bottomSheets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +59,13 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
         // Init views
         initViews();
+        bottomSheets = new ArrayList<>();
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
             }
         });
 
