@@ -19,6 +19,11 @@
             android:name=".MapsActivity"
             android:exported="false" />
 
+        <!-- Restaurant search list -->
+        <activity
+            android:name=".ui_general.RestaurantSearchListActivity"
+            android:exported="false" />
+
         <!-- Restaurant details -->
         <activity
             android:name=".ui_restaurant_detail.RestaurantDetailActivity"

@@ -65,6 +65,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
             }
         });
 

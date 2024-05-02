@@ -1,406 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_bg"
+    android:orientation="vertical"
     tools:context=".ui_general.HomeFragment">
 
-    <ScrollView
-        android:id="@+id/scrollView2"
+    <TextView
+        style="@style/TitleFont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_30"
+        android:layout_marginTop="@dimen/margin_20"
+        android:text="@string/search"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_25" />
+
+    <EditText
+        android:id="@+id/search_bar_browse"
+        style="@style/TextFont"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_30"
+        android:layout_marginVertical="@dimen/margin_15"
+        android:autofillHints="name"
+        android:background="@drawable/border_search_bar"
+        android:drawableEnd="@drawable/ic_search"
+        android:hint="Restaurant, cuisine,..."
+        android:inputType="text"
+        android:paddingVertical="@dimen/padding_10"
+        android:paddingStart="@dimen/padding_25"
+        android:paddingEnd="@dimen/padding_15"
+        android:selectAllOnFocus="true"
+        android:textColor="@color/black"
+        tools:ignore="HardcodedText" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/padding_30">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <TextView
+                style="@style/TitleFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:text="@string/recent_searches"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_18" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/first_scroll_browse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="200dp">
+                android:layout_height="2dp"
+                android:layout_marginTop="@dimen/margin_5"
+                android:background="@color/divider" />
 
-                <TextView
-                    android:id="@+id/search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="44dp"
-                    android:text="@string/search"
-                    android:textColor="@color/black"
-                    android:textSize="30sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                style="@style/TitleFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:text="@string/popular_searches"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_18" />
 
-                <!-- Change this to edit text -->
-                <ImageButton
-                    android:id="@+id/browse_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="104dp"
-                    android:src="@drawable/browsebar"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.494"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:contentDescription="@string/go_to_search_view"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/second_scroll_browse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <LinearLayout
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="2dp"
+                android:layout_marginTop="@dimen/margin_5"
+                android:background="@color/divider" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+            <TextView
+                style="@style/TitleFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:text="@string/recommended"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_18" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="10dp">
-
-                        <TextView
-                            android:id="@+id/recent_res4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/baking_duck"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/recent_img4"
-                            app:layout_constraintStart_toStartOf="@+id/recent_img4"
-                            app:layout_constraintTop_toBottomOf="@+id/recent_img4" />
-
-                        <ImageButton
-                            android:id="@+id/recent_img4"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_marginTop="32dp"
-                            android:contentDescription="@string/choiceres4"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.9"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/sample_ava" />
-
-                        <TextView
-                            android:id="@+id/recent_res3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/burger"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/recent_img3"
-                            app:layout_constraintStart_toStartOf="@+id/recent_img3"
-                            app:layout_constraintTop_toBottomOf="@+id/recent_img3" />
-
-                        <ImageButton
-                            android:id="@+id/recent_img3"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_marginTop="32dp"
-                            android:contentDescription="@string/choiceres3"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.624"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/sample_ava" />
-
-                        <TextView
-                            android:id="@+id/recent_res1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/pizza"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/recen_img1"
-                            app:layout_constraintStart_toStartOf="@+id/recen_img1"
-                            app:layout_constraintTop_toBottomOf="@+id/recen_img1" />
-
-                        <ImageButton
-                            android:id="@+id/recen_img1"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_marginTop="32dp"
-                            android:contentDescription="@string/choiceres1"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.076"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/sample_ava" />
-
-                        <TextView
-                            android:id="@+id/recent_seach"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/recent_searches"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.054"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageButton
-                            android:id="@+id/recent_img2"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_marginTop="32dp"
-                            android:contentDescription="@string/choiceres2"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.348"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/sample_ava" />
-
-                        <TextView
-                            android:id="@+id/recent_res2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/pasta"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/recent_img2"
-                            app:layout_constraintStart_toStartOf="@+id/recent_img2"
-                            app:layout_constraintTop_toBottomOf="@+id/recent_img2" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="30dp">
-
-                        <TextView
-                            android:id="@+id/popular_search"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/popular_searches"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.057"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:textColor="@color/black" />
-
-                        <ImageButton
-                            android:id="@+id/popular_img2"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_marginTop="32dp"
-                            android:contentDescription="@string/nearres2"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.357"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/sample_ava" />
-
-                        <TextView
-                            android:id="@+id/popular_res2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/banh_hoi"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/popular_img2"
-                            app:layout_constraintStart_toStartOf="@+id/popular_img2"
-                            app:layout_constraintTop_toBottomOf="@+id/popular_img2" />
-
-                        <ImageButton
-                            android:id="@+id/popular_img1"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_marginTop="32dp"
-                            android:contentDescription="@string/neares1"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.085"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/sample_ava" />
-
-                        <TextView
-                            android:id="@+id/popular_res1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/banh_mi"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/popular_img1"
-                            app:layout_constraintStart_toStartOf="@+id/popular_img1"
-                            app:layout_constraintTop_toBottomOf="@+id/popular_img1" />
-
-                        <ImageButton
-                            android:id="@+id/popular_img3"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_marginTop="32dp"
-                            android:contentDescription="@string/nearres3"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.636"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/sample_ava" />
-
-                        <TextView
-                            android:id="@+id/popular_res3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/banh_trang"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/popular_img3"
-                            app:layout_constraintStart_toStartOf="@+id/popular_img3"
-                            app:layout_constraintTop_toBottomOf="@+id/popular_img3" />
-
-                        <ImageButton
-                            android:id="@+id/popular_img4"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_marginTop="32dp"
-                            android:contentDescription="@string/nearres4"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.92"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/sample_ava" />
-
-                        <TextView
-                            android:id="@+id/popular_res4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/pancake"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/popular_img4"
-                            app:layout_constraintStart_toStartOf="@+id/popular_img4"
-                            app:layout_constraintTop_toBottomOf="@+id/popular_img4" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="30dp">
-
-                        <TextView
-                            android:id="@+id/recom_res1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/kfc"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/recom_img1"
-                            app:layout_constraintStart_toStartOf="@+id/recom_img1"
-                            app:layout_constraintTop_toBottomOf="@+id/recom_img1" />
-
-                        <ImageButton
-                            android:id="@+id/recom_img1"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_marginTop="32dp"
-                            android:contentDescription="@string/newres1"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.076"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/sample_ava" />
-
-                        <TextView
-                            android:id="@+id/recommended"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/recommended"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.049"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageButton
-                            android:id="@+id/recom_img2"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_marginTop="32dp"
-                            android:contentDescription="@string/newres2"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.36"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/sample_ava" />
-
-                        <TextView
-                            android:id="@+id/recom_res2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/mc_donals"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/recom_img2"
-                            app:layout_constraintStart_toStartOf="@+id/recom_img2"
-                            app:layout_constraintTop_toBottomOf="@+id/recom_img2" />
-
-                        <ImageButton
-                            android:id="@+id/recom_img3"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_marginTop="32dp"
-                            android:contentDescription="@string/newres3"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.636"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/sample_ava" />
-
-                        <TextView
-                            android:id="@+id/recom_res3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/bun_cha"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/recom_img3"
-                            app:layout_constraintStart_toStartOf="@+id/recom_img3"
-                            app:layout_constraintTop_toBottomOf="@+id/recom_img3" />
-
-                        <ImageButton
-                            android:id="@+id/recom_img4"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_marginTop="32dp"
-                            android:contentDescription="@string/newres4"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.912"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/sample_ava" />
-
-                        <TextView
-                            android:id="@+id/recom_res4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/mi_quang"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="@+id/recom_img4"
-                            app:layout_constraintStart_toStartOf="@+id/recom_img4"
-                            app:layout_constraintTop_toBottomOf="@+id/recom_img4" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
-
-            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/third_scroll_browse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
+
     </ScrollView>
 
-
-</FrameLayout>
+</LinearLayout>
