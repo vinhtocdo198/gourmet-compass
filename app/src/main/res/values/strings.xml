@@ -101,6 +101,6 @@
     <string name="save">Save</string>
     <string name="account_ava">Account ava</string>
     <string name="type">Type</string>
-    <string name="n_results">n results</string>
+    <string name="n_results">%1$d results</string>
 
 </resources>
