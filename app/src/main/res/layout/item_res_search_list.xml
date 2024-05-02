@@ -23,9 +23,9 @@
             app:cardCornerRadius="20dp">
 
             <ImageView
-                android:id="@+id/dish_img"
+                android:id="@+id/res_search_list_res_img"
                 android:layout_width="@dimen/dish_ava_size"
-                android:layout_height="@dimen/dish_ava_size"
+                android:layout_height="match_parent"
                 android:background="@drawable/sample_ava"
                 android:contentDescription="@string/dish_ava"
                 android:scaleType="centerCrop" />
@@ -49,7 +49,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/dish_title"
+                    android:id="@+id/res_search_list_res_title"
                     style="@style/TitleFont"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -80,6 +80,7 @@
                     style="@style/TitleFont"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_15"
                     android:text="@string/rating_count"
                     android:textColor="@color/star"
                     android:textSize="@dimen/text_16"
@@ -91,24 +92,17 @@
 
 
             <TextView
-                android:id="@+id/dish_desc"
+                android:id="@+id/res_search_list_res_desc"
                 style="@style/TextFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_15"
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:text="@string/description"
                 android:textSize="@dimen/text_14" />
 
         </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/dish_btn_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:contentDescription="@string/icon"
-            android:src="@drawable/ic_more" />
 
     </LinearLayout>
 

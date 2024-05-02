@@ -31,7 +31,7 @@
 
     <include
         android:id="@+id/item_collection"
-        layout="@layout/item_collection"
+        layout="@layout/item_coll_btmsheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_15"

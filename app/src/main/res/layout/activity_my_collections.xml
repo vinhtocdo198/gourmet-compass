@@ -21,7 +21,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/margin_15"
             android:background="@drawable/ic_arrow_back"
-            android:contentDescription="Check noti"
+            android:contentDescription="Go back"
             tools:ignore="HardcodedText" />
 
         <TextView
@@ -42,7 +42,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginHorizontal="@dimen/margin_5"
             android:background="@drawable/ic_search"
-            android:contentDescription="Check noti"
+            android:contentDescription="Search collection"
             tools:ignore="HardcodedText" />
 
         <ImageButton
@@ -51,7 +51,7 @@
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
             android:background="@drawable/ic_plus"
-            android:contentDescription="Check noti"
+            android:contentDescription="Open bottom sheet"
             tools:ignore="HardcodedText" />
 
     </LinearLayout>

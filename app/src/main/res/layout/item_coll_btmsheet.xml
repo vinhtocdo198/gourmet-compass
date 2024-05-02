@@ -28,7 +28,7 @@
                 android:id="@+id/imageView2"
                 android:layout_width="@dimen/coll_ava_size"
                 android:layout_height="@dimen/coll_ava_size"
-                android:background="@drawable/ava_dish"
+                android:background="@drawable/ava_item_recyclerview"
                 android:contentDescription="@string/dish_ava"
                 android:scaleType="centerCrop"
                 tools:srcCompat="@tools:sample/avatars" />

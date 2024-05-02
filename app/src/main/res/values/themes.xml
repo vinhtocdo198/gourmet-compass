@@ -42,8 +42,4 @@
         <item name="android:fontFamily">@font/nunito_sans_regular</item>
     </style>
 
-    <style name="CustomRatingBar" parent="Widget.AppCompat.RatingBar">
-        <item name="android:progressDrawable">@drawable/rating_bar</item>
-    </style>
-
 </resources>

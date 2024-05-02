@@ -42,7 +42,7 @@
         android:layout_height="120dp"
         android:layout_gravity="center"
         android:layout_marginVertical="@dimen/margin_20"
-        android:background="@drawable/account_circle_icon"
+        android:background="@drawable/ic_default_account_ava"
         android:contentDescription="@string/account_ava" />
 
     <LinearLayout
@@ -122,7 +122,7 @@
             android:autofillHints="phone"
             android:background="@drawable/input_text_field"
             android:drawableEnd="@drawable/ic_edit_text"
-            android:hint="Enter Phone Number"
+            android:hint="Enter phone number"
             android:inputType="phone"
             android:padding="12dp"
             android:selectAllOnFocus="true"
@@ -132,7 +132,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_save_personal_info"
+        android:id="@+id/btn_save_basic_info"
         style="@style/TitleFont"
         android:layout_width="130dp"
         android:layout_height="48dp"

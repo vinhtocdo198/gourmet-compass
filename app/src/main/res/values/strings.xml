@@ -90,9 +90,9 @@
     <string name="request_to_add_edit_a_restaurant">Request to add/edit a restaurant</string>
     <string name="log_out">Log Out</string>
     <string name="back_to_previous_page">Back to previous page</string>
-    <string name="highest_rated_restaurant">Highest Rated Restaurant</string>
-    <string name="most_reviewed_restaurant">Most Reviewed Restaurant</string>
-    <string name="nearest_restaurant">Nearest Restaurant</string>
+    <string name="highest_rated">Highest Rated</string>
+    <string name="most_reviewed">Most Reviewed</string>
+    <string name="nearest">Nearest</string>
     <string name="restaurants">Restaurants</string>
     <string name="dishes">Dishes</string>
     <string name="restaurant_description">Description</string>
@@ -100,5 +100,7 @@
     <string name="_1h">1h</string>
     <string name="save">Save</string>
     <string name="account_ava">Account ava</string>
+    <string name="type">Type</string>
+    <string name="n_results">n results</string>
 
 </resources>
