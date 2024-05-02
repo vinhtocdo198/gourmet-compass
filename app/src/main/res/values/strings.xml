@@ -102,5 +102,7 @@
     <string name="account_ava">Account ava</string>
     <string name="type">Type</string>
     <string name="n_results">%1$d results</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="log_in">Log In</string>
 
 </resources>

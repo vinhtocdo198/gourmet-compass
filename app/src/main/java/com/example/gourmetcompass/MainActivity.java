@@ -10,9 +10,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.gourmetcompass.databinding.ActivityMainBinding;
-import com.example.gourmetcompass.ui_general.AccountFragment;
 import com.example.gourmetcompass.ui_general.BrowseFragment;
 import com.example.gourmetcompass.ui_general.HomeFragment;
+import com.example.gourmetcompass.ui_general.LogInFragment;
 import com.example.gourmetcompass.ui_general.MapFragment;
 import com.example.gourmetcompass.ui_general.NotificationFragment;
 
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.noti_fragment) {
                 selectedFragment = new NotificationFragment();
             } else if (item.getItemId() == R.id.account_fragment) {
-                selectedFragment = new AccountFragment();
+                selectedFragment = new LogInFragment();
             } else {
                 selectedFragment = new HomeFragment(); // Default fragment
             }
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.replace(R.id.main_frame_layout, fragment);
         fragmentTransaction.commit();
     }
 

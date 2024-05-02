@@ -43,7 +43,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_10"
             android:orientation="vertical"
             android:paddingHorizontal="@dimen/padding_30">
 
@@ -183,20 +183,19 @@
                 tools:ignore="HardcodedText" />
 
             <Button
-                android:id="@+id/uploadButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="7dp"
-                android:background="@drawable/regular_button_structure"
-                android:backgroundTint="@color/button_pressed_upload"
-                android:drawableStart="@drawable/upload_img"
-                android:fontFamily="serif"
-                android:text="Upload"
+                android:id="@+id/btn_upload_req_add_res"
+                style="@style/TitleFont"
+                android:layout_width="130dp"
+                android:layout_height="48dp"
+                android:layout_gravity="start"
+                android:background="@drawable/btn_review"
+                android:drawableStart="@drawable/ic_upload"
+                android:elevation="5dp"
+                android:paddingHorizontal="@dimen/padding_10"
+                android:text="@string/upload"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-
-                />
+                android:textSize="@dimen/text_18" />
 
 
             <Button
@@ -205,6 +204,7 @@
                 android:layout_width="130dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_20"
                 android:background="@drawable/btn_orange"
                 android:elevation="5dp"
                 android:text="@string/submit"
