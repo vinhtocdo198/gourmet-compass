@@ -15,7 +15,7 @@
         android:background="@drawable/ic_drag_handle" />
 
     <Button
-        android:id="@+id/btn_review"
+        android:id="@+id/btn_add_review_btms_res"
         style="@style/TitleFont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

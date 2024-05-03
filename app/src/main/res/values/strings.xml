@@ -104,5 +104,9 @@
     <string name="n_results">%1$d results</string>
     <string name="sign_up">Sign Up</string>
     <string name="log_in">Log In</string>
+    <string name="user_avatar">User avatar</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="photo_library">Photo Library</string>
+    <string name="edit_avatar">Edit avatar</string>
 
 </resources>

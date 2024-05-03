@@ -47,7 +47,7 @@ public class LogInFragment extends Fragment {
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                replaceFragment(new SignUpFragment());
+                replaceFragment(new SignUpFragment(), null);
             }
         });
 
@@ -72,7 +72,13 @@ public class LogInFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    replaceFragment(new AccountFragment());
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    if (user != null) {
+                                        // Pass user data to account fragment
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("userId", user.getUid());
+                                        replaceFragment(new AccountFragment(), bundle);
+                                    }
                                     Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_SHORT).show();
                                 } else {
                                     // If sign in fails, display a message to the user.
@@ -93,11 +99,10 @@ public class LogInFragment extends Fragment {
         // If user is already logged in, show account fragment
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            String email = currentUser.getEmail();
-            String uid = currentUser.getUid();
-            Log.d(TAG, "User Email: " + email);
-            Log.d(TAG, "User UID: " + uid);
-            replaceFragment(new AccountFragment());
+            // Pass user data to account fragment
+            Bundle bundle = new Bundle();
+            bundle.putString("userId", currentUser.getUid());
+            replaceFragment(new AccountFragment(), bundle);
         }
     }
 
@@ -108,7 +113,8 @@ public class LogInFragment extends Fragment {
         signUpBtn = view.findViewById(R.id.btn_sign_up_bot);
     }
 
-    private void replaceFragment(Fragment fragment) {
+    private void replaceFragment(Fragment fragment, Bundle bundle) {
+        fragment.setArguments(bundle);
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_frame_layout, fragment);
