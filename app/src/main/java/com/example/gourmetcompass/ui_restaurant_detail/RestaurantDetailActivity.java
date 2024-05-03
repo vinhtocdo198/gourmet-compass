@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -46,6 +45,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     ImageButton plusBtn, searchBtn, backBtn;
+    Restaurant restaurant;
     TextView resName;
     List<BottomSheetDialog> bottomSheets;
 
@@ -102,14 +102,14 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
     private void openBottomSheet() {
         BottomSheetDialog outerBottomSheet = new BottomSheetDialog(RestaurantDetailActivity.this, R.style.BottomSheetTheme);
-        View outerSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_restaurant, findViewById(R.id.bottom_sheet_container));
+        View outerSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_restaurant, findViewById(R.id.btms_res_container));
         outerBottomSheet.setContentView(outerSheetView);
         outerBottomSheet.show();
         bottomSheets.add(outerBottomSheet);
 
         // Bottom sheet buttons
-        Button addToCollBtn = outerSheetView.findViewById(R.id.btn_add);
-        Button addReviewBtn = outerSheetView.findViewById(R.id.btn_review);
+        Button addToCollBtn = outerSheetView.findViewById(R.id.btn_add_btms_res);
+        Button addReviewBtn = outerSheetView.findViewById(R.id.btn_add_review_btms_res);
 
         addToCollBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,7 +249,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot documentSnapshot = task.getResult();
                             if (documentSnapshot.exists()) {
-                                Restaurant restaurant = documentSnapshot.toObject(Restaurant.class);
+                                restaurant = documentSnapshot.toObject(Restaurant.class);
 
                                 if (restaurant != null) {
                                     resName.setText(restaurant.getName());

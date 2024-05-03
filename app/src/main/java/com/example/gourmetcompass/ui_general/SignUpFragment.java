@@ -53,7 +53,7 @@ public class SignUpFragment extends Fragment {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                replaceFragment(new LogInFragment());
+                replaceFragment(new LogInFragment(), null);
             }
         });
 
@@ -83,7 +83,7 @@ public class SignUpFragment extends Fragment {
                     return;
                 }
                 if (!cfPassword.equals(password)) {
-                    Toast.makeText(getContext(), "Password and confirm password don't match! Please check again!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Password and confirm password do not match! Please check again!", Toast.LENGTH_SHORT).show();
                     SignUpFragment.this.passwordTextField.setText("");
                     cfPasswordTextField.setText("");
                 } else {
@@ -92,13 +92,13 @@ public class SignUpFragment extends Fragment {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        // Sign in success, update UI with the signed-in user's information
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         if (user != null) {
                                             // Create a new user with a phone number and username
                                             Map<String, Object> userMap = new HashMap<>();
 //                                            userMap.put("phoneNumber", phoneNumber); // TODO: Add phone number?
                                             userMap.put("username", username);
+                                            userMap.put("email", email);
 
                                             // Add a new document with a generated ID
                                             db.collection("users")
@@ -116,10 +116,13 @@ public class SignUpFragment extends Fragment {
                                                             Log.w(TAG, "Error adding document", e);
                                                         }
                                                     });
-                                        }
 
+                                            // Pass user data to account fragment
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("userId", user.getUid());
+                                            replaceFragment(new AccountFragment(), bundle);
+                                        }
                                     } else {
-                                        // If sign up fails, display a message to the user.
                                         Log.w(TAG, "Failed to create a new account", task.getException());
                                         Toast.makeText(getActivity(), "Failed to create a new account", Toast.LENGTH_SHORT).show();
                                     }
@@ -141,7 +144,8 @@ public class SignUpFragment extends Fragment {
         loginBtn = view.findViewById(R.id.btn_log_in_bot);
     }
 
-    private void replaceFragment(Fragment fragment) {
+    private void replaceFragment(Fragment fragment, Bundle bundle) {
+        fragment.setArguments(bundle);
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_frame_layout, fragment);

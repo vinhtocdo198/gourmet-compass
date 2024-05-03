@@ -46,7 +46,7 @@ public class MyCollectionsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Open bottom sheet add collection
                 BottomSheetDialog bottomSheet = new BottomSheetDialog(MyCollectionsActivity.this, R.style.BottomSheetTheme);
-                View sheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_my_colls, findViewById(R.id.bottom_sheet_container));
+                View sheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_my_colls, findViewById(R.id.btms_res_container));
                 bottomSheet.setContentView(sheetView);
                 bottomSheet.show();
 
