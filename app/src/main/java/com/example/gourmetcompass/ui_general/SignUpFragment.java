@@ -83,7 +83,7 @@ public class SignUpFragment extends Fragment {
                     return;
                 }
                 if (!cfPassword.equals(password)) {
-                    Toast.makeText(getContext(), "Password and confirm password don't match! Please check again!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Password and confirm password do not match! Please check again!", Toast.LENGTH_SHORT).show();
                     SignUpFragment.this.passwordTextField.setText("");
                     cfPasswordTextField.setText("");
                 } else {

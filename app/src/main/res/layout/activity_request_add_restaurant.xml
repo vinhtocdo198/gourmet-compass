@@ -158,7 +158,7 @@
                 tools:ignore="HardcodedText" />
 
             <EditText
-                android:id="@+id/cf_new_password"
+                android:id="@+id/cf_new_pass_change_pass"
                 style="@style/TextFont"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
