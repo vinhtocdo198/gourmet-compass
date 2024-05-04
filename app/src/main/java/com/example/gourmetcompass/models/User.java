@@ -1,7 +1,7 @@
 package com.example.gourmetcompass.models;
 
 public class User {
-    String id, username, email, phone, avatarUrl;
+    private String id, username, email, phone, avatarUrl;
 
     public String getId() {
         return id;

@@ -26,7 +26,7 @@
         android:textSize="@dimen/text_18" />
 
     <EditText
-        android:id="@+id/text_field"
+        android:id="@+id/btms_coll_name_my_colls"
         style="@style/TextFont"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -51,6 +51,7 @@
         android:textSize="@dimen/text_18" />
 
     <RadioGroup
+        android:id="@+id/radio_group_my_colls"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_30"

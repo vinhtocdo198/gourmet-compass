@@ -76,9 +76,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_10"
-                android:text="@string/_1h"
+                android:text="1h"
                 android:textColor="@color/content_text"
-                android:textSize="@dimen/text_12" />
+                android:textSize="@dimen/text_12"
+                tools:ignore="HardcodedText" />
 
 
         </LinearLayout>
@@ -97,102 +98,102 @@
             android:textSize="@dimen/text_14"
             tools:ignore="HardcodedText" />
 
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/padding_10">
+<!--        <HorizontalScrollView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:paddingHorizontal="@dimen/padding_10">-->
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal">-->
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="@dimen/comment_img_size"
-                    android:layout_height="@dimen/comment_img_size"
-                    android:layout_margin="@dimen/margin_5"
-                    app:cardCornerRadius="15dp"
-                    app:cardElevation="5dp">
+<!--                <androidx.cardview.widget.CardView-->
+<!--                    android:layout_width="@dimen/comment_img_size"-->
+<!--                    android:layout_height="@dimen/comment_img_size"-->
+<!--                    android:layout_margin="@dimen/margin_5"-->
+<!--                    app:cardCornerRadius="15dp"-->
+<!--                    app:cardElevation="5dp">-->
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/gallery_img"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_plus" />
+<!--                    <ImageView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:contentDescription="@string/gallery_img"-->
+<!--                        android:scaleType="centerCrop"-->
+<!--                        android:src="@drawable/ic_plus" />-->
 
-                </androidx.cardview.widget.CardView>
+<!--                </androidx.cardview.widget.CardView>-->
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="@dimen/comment_img_size"
-                    android:layout_height="@dimen/comment_img_size"
-                    android:layout_margin="@dimen/margin_5"
-                    app:cardCornerRadius="15dp"
-                    app:cardElevation="5dp">
+<!--                <androidx.cardview.widget.CardView-->
+<!--                    android:layout_width="@dimen/comment_img_size"-->
+<!--                    android:layout_height="@dimen/comment_img_size"-->
+<!--                    android:layout_margin="@dimen/margin_5"-->
+<!--                    app:cardCornerRadius="15dp"-->
+<!--                    app:cardElevation="5dp">-->
 
-                    <!-- Add src image -->
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/gallery_img"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_plus" />
+<!--                    &lt;!&ndash; Add src image &ndash;&gt;-->
+<!--                    <ImageView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:contentDescription="@string/gallery_img"-->
+<!--                        android:scaleType="centerCrop"-->
+<!--                        android:src="@drawable/ic_plus" />-->
 
-                </androidx.cardview.widget.CardView>
+<!--                </androidx.cardview.widget.CardView>-->
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="@dimen/comment_img_size"
-                    android:layout_height="@dimen/comment_img_size"
-                    android:layout_margin="@dimen/margin_5"
-                    app:cardCornerRadius="15dp"
-                    app:cardElevation="5dp">
+<!--                <androidx.cardview.widget.CardView-->
+<!--                    android:layout_width="@dimen/comment_img_size"-->
+<!--                    android:layout_height="@dimen/comment_img_size"-->
+<!--                    android:layout_margin="@dimen/margin_5"-->
+<!--                    app:cardCornerRadius="15dp"-->
+<!--                    app:cardElevation="5dp">-->
 
-                    <!-- Add src image -->
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/gallery_img"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_plus" />
+<!--                    &lt;!&ndash; Add src image &ndash;&gt;-->
+<!--                    <ImageView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:contentDescription="@string/gallery_img"-->
+<!--                        android:scaleType="centerCrop"-->
+<!--                        android:src="@drawable/ic_plus" />-->
 
-                </androidx.cardview.widget.CardView>
+<!--                </androidx.cardview.widget.CardView>-->
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="@dimen/comment_img_size"
-                    android:layout_height="@dimen/comment_img_size"
-                    android:layout_margin="@dimen/margin_5"
-                    app:cardCornerRadius="15dp"
-                    app:cardElevation="5dp">
+<!--                <androidx.cardview.widget.CardView-->
+<!--                    android:layout_width="@dimen/comment_img_size"-->
+<!--                    android:layout_height="@dimen/comment_img_size"-->
+<!--                    android:layout_margin="@dimen/margin_5"-->
+<!--                    app:cardCornerRadius="15dp"-->
+<!--                    app:cardElevation="5dp">-->
 
-                    <!-- Add src image -->
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/gallery_img"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_plus" />
+<!--                    &lt;!&ndash; Add src image &ndash;&gt;-->
+<!--                    <ImageView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:contentDescription="@string/gallery_img"-->
+<!--                        android:scaleType="centerCrop"-->
+<!--                        android:src="@drawable/ic_plus" />-->
 
-                </androidx.cardview.widget.CardView>
+<!--                </androidx.cardview.widget.CardView>-->
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="@dimen/comment_img_size"
-                    android:layout_height="@dimen/comment_img_size"
-                    android:layout_margin="@dimen/margin_5"
-                    app:cardCornerRadius="15dp"
-                    app:cardElevation="5dp">
+<!--                <androidx.cardview.widget.CardView-->
+<!--                    android:layout_width="@dimen/comment_img_size"-->
+<!--                    android:layout_height="@dimen/comment_img_size"-->
+<!--                    android:layout_margin="@dimen/margin_5"-->
+<!--                    app:cardCornerRadius="15dp"-->
+<!--                    app:cardElevation="5dp">-->
 
-                    <!-- Add src image -->
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/gallery_img"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_plus" />
+<!--                    &lt;!&ndash; Add src image &ndash;&gt;-->
+<!--                    <ImageView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:contentDescription="@string/gallery_img"-->
+<!--                        android:scaleType="centerCrop"-->
+<!--                        android:src="@drawable/ic_plus" />-->
 
-                </androidx.cardview.widget.CardView>
+<!--                </androidx.cardview.widget.CardView>-->
 
-            </LinearLayout>
-        </HorizontalScrollView>
+<!--            </LinearLayout>-->
+<!--        </HorizontalScrollView>-->
 
         <LinearLayout
             android:layout_width="match_parent"

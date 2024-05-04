@@ -7,16 +7,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.models.Restaurant;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.gourmetcompass.models.Review;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class RestaurantDetailFragment extends Fragment {
 
@@ -56,6 +59,9 @@ public class RestaurantDetailFragment extends Fragment {
         // Fetch restaurant details
         fetchRestaurantDetail();
 
+        // Get total ratings
+        getTotalRatings();
+
         return view;
     }
 
@@ -64,8 +70,6 @@ public class RestaurantDetailFragment extends Fragment {
         addressContent.setText(restaurant.getAddress());
         phoneContent.setText(restaurant.getPhoneNo());
         openHrContent.setText(restaurant.getOpeningHours());
-        ratingsTitle.setText(getString(R.string.ratings_title, restaurant.getRatings()));
-        // TODO: Set the ratings count for each star
     }
 
     private void initViews(View view) {
@@ -82,18 +86,74 @@ public class RestaurantDetailFragment extends Fragment {
     }
 
     private void fetchRestaurantDetail() {
-        db.collection("restaurants").document(restaurantId).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("restaurants").document(restaurantId)
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot documentSnapshot = task.getResult();
-                            if (documentSnapshot.exists()) {
-                                restaurant = documentSnapshot.toObject(Restaurant.class);
-                                setViews();
-                            }
+                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed.", e);
+                            return;
+                        }
+
+                        if (value != null && value.exists()) {
+                            restaurant = value.toObject(Restaurant.class);
+                            setViews();
                         } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
+                            Log.d(TAG, "Current data: null");
+                        }
+                    }
+                });
+    }
+
+    private void getTotalRatings() {
+        db.collection("restaurants").document(restaurantId)
+                .collection("reviews")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed.", e);
+                            return;
+                        }
+
+                        if (value != null) {
+                            int rate1Count = 0, rate2Count = 0, rate3Count = 0, rate4Count = 0, rate5Count = 0;
+                            float averageRatings, totalRatings = 0;
+                            int totalReviews = 0;
+
+                            for (QueryDocumentSnapshot document : value) {
+                                Review review = document.toObject(Review.class);
+                                switch (review.getRatings()) {
+                                    case "1.0":
+                                        rate1Count++;
+                                        break;
+                                    case "2.0":
+                                        rate2Count++;
+                                        break;
+                                    case "3.0":
+                                        rate3Count++;
+                                        break;
+                                    case "4.0":
+                                        rate4Count++;
+                                        break;
+                                    case "5.0":
+                                        rate5Count++;
+                                        break;
+                                }
+                                totalRatings += Float.parseFloat(review.getRatings());
+                                totalReviews++;
+                                averageRatings = totalRatings / totalReviews;
+                                ratingsTitle.setText(String.format(requireContext().getString(R.string.ratings_title), averageRatings));
+                            }
+
+                            rate1.setText(String.format(requireContext().getString(R.string.rating_count), rate1Count));
+                            rate2.setText(String.format(requireContext().getString(R.string.rating_count), rate2Count));
+                            rate3.setText(String.format(requireContext().getString(R.string.rating_count), rate3Count));
+                            rate4.setText(String.format(requireContext().getString(R.string.rating_count), rate4Count));
+                            rate5.setText(String.format(requireContext().getString(R.string.rating_count), rate5Count));
+
+                        } else {
+                            Log.d(TAG, "Current data: null");
                         }
                     }
                 });

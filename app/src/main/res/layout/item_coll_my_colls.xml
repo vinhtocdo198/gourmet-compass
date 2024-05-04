@@ -6,16 +6,16 @@
     android:orientation="horizontal">
 
     <Button
-        android:id="@+id/my_coll_btn"
-        style="@style/TitleFont"
+        android:id="@+id/btn_my_coll_name"
+        style="@style/TextFont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/margin_10"
+        android:layout_marginBottom="@dimen/margin_5"
         android:background="@color/app_bg"
         android:drawableEnd="@drawable/ic_arrow_right"
         android:text="@string/my_collection"
         android:textAlignment="textStart"
         android:textAllCaps="false"
-        android:textSize="@dimen/text_18" />
+        android:textSize="@dimen/text_16" />
 
 </LinearLayout>

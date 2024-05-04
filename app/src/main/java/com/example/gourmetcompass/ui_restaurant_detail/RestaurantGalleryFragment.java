@@ -71,6 +71,7 @@ public class RestaurantGalleryFragment extends Fragment {
         return view;
     }
 
+    // TODO: update restaurant id from storage
     @SuppressLint("NotifyDataSetChanged")
     private void fetchGalleryImages() {
 

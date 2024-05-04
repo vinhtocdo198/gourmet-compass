@@ -1,20 +1,24 @@
 package com.example.gourmetcompass.models;
 
+import java.util.ArrayList;
+
 public class Review {
-    String id, description, ratings;
-    int replyCount, likeCount, dislikeCount;
-    boolean liked, disliked;
+    String id, description, ratings, reviewerId;
+    long timestamp;
+    ArrayList<String> likedUserIds, dislikedUserIds;
+    // TODO: upload image urls
 
     public Review() {
     }
 
-    public Review(String id, String description, String ratings, int replyCount, int likeCount, int dislikeCount) {
+    public Review(String id, String reviewerId, String description, String ratings, long timestamp, ArrayList<String> likedUserIds, ArrayList<String> dislikedUserIds) {
         this.id = id;
+        this.reviewerId = reviewerId;
         this.description = description;
         this.ratings = ratings;
-        this.replyCount = replyCount;
-        this.likeCount = likeCount;
-        this.dislikeCount = dislikeCount;
+        this.timestamp = timestamp;
+        this.likedUserIds = likedUserIds;
+        this.dislikedUserIds = dislikedUserIds;
     }
 
     public String getId() {
@@ -23,6 +27,14 @@ public class Review {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getReviewerId() {
+        return reviewerId;
+    }
+
+    public void setReviewerId(String reviewerId) {
+        this.reviewerId = reviewerId;
     }
 
     public String getDescription() {
@@ -41,115 +53,27 @@ public class Review {
         this.ratings = ratings;
     }
 
-    public int getReplyCount() {
-        return replyCount;
+    public long getTimestamp() {
+        return timestamp;
     }
 
-    public void setReplyCount(int replyCount) {
-        this.replyCount = replyCount;
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
-    public int getLikeCount() {
-        return likeCount;
+    public ArrayList<String> getLikedUserIds() {
+        return likedUserIds;
     }
 
-    public void setLikeCount(int likeCount) {
-        this.likeCount = likeCount;
+    public void setLikedUserIds(ArrayList<String> likedUserIds) {
+        this.likedUserIds = likedUserIds;
     }
 
-    public int getDislikeCount() {
-        return dislikeCount;
+    public ArrayList<String> getDislikedUserIds() {
+        return dislikedUserIds;
     }
 
-    public void setDislikeCount(int dislikeCount) {
-        this.dislikeCount = dislikeCount;
+    public void setDislikedUserIds(ArrayList<String> dislikedUserIds) {
+        this.dislikedUserIds = dislikedUserIds;
     }
-
-    public boolean isLiked() {
-        return liked;
-    }
-
-    public void setLiked(boolean liked) {
-        this.liked = liked;
-    }
-
-    public boolean isDisliked() {
-        return disliked;
-    }
-
-    public void setDisliked(boolean disliked) {
-        this.disliked = disliked;
-    }
-
 }
-
-// Consider this model class for Firestore
-//public class Review {
-//    private String reviewId;
-//    private String userId;
-//    private String restaurantId;
-//    private float rating;
-//    private String comment;
-//    private long timestamp;
-//
-//    // Empty constructor needed for Firestore
-//    public Review() {}
-//
-//    public Review(String reviewId, String userId, String restaurantId, float rating, String comment, long timestamp) {
-//        this.reviewId = reviewId;
-//        this.userId = userId;
-//        this.restaurantId = restaurantId;
-//        this.rating = rating;
-//        this.comment = comment;
-//        this.timestamp = timestamp;
-//    }
-//
-//    // Getters and setters
-//    public String getReviewId() {
-//        return reviewId;
-//    }
-//
-//    public void setReviewId(String reviewId) {
-//        this.reviewId = reviewId;
-//    }
-//
-//    public String getUserId() {
-//        return userId;
-//    }
-//
-//    public void setUserId(String userId) {
-//        this.userId = userId;
-//    }
-//
-//    public String getRestaurantId() {
-//        return restaurantId;
-//    }
-//
-//    public void setRestaurantId(String restaurantId) {
-//        this.restaurantId = restaurantId;
-//    }
-//
-//    public float getRating() {
-//        return rating;
-//    }
-//
-//    public void setRating(float rating) {
-//        this.rating = rating;
-//    }
-//
-//    public String getComment() {
-//        return comment;
-//    }
-//
-//    public void setComment(String comment) {
-//        this.comment = comment;
-//    }
-//
-//    public long getTimestamp() {
-//        return timestamp;
-//    }
-//
-//    public void setTimestamp(long timestamp) {
-//        this.timestamp = timestamp;
-//    }
-//}

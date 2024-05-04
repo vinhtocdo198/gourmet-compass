@@ -3,13 +3,16 @@ package com.example.gourmetcompass.adapters;
 import android.app.Dialog;
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -18,15 +21,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.models.Review;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyViewHolder> {
 
+    private static final String TAG = "ReviewRVAdapter";
     Context context;
     ArrayList<Review> reviews;
-    String restaurantId;
+    String restaurantId, reviewerId;
+    FirebaseUser user;
+    FirebaseFirestore db;
 
     public ReviewRVAdapter(Context context, ArrayList<Review> reviews, String restaurantId) {
         this.context = context;
@@ -36,95 +52,241 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
 
     @NonNull
     @Override
-    public ReviewRVAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_review_res, parent, false);
-        return new ReviewRVAdapter.MyViewHolder(view);
+        return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ReviewRVAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Review review = reviews.get(position);
-        holder.reviewerName.setText(R.string.name);
+//        likedUserIds = new ArrayList<>(review.getLikedUserIds());
+//        dislikedUserIds = new ArrayList<>(review.getDislikedUserIds());
         holder.reviewContent.setText(review.getDescription());
-        holder.reviewTime.setText(R.string._1h);
-        holder.reviewRatings.setText(review.getRatings());
-        holder.likeButton.setText(String.format(context.getString(R.string.react_count), review.getLikeCount()));
-        holder.dislikeButton.setText(String.format(context.getString(R.string.react_count), review.getDislikeCount()));
-        holder.replyButton.setText(String.format(context.getString(R.string.react_count), review.getReplyCount()));
+        holder.reviewRatings.setText(String.valueOf((int) Float.parseFloat(review.getRatings())));
 
-        FirebaseFirestore db = FirestoreUtil.getInstance().getFirestore();
+        // Init firebase services
+        db = FirestoreUtil.getInstance().getFirestore();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        // Fetch review data
+        setReviewData(holder, review);
+        setReactButtonsStatus(holder, review);
+        setReplyButton(holder, review);
 
         holder.replyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replyReview();
+                openReplyDialog(review.getId());
             }
         });
 
         holder.likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (review.isLiked()) {
-                    // If the review is already liked, decrement the like count and change the button color
-                    review.setLikeCount(review.getLikeCount() - 1);
-                    holder.likeButton.setBackgroundResource(R.drawable.btn_review); // Replace with your default button color
-                    review.setLiked(false);
-                } else {
-                    // If the review is not liked, increment the like count and change the button color
-                    review.setLikeCount(review.getLikeCount() + 1);
-                    holder.likeButton.setBackgroundResource(R.drawable.btn_react_pressed); // Replace with your liked button color
-                    review.setLiked(true);
-
-                    // If the review is disliked, decrement the dislike count and change the dislike button color
-                    if (review.isDisliked()) {
-                        review.setDislikeCount(review.getDislikeCount() - 1);
-                        holder.dislikeButton.setBackgroundResource(R.drawable.btn_review); // Default button state
-                        review.setDisliked(false);
-                    }
-                }
-                holder.likeButton.setText(String.format(context.getString(R.string.react_count), review.getLikeCount()));
-                holder.dislikeButton.setText(String.format(context.getString(R.string.react_count), review.getDislikeCount()));
-
-                // Update Firestore
-                db.collection("restaurants").document(restaurantId).collection("reviews").document(review.getId())
-                        .update("likeCount", review.getLikeCount(), "dislikeCount", review.getDislikeCount());
+                likeReview(holder, review);
             }
         });
 
         holder.dislikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (review.isDisliked()) {
-                    // If the review is already disliked, decrement the dislike count and change the button color
-                    review.setDislikeCount(review.getDislikeCount() - 1);
-                    holder.dislikeButton.setBackgroundResource(R.drawable.btn_review); // Default button state
-                    review.setDisliked(false);
-                } else {
-                    // If the review is not disliked, increment the dislike count and change the button color
-                    review.setDislikeCount(review.getDislikeCount() + 1);
-                    holder.dislikeButton.setBackgroundResource(R.drawable.btn_react_pressed); // Disliked button state
-                    review.setDisliked(true);
-
-                    // If the review is liked, decrement the like count and change the like button color
-                    if (review.isLiked()) {
-                        review.setLikeCount(review.getLikeCount() - 1);
-                        holder.likeButton.setBackgroundResource(R.drawable.btn_review); // Default button state
-                        review.setLiked(false);
-                    }
-                }
-                holder.likeButton.setText(String.format(context.getString(R.string.react_count), review.getLikeCount()));
-                holder.dislikeButton.setText(String.format(context.getString(R.string.react_count), review.getDislikeCount()));
-
-                // Update Firestore
-                db.collection("restaurants").document(restaurantId).collection("reviews").document(review.getId())
-                        .update("likeCount", review.getLikeCount(), "dislikeCount", review.getDislikeCount());
+                dislikeReview(holder, review);
             }
         });
 
-        // TODO: fix for each user like and dislike
     }
 
-    private void replyReview() {
+    private void dislikeReview(@NonNull MyViewHolder holder, Review review) {
+        ArrayList<String> likedUserIds = review.getLikedUserIds();
+        ArrayList<String> dislikedUserIds = review.getDislikedUserIds();
+        if (dislikedUserIds.contains(user.getUid())) {
+            dislikedUserIds.remove(user.getUid());
+            holder.dislikeButton.setBackgroundResource(R.drawable.btn_review); // Default button state
+        } else {
+            dislikedUserIds.add(user.getUid());
+            holder.dislikeButton.setBackgroundResource(R.drawable.btn_react_pressed); // Disliked button state
+
+            if (likedUserIds.contains(user.getUid())) {
+                likedUserIds.remove(user.getUid());
+                holder.likeButton.setBackgroundResource(R.drawable.btn_review); // Default button state
+            }
+        }
+
+        // Update Firestore
+        db.collection("restaurants").document(restaurantId)
+                .collection("reviews").document(review.getId())
+                .update("likedUserIds", likedUserIds, "dislikedUserIds", dislikedUserIds)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            holder.likeButton.setText(String.format(context.getString(R.string.react_count), review.getLikedUserIds().size()));
+                            holder.dislikeButton.setText(String.format(context.getString(R.string.react_count), review.getDislikedUserIds().size()));
+                            Log.d(TAG, "DocumentSnapshot successfully updated!");
+                        } else {
+                            Log.d(TAG, "Error updating document", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private void likeReview(@NonNull MyViewHolder holder, Review review) {
+        ArrayList<String> likedUserIds = review.getLikedUserIds();
+        ArrayList<String> dislikedUserIds = review.getDislikedUserIds();
+        if (likedUserIds.contains(user.getUid())) {
+            likedUserIds.remove(user.getUid());
+            holder.likeButton.setBackgroundResource(R.drawable.btn_review);
+        } else if (!likedUserIds.contains(user.getUid())) {
+            likedUserIds.add(user.getUid());
+            holder.likeButton.setBackgroundResource(R.drawable.btn_react_pressed);
+
+            if (dislikedUserIds.contains(user.getUid())) {
+                dislikedUserIds.remove(user.getUid());
+                holder.dislikeButton.setBackgroundResource(R.drawable.btn_review);
+            }
+        }
+
+        // Update Firestore
+        db.collection("restaurants").document(restaurantId)
+                .collection("reviews").document(review.getId())
+                .update("likedUserIds", likedUserIds, "dislikedUserIds", dislikedUserIds)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            holder.likeButton.setText(String.format(context.getString(R.string.react_count), likedUserIds.size()));
+                            holder.dislikeButton.setText(String.format(context.getString(R.string.react_count), dislikedUserIds.size()));
+                            Log.d(TAG, "DocumentSnapshot successfully updated!");
+                        } else {
+                            Log.d(TAG, "Error updating document", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private void setReactButtonsStatus(@NonNull MyViewHolder holder, Review review) {
+        db.collection("restaurants").document(restaurantId).
+                collection("reviews").document(review.getId()).
+                get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @SuppressWarnings("unchecked")
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                ArrayList<String> likedUserIds = (ArrayList<String>) document.get("likedUserIds");
+                                ArrayList<String> dislikedUserIds = (ArrayList<String>) document.get("dislikedUserIds");
+
+                                holder.likeButton.setText(String.format(context.getString(R.string.react_count), likedUserIds != null ? likedUserIds.size() : 0));
+                                holder.dislikeButton.setText(String.format(context.getString(R.string.react_count), dislikedUserIds != null ? dislikedUserIds.size() : 0));
+
+                                if (likedUserIds != null && likedUserIds.contains(user.getUid())) {
+                                    holder.likeButton.setBackgroundResource(R.drawable.btn_react_pressed);
+                                }
+
+                                if (dislikedUserIds != null && dislikedUserIds.contains(user.getUid())) {
+                                    holder.dislikeButton.setBackgroundResource(R.drawable.btn_react_pressed);
+                                }
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "Get failed with ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private void setReplyButton(@NonNull MyViewHolder holder, Review review) {
+        db.collection("restaurants").document(restaurantId)
+                .collection("reviews").document(review.getId())
+                .collection("replies")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            int replyCount = task.getResult().size();
+                            holder.replyButton.setText(String.format(context.getString(R.string.react_count), replyCount));
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private void setReviewData(@NonNull MyViewHolder holder, Review review) {
+        db.collection("restaurants").document(restaurantId)
+                .collection("reviews").document(review.getId())
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                // Get the current username
+                                reviewerId = document.getString("reviewerId");
+                                setReviewerUsernameReview(reviewerId, holder);
+
+                                // Calculate the time passed since the review was posted
+                                Long timestamp = document.getLong("timestamp");
+                                if (timestamp != null) {
+                                    holder.reviewTime.setText(getTimePassed(timestamp));
+                                } else {
+                                    // Handle the case where timestamp is null
+                                    holder.reviewTime.setText("N/A");
+                                }
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "Get failed with ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private void setReviewerUsernameReview(String reviewerId, @NonNull MyViewHolder holder) {
+        db.collection("users").document(reviewerId)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                String username = document.getString("username");
+                                holder.reviewerName.setText(username);
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "Get failed with ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private String getTimePassed(long timestamp) {
+        long currentTime = System.currentTimeMillis();
+        long timeDifference = currentTime - timestamp;
+
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(timeDifference);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(timeDifference);
+        long hours = TimeUnit.MILLISECONDS.toHours(timeDifference);
+        long days = TimeUnit.MILLISECONDS.toDays(timeDifference);
+
+        if (seconds < 60) {
+            return seconds + "s";
+        } else if (minutes < 60) {
+            return minutes + "m";
+        } else if (hours < 24) {
+            return hours + "h";
+        } else {
+            return days + "d";
+        }
+    }
+
+    private void openReplyDialog(String reviewId) {
         // Create a dialog for replying to the review
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_reply_review);
@@ -141,13 +303,16 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
         }
         dialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.dialog_bg));
 
+        // Init dialog views
+        TextView reviewerName = dialog.findViewById(R.id.reply_review_dialog_title);
+        EditText replyTextField = dialog.findViewById(R.id.reply_review_dialog_content);
         Button btnCancel = dialog.findViewById(R.id.btn_cancel_reply);
         Button btnSubmit = dialog.findViewById(R.id.btn_submit_reply);
+        setReviewerUsernameReplyDialog(reviewerName);
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Dismiss the dialog when the cancel button is clicked
                 dialog.dismiss();
             }
         });
@@ -155,15 +320,61 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Handle the submit action
-                // For example, you can get the text from the EditText and use it to reply to the review
+                String replyContent = replyTextField.getText().toString();
+                if (replyContent.isEmpty()) {
+                    Toast.makeText(context, "Reply cannot be empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                replyToReview(reviewId, replyContent);
 
-                // Dismiss the dialog when the submit action is done
                 dialog.dismiss();
             }
         });
 
         dialog.show();
+    }
+
+    private void replyToReview(String reviewId, String replyContent) {
+        // Create a reply object
+        Map<String, Object> reply = new HashMap<>();
+        reply.put("timestamp", System.currentTimeMillis());
+        reply.put("description", replyContent);
+        reply.put("replierId", user.getUid());
+
+        // Add the reply to Firestore
+        db.collection("restaurants").document(restaurantId)
+                .collection("reviews").document(reviewId)
+                .collection("replies").add(reply)
+                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(context, "Reply submitted", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "Failed to submit reply", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void setReviewerUsernameReplyDialog(TextView reviewerName) {
+        db.collection("users").document(reviewerId)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                String username = document.getString("username");
+                                reviewerName.setText(context.getString(R.string.reply_review, username));
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "Get failed with ", task.getException());
+                        }
+                    }
+                });
     }
 
     @Override

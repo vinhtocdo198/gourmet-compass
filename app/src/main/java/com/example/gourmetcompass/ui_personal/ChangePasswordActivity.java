@@ -1,7 +1,6 @@
 package com.example.gourmetcompass.ui_personal;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
