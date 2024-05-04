@@ -2,8 +2,8 @@ package com.example.gourmetcompass.models;
 
 public class Dish {
 
-    String id, name, description, ratings;
-    int ratingCount;
+    private String id, name, description, ratings;
+    private int ratingCount;
 
     public Dish() {
     }

@@ -1,20 +1,20 @@
 package com.example.gourmetcompass.models;
 
 public class Review {
-    String id, description, ratings;
-    int replyCount, likeCount, dislikeCount;
+    String id, description, ratings, reviewerId;
     boolean liked, disliked;
+    // TODO: upload image urls
 
     public Review() {
     }
 
-    public Review(String id, String description, String ratings, int replyCount, int likeCount, int dislikeCount) {
+    public Review(String id, String reviewerId, String description, String ratings, boolean liked, boolean disliked) {
         this.id = id;
+        this.reviewerId = reviewerId;
         this.description = description;
         this.ratings = ratings;
-        this.replyCount = replyCount;
-        this.likeCount = likeCount;
-        this.dislikeCount = dislikeCount;
+        this.liked = liked;
+        this.disliked = disliked;
     }
 
     public String getId() {
@@ -23,6 +23,14 @@ public class Review {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getReviewerId() {
+        return reviewerId;
+    }
+
+    public void setReviewerId(String reviewerId) {
+        this.reviewerId = reviewerId;
     }
 
     public String getDescription() {
@@ -39,30 +47,6 @@ public class Review {
 
     public void setRatings(String ratings) {
         this.ratings = ratings;
-    }
-
-    public int getReplyCount() {
-        return replyCount;
-    }
-
-    public void setReplyCount(int replyCount) {
-        this.replyCount = replyCount;
-    }
-
-    public int getLikeCount() {
-        return likeCount;
-    }
-
-    public void setLikeCount(int likeCount) {
-        this.likeCount = likeCount;
-    }
-
-    public int getDislikeCount() {
-        return dislikeCount;
-    }
-
-    public void setDislikeCount(int dislikeCount) {
-        this.dislikeCount = dislikeCount;
     }
 
     public boolean isLiked() {

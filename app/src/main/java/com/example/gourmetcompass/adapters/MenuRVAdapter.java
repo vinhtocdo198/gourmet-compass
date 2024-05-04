@@ -39,7 +39,7 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
         Dish dish = menu.get(position);
         holder.dishName.setText(dish.getName());
         holder.dishDesc.setText(dish.getDescription());
-        holder.dishRatings.setText(dish.getRatings());
+        holder.dishRatings.setText(String.valueOf((int) Float.parseFloat(dish.getRatings())));
         holder.dishRatingCount.setText(String.format(context.getString(R.string.rating_count), dish.getRatingCount()));
         holder.dishImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override

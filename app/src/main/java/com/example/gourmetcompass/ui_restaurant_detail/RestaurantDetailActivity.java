@@ -14,10 +14,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -25,22 +27,31 @@ import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.ViewPagerAdapter;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.models.Restaurant;
+import com.example.gourmetcompass.models.Review;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "RestaurantDetailActivity";
     private final String[] titles = {"Detail", "Menu", "Gallery", "Review"};
     FirebaseFirestore db;
+    FirebaseUser currentUser;
     ViewPagerAdapter viewPagerAdapter;
     TabLayout tabLayout;
     ViewPager2 viewPager2;
@@ -48,18 +59,25 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     Restaurant restaurant;
     TextView resName;
     List<BottomSheetDialog> bottomSheets;
+    String restaurantId, reviewerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_detail);
 
-        // Init db instance
+        // Init firebase services
         db = FirestoreUtil.getInstance().getFirestore();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            reviewerId = currentUser.getUid(); // Get current user id
+        }
+
+        // Get restaurant id from intent
+        restaurantId = getIntent().getStringExtra("restaurantId");
 
         // Init views
         initViews();
-        bottomSheets = new ArrayList<>();
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,9 +101,6 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             }
         });
 
-        // Get restaurant id from intent
-        String restaurantId = getIntent().getStringExtra("restaurantId");
-
         // Fetch details of the restaurant
         getRestaurantDetail(restaurantId);
 
@@ -98,6 +113,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         backBtn = findViewById(R.id.btn_back);
         viewPager2 = findViewById(R.id.view_pager);
         tabLayout = findViewById(R.id.tab_layout);
+        bottomSheets = new ArrayList<>();
     }
 
     private void openBottomSheet() {
@@ -177,12 +193,12 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                 switchFragment(3);
                 outerBottomSheet.dismiss();
 
-                addAReview();
+                addReview();
             }
         });
     }
 
-    private void addAReview() {
+    private void addReview() {
         // Create a dialog for adding a review
         Dialog reviewDialog = new Dialog(RestaurantDetailActivity.this);
         reviewDialog.setContentView(R.layout.dialog_add_review);
@@ -199,13 +215,16 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         }
         reviewDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+        // Init views
         Button cancelBtn = reviewDialog.findViewById(R.id.btn_cancel_add_review);
         Button submitBtn = reviewDialog.findViewById(R.id.btn_submit_add_review);
+        Button uploadImg = reviewDialog.findViewById(R.id.btn_upload_add_review);
+        EditText reviewTextField = reviewDialog.findViewById(R.id.dialog_text_add_review);
+        RatingBar ratingBar = reviewDialog.findViewById(R.id.rating_bar_add_review);
 
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Dismiss the dialog when the cancel button is clicked
                 reviewDialog.dismiss();
             }
         });
@@ -213,15 +232,51 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Handle the submit action
-                // For example, you can get the text from the EditText and use it to add a review
+                String reviewContent = reviewTextField.getText().toString();
+                String ratings = String.valueOf(ratingBar.getRating());
+                if (reviewContent.isEmpty()) {
+                    Toast.makeText(RestaurantDetailActivity.this, "Review cannot be empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                submitReview(reviewContent, ratings);
 
-                // Dismiss the dialog when the submit action is done
                 reviewDialog.dismiss();
             }
         });
 
+        uploadImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: Handle the upload image action
+            }
+        });
+
         reviewDialog.show();
+    }
+
+    private void submitReview(String reviewContent, String ratings) {
+        // Create a new review object
+        Map<String, Object> review = new HashMap<>();
+        review.put("timestamp", System.currentTimeMillis());
+        review.put("description", reviewContent);
+        review.put("ratings", ratings);
+        review.put("reviewerId", reviewerId);
+        review.put("likedUserIds", new ArrayList<String>());
+        review.put("dislikedUserIds", new ArrayList<String>());
+
+        // Add to db
+        db.collection("restaurants").document(restaurantId).
+                collection("reviews").add(review).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(RestaurantDetailActivity.this, "Review added", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(RestaurantDetailActivity.this, "Failed to add review", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
     }
 
     private void switchFragment(int index) {

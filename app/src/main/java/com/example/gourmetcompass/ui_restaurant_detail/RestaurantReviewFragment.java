@@ -22,6 +22,7 @@ import com.example.gourmetcompass.models.Review;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -74,7 +75,9 @@ public class RestaurantReviewFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        db.collection("restaurants").document(restaurantId).collection("reviews")
+        db.collection("restaurants").document(restaurantId)
+                .collection("reviews")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @SuppressLint("NotifyDataSetChanged")
@@ -96,5 +99,11 @@ public class RestaurantReviewFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void addReview(Review review) {
+        reviews.add(review);
+        adapter.notifyDataSetChanged();
     }
 }

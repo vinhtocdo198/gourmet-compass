@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -105,6 +106,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Log out of the account
+                Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
                 mAuth.signOut();
                 replaceFragment(new LogInFragment());
             }

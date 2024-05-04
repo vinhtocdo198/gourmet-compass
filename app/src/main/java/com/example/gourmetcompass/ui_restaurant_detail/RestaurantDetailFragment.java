@@ -17,6 +17,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.example.gourmetcompass.models.Review;
 
 public class RestaurantDetailFragment extends Fragment {
 
@@ -56,6 +59,9 @@ public class RestaurantDetailFragment extends Fragment {
         // Fetch restaurant details
         fetchRestaurantDetail();
 
+        // Get total ratings
+        getTotalRatings();
+
         return view;
     }
 
@@ -64,7 +70,6 @@ public class RestaurantDetailFragment extends Fragment {
         addressContent.setText(restaurant.getAddress());
         phoneContent.setText(restaurant.getPhoneNo());
         openHrContent.setText(restaurant.getOpeningHours());
-        ratingsTitle.setText(getString(R.string.ratings_title, restaurant.getRatings()));
         // TODO: Set the ratings count for each star
     }
 
@@ -92,6 +97,55 @@ public class RestaurantDetailFragment extends Fragment {
                                 restaurant = documentSnapshot.toObject(Restaurant.class);
                                 setViews();
                             }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private void getTotalRatings() {
+        db.collection("restaurants").document(restaurantId)
+                .collection("reviews")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            int rate1Count = 0, rate2Count = 0, rate3Count = 0, rate4Count = 0, rate5Count = 0;
+                            float averageRatings, totalRatings = 0;
+                            int totalReviews = 0;
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Review review = document.toObject(Review.class);
+                                switch (review.getRatings()) {
+                                    case "1.0":
+                                        rate1Count++;
+                                        break;
+                                    case "2.0":
+                                        rate2Count++;
+                                        break;
+                                    case "3.0":
+                                        rate3Count++;
+                                        break;
+                                    case "4.0":
+                                        rate4Count++;
+                                        break;
+                                    case "5.0":
+                                        rate5Count++;
+                                        break;
+                                }
+                                totalRatings += Float.parseFloat(review.getRatings());
+                                totalReviews++;
+                                averageRatings = totalRatings / totalReviews;
+                                ratingsTitle.setText(getString(R.string.ratings_title, averageRatings));
+                            }
+
+                            rate1.setText(String.format(requireContext().getString(R.string.rating_count), rate1Count));
+                            rate2.setText(String.format(requireContext().getString(R.string.rating_count), rate2Count));
+                            rate3.setText(String.format(requireContext().getString(R.string.rating_count), rate3Count));
+                            rate4.setText(String.format(requireContext().getString(R.string.rating_count), rate4Count));
+                            rate5.setText(String.format(requireContext().getString(R.string.rating_count), rate5Count));
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }

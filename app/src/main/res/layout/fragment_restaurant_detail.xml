@@ -135,7 +135,7 @@
             android:id="@+id/ratings"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_40"
+            android:layout_marginHorizontal="@dimen/margin_25"
             android:layout_marginTop="@dimen/margin_20"
             android:orientation="vertical"
             android:paddingBottom="@dimen/padding_20"
@@ -149,6 +149,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_10"
+                android:paddingHorizontal="@dimen/margin_15"
                 android:text="@string/ratings_title"
                 android:textColor="@color/title_text"
                 android:textSize="@dimen/text_18" />

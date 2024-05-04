@@ -1,7 +1,7 @@
 package com.example.gourmetcompass.models;
 
 public class Restaurant {
-    String id, name, description, address, phoneNo, openingHours, ratings, category, tag;
+    private String id, name, description, address, phoneNo, openingHours, ratings, category, tag;
 
     public Restaurant() {
     }

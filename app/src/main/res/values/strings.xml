@@ -11,7 +11,7 @@
     <string name="address_title">Address</string>
     <string name="phone_title">Phone Number</string>
     <string name="open_hr_title">Opening Hours</string>
-    <string name="ratings_title">Ratings (%1$s/5)</string>
+    <string name="ratings_title">Ratings (%.1f/5.0)</string>
     <string name="star">Star</string>
     <string name="res_bg_image">Restaurant bg image</string>
     <string name="res_ava_image">Restaurant ava image</string>
@@ -27,7 +27,7 @@
     <string name="add_a_review">Add a review</string>
     <string name="rate_this_dish">Rate this dish</string>
     <string name="create_new_coll">Create a new collection</string>
-    <string name="my_collection">My collection #</string>
+    <string name="my_collection">My collection #%1$d</string>
     <string name="submit">Submit</string>
     <string name="new_collection">New collection</string>
     <string name="done">Done</string>
@@ -73,7 +73,6 @@
     <string name="map">Map</string>
     <string name="notification">Notification</string>
     <string name="account">Account</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="gourmet_s_choice">Gourmet\'s choice</string>
     <string name="search">Search</string>
@@ -97,7 +96,6 @@
     <string name="dishes">Dishes</string>
     <string name="restaurant_description">Description</string>
     <string name="name">Name</string>
-    <string name="_1h">1h</string>
     <string name="save">Save</string>
     <string name="account_ava">Account ava</string>
     <string name="type">Type</string>

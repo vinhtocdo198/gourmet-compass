@@ -21,10 +21,13 @@ import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.HomeRVAdapter;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.models.Restaurant;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -84,29 +87,21 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchRestaurantList(ArrayList<Restaurant> list, HomeRVAdapter adapter) {
-        db.collection("restaurants").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection("restaurants")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    String errorMessage = error.getMessage();
-                    if (errorMessage != null) {
-                        Log.e("Firestore error", errorMessage);
-                    } else {
-                        Log.e("Firestore error", "An unknown error occurred");
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Restaurant restaurant = document.toObject(Restaurant.class);
+                        restaurant.setId(document.getId());
+                        list.add(restaurant);
                     }
-                    return;
-                }
-
-                if (value != null) {
-                    for (DocumentChange dc : value.getDocumentChanges()) {
-                        if (dc.getType() == DocumentChange.Type.ADDED) {
-                            Restaurant restaurant = dc.getDocument().toObject(Restaurant.class);
-                            restaurant.setId(dc.getDocument().getId()); // Set the ID
-                            list.add(restaurant);
-                        }
-                        adapter.notifyDataSetChanged();
-                    }
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Log.d("Firestore error", "Error getting documents: ", task.getException());
                 }
             }
         });
