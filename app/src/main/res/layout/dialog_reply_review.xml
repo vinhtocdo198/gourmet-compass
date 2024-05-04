@@ -10,7 +10,7 @@
     android:paddingVertical="@dimen/padding_20">
 
     <TextView
-        android:id="@+id/dialog_title"
+        android:id="@+id/reply_review_dialog_title"
         style="@style/TitleFont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
 
 
     <EditText
-        android:id="@+id/dialog_text"
+        android:id="@+id/reply_review_dialog_content"
         style="@style/TextFont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

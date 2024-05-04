@@ -36,7 +36,7 @@
     <string name="upload">Upload</string>
     <string name="rate_this_restaurant">Rate this restaurant</string>
     <string name="favorites_restaurants">Favorites Restaurants</string>
-    <string name="reply_review">Reply to …\'s review</string>
+    <string name="reply_review">Replying to %1$s</string>
     <string name="description">Description</string>
     <string name="remove_from_collection">Remove from collection</string>
     <string name="pizza">Pizza</string>
@@ -106,5 +106,7 @@
     <string name="take_photo">Take Photo</string>
     <string name="photo_library">Photo Library</string>
     <string name="edit_avatar">Edit avatar</string>
+    <string name="empty">Empty</string>
+    <string name="add_your_first_collection">Add your first collection!</string>
 
 </resources>

@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +39,8 @@ public class MyCollectionsActivity extends AppCompatActivity {
     FirebaseFirestore db;
     FirebaseUser user;
     ImageButton backBtn, searchBtn, addBtn;
+    ScrollView myCollLayout;
+    LinearLayout myCollEmptyLayout;
     ProgressBar progressBar;
 
     @Override
@@ -75,10 +79,18 @@ public class MyCollectionsActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initViews();
+    }
+
     private void initViews() {
         backBtn = findViewById(R.id.btn_back_my_collections);
         searchBtn = findViewById(R.id.btn_search_my_collections);
         addBtn = findViewById(R.id.btn_add_my_collections);
+        myCollLayout = findViewById(R.id.my_coll_layout);
+        myCollEmptyLayout = findViewById(R.id.my_coll_empty_layout);
         initRecyclerView(findViewById(R.id.my_coll_res_recyclerview), "restaurant");
         initRecyclerView(findViewById(R.id.my_coll_dish_recyclerview), "dish");
     }
@@ -173,7 +185,27 @@ public class MyCollectionsActivity extends AppCompatActivity {
                             list.add(doc.toObject(UserCollection.class));
                         }
                     }
+                    setLayout();
                     adapter.notifyDataSetChanged();
+                });
+    }
+
+    // Show empty icon if there are no collections
+    private void setLayout() {
+        db.collection("users")
+                .document(user.getUid())
+                .collection("collections")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().isEmpty()) {
+                            myCollEmptyLayout.setVisibility(View.VISIBLE);
+                            myCollLayout.setVisibility(View.GONE);
+                        } else {
+                            myCollEmptyLayout.setVisibility(View.GONE);
+                            myCollLayout.setVisibility(View.VISIBLE);
+                        }
+                    }
                 });
     }
 }

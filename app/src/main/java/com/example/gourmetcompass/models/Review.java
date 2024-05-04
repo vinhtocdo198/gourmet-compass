@@ -1,20 +1,24 @@
 package com.example.gourmetcompass.models;
 
+import java.util.ArrayList;
+
 public class Review {
     String id, description, ratings, reviewerId;
-    boolean liked, disliked;
+    long timestamp;
+    ArrayList<String> likedUserIds, dislikedUserIds;
     // TODO: upload image urls
 
     public Review() {
     }
 
-    public Review(String id, String reviewerId, String description, String ratings, boolean liked, boolean disliked) {
+    public Review(String id, String reviewerId, String description, String ratings, long timestamp, ArrayList<String> likedUserIds, ArrayList<String> dislikedUserIds) {
         this.id = id;
         this.reviewerId = reviewerId;
         this.description = description;
         this.ratings = ratings;
-        this.liked = liked;
-        this.disliked = disliked;
+        this.timestamp = timestamp;
+        this.likedUserIds = likedUserIds;
+        this.dislikedUserIds = dislikedUserIds;
     }
 
     public String getId() {
@@ -49,91 +53,27 @@ public class Review {
         this.ratings = ratings;
     }
 
-    public boolean isLiked() {
-        return liked;
+    public long getTimestamp() {
+        return timestamp;
     }
 
-    public void setLiked(boolean liked) {
-        this.liked = liked;
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
-    public boolean isDisliked() {
-        return disliked;
+    public ArrayList<String> getLikedUserIds() {
+        return likedUserIds;
     }
 
-    public void setDisliked(boolean disliked) {
-        this.disliked = disliked;
+    public void setLikedUserIds(ArrayList<String> likedUserIds) {
+        this.likedUserIds = likedUserIds;
     }
 
+    public ArrayList<String> getDislikedUserIds() {
+        return dislikedUserIds;
+    }
+
+    public void setDislikedUserIds(ArrayList<String> dislikedUserIds) {
+        this.dislikedUserIds = dislikedUserIds;
+    }
 }
-
-// Consider this model class for Firestore
-//public class Review {
-//    private String reviewId;
-//    private String userId;
-//    private String restaurantId;
-//    private float rating;
-//    private String comment;
-//    private long timestamp;
-//
-//    // Empty constructor needed for Firestore
-//    public Review() {}
-//
-//    public Review(String reviewId, String userId, String restaurantId, float rating, String comment, long timestamp) {
-//        this.reviewId = reviewId;
-//        this.userId = userId;
-//        this.restaurantId = restaurantId;
-//        this.rating = rating;
-//        this.comment = comment;
-//        this.timestamp = timestamp;
-//    }
-//
-//    // Getters and setters
-//    public String getReviewId() {
-//        return reviewId;
-//    }
-//
-//    public void setReviewId(String reviewId) {
-//        this.reviewId = reviewId;
-//    }
-//
-//    public String getUserId() {
-//        return userId;
-//    }
-//
-//    public void setUserId(String userId) {
-//        this.userId = userId;
-//    }
-//
-//    public String getRestaurantId() {
-//        return restaurantId;
-//    }
-//
-//    public void setRestaurantId(String restaurantId) {
-//        this.restaurantId = restaurantId;
-//    }
-//
-//    public float getRating() {
-//        return rating;
-//    }
-//
-//    public void setRating(float rating) {
-//        this.rating = rating;
-//    }
-//
-//    public String getComment() {
-//        return comment;
-//    }
-//
-//    public void setComment(String comment) {
-//        this.comment = comment;
-//    }
-//
-//    public long getTimestamp() {
-//        return timestamp;
-//    }
-//
-//    public void setTimestamp(long timestamp) {
-//        this.timestamp = timestamp;
-//    }
-//}

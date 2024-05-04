@@ -96,7 +96,6 @@ public class SignUpFragment extends Fragment {
                                         if (user != null) {
                                             // Create a new user with a phone number and username
                                             Map<String, Object> userMap = new HashMap<>();
-//                                            userMap.put("phoneNumber", phoneNumber); // TODO: Add phone number?
                                             userMap.put("username", username);
                                             userMap.put("email", email);
 
