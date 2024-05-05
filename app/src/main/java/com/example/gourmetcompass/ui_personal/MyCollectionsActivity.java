@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,9 +26,12 @@ import com.example.gourmetcompass.models.UserCollection;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,12 +81,6 @@ public class MyCollectionsActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        initViews();
     }
 
     private void initViews() {
@@ -136,12 +134,19 @@ public class MyCollectionsActivity extends AppCompatActivity {
         Map<String, Object> collection = new HashMap<>();
         collection.put("type", type);
         collection.put("name", collName);
-        collection.put("timestamp", System.currentTimeMillis());
+        collection.put("restaurantIds", new ArrayList<>());
 
         // Add to firestore
         db.collection("users").document(user.getUid())
                 .collection("collections")
-                .add(collection);
+                .add(collection)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "Collection created");
+                    } else {
+                        Log.e(TAG, "Error creating collection", task.getException());
+                    }
+                });
     }
 
     private void setDefaultCollName(EditText nameTextField) {
@@ -173,16 +178,18 @@ public class MyCollectionsActivity extends AppCompatActivity {
                 .document(user.getUid())
                 .collection("collections")
                 .whereEqualTo("type", type)
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .addSnapshotListener((value, error) -> {
-                    if (error != null) {
-                        Log.e(TAG, "Error fetching collections", error);
+                .orderBy("name")
+                .addSnapshotListener((value, e) -> {
+                    if (e != null) {
+                        Log.e(TAG, "Error fetching collections", e);
                         return;
                     }
                     list.clear();
                     if (value != null) {
                         for (QueryDocumentSnapshot doc : value) {
-                            list.add(doc.toObject(UserCollection.class));
+                            UserCollection collection = doc.toObject(UserCollection.class);
+                            collection.setId(doc.getId());
+                            list.add(collection);
                         }
                     }
                     setLayout();
@@ -195,16 +202,17 @@ public class MyCollectionsActivity extends AppCompatActivity {
         db.collection("users")
                 .document(user.getUid())
                 .collection("collections")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        if (task.getResult().isEmpty()) {
-                            myCollEmptyLayout.setVisibility(View.VISIBLE);
-                            myCollLayout.setVisibility(View.GONE);
-                        } else {
-                            myCollEmptyLayout.setVisibility(View.GONE);
-                            myCollLayout.setVisibility(View.VISIBLE);
-                        }
+                .addSnapshotListener((value, e) -> {
+                    if (e != null) {
+                        Log.e(TAG, "Error fetching collections", e);
+                        return;
+                    }
+                    if (value != null && value.isEmpty()) {
+                        myCollEmptyLayout.setVisibility(View.VISIBLE);
+                        myCollLayout.setVisibility(View.GONE);
+                    } else {
+                        myCollEmptyLayout.setVisibility(View.GONE);
+                        myCollLayout.setVisibility(View.VISIBLE);
                     }
                 });
     }

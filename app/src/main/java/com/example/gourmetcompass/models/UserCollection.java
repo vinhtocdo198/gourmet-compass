@@ -1,17 +1,21 @@
 package com.example.gourmetcompass.models;
 
+import java.util.ArrayList;
+
 public class UserCollection {
     String id, name, type;
-    long timestamp;
+    ArrayList<String> restaurantIds;
+    boolean isChecked;
 
     public UserCollection() {
     }
 
-    public UserCollection(String id, String name, String type, long timestamp) {
+    public UserCollection(String id, String name, String type, ArrayList<String> restaurantIds, boolean isChecked) {
         this.id = id;
         this.name = name;
         this.type = type;
-        this.timestamp = timestamp;
+        this.restaurantIds = restaurantIds;
+        this.isChecked = isChecked;
     }
 
     public String getId() {
@@ -38,11 +42,20 @@ public class UserCollection {
         this.type = collectionType;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public ArrayList<String> getRestaurantIds() {
+        return restaurantIds;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+    public void setRestaurantIds(ArrayList<String> restaurantIds) {
+        this.restaurantIds = restaurantIds;
     }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean isChecked) {
+        this.isChecked = isChecked;
+    }
+
 }

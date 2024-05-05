@@ -24,6 +24,7 @@
             tools:ignore="HardcodedText" />
 
         <TextView
+            android:id="@+id/res_my_colls_coll_title"
             style="@style/TitleFont"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
