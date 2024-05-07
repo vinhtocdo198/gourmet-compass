@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/app_bg"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/btn_my_coll_name"
+        style="@style/TextFont"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_5"
+        android:background="@color/app_bg"
+        android:drawableEnd="@drawable/ic_arrow_right"
+        android:text="@string/my_collection"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textSize="@dimen/text_16" />
+
+</LinearLayout>

@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.GourmetCompass" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.GourmetCompass" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -10,7 +10,36 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/status_bar</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="windowSplashScreenBackground">@color/app_bg</item>
+        <item name="postSplashScreenTheme">@style/Theme.GourmetCompass</item>
+    </style>
+
+    <style name="BottomSheetTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="RestaurantDetailTabBar" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:fontFamily">@font/nunito_sans_bold</item>
+    </style>
+
+    <!-- Font of the app -->
+    <style name="TitleFont">
+        <item name="android:fontFamily">@font/nunito_sans_bold</item>
+    </style>
+
+    <style name="TextFont">
+        <item name="android:fontFamily">@font/nunito_sans_regular</item>
+    </style>
+
 </resources>

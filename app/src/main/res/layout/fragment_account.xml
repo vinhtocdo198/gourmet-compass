@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    android:orientation="vertical"
+    tools:context=".ui_general.AccountFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:background="@color/app_bar"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/padding_20">
+
+        <TextView
+            android:id="@+id/username_account"
+            style="@style/TitleFont"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:paddingStart="@dimen/padding_15"
+            android:text="@string/guest"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_25"
+            tools:ignore="RtlSymmetry" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/margin_15"
+            android:elevation="10dp"
+            app:cardCornerRadius="50dp">
+
+            <ImageView
+                android:id="@+id/user_avatar"
+                android:layout_width="@dimen/comment_img_size"
+                android:layout_height="@dimen/comment_img_size"
+                android:background="@drawable/ic_default_avatar"
+                android:contentDescription="@string/user_avatar"
+                android:scaleType="centerCrop" />
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_50"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/padding_30">
+
+        <Button
+            android:id="@+id/personal_info_btn"
+            style="@style/TitleFont"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_10"
+            android:background="@color/app_bg"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:text="@string/personal_information"
+            android:textAlignment="textStart"
+            android:textAllCaps="false"
+            android:textSize="@dimen/text_18" />
+
+        <Button
+            android:id="@+id/my_collections_btn"
+            style="@style/TitleFont"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_10"
+            android:background="@color/app_bg"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:text="@string/my_collections"
+            android:textAlignment="textStart"
+            android:textAllCaps="false"
+            android:textSize="@dimen/text_18" />
+
+        <Button
+            android:id="@+id/my_reviews_btn"
+            style="@style/TitleFont"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_10"
+            android:background="@color/app_bg"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:text="@string/my_reviews"
+            android:textAlignment="textStart"
+            android:textAllCaps="false"
+            android:textSize="@dimen/text_18" />
+
+        <Button
+            android:id="@+id/change_password_btn"
+            style="@style/TitleFont"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_10"
+            android:background="@color/app_bg"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:text="@string/change_password"
+            android:textAlignment="textStart"
+            android:textAllCaps="false"
+            android:textSize="@dimen/text_18" />
+
+        <Button
+            android:id="@+id/add_edit_res_btn"
+            style="@style/TitleFont"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_10"
+            android:background="@color/app_bg"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:text="@string/request_to_add_edit_a_restaurant"
+            android:textAlignment="textStart"
+            android:textAllCaps="false"
+            android:textSize="@dimen/text_18" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/log_out_btn"
+        style="@style/TitleFont"
+        android:layout_width="140dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_50"
+        android:background="@drawable/btn_orange"
+        android:elevation="5dp"
+        android:text="@string/log_out"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_18" />
+
+</LinearLayout>
