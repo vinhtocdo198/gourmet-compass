@@ -1,6 +1,7 @@
 package com.example.gourmetcompass.ui_general;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,8 +16,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
+import com.example.gourmetcompass.firebase.StorageUtil;
 import com.example.gourmetcompass.models.User;
 import com.example.gourmetcompass.ui_personal.ChangePasswordActivity;
 import com.example.gourmetcompass.ui_personal.MyCollectionsActivity;
@@ -26,6 +29,7 @@ import com.example.gourmetcompass.ui_personal.RequestAddRestaurantActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.StorageReference;
 
 public class AccountFragment extends Fragment {
 
@@ -33,10 +37,12 @@ public class AccountFragment extends Fragment {
     Button personalInfoBtn, myCollectionsBtn, myReviewsBtn, changePasswordBtn, requestBtn, logoutBtn;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
+    StorageReference storageRef;
     String userId;
     User user;
     TextView usernameAppBar;
     ImageView userAvatarAppBar;
+    Uri avatarUri;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +54,7 @@ public class AccountFragment extends Fragment {
         // Init firebase services
         mAuth = FirebaseAuth.getInstance();
         db = FirestoreUtil.getInstance().getFirestore();
+        storageRef = StorageUtil.getInstance().getStorage().getReference();
 
         // Get user id from arguments
         Bundle bundle = getArguments();
@@ -149,22 +156,35 @@ public class AccountFragment extends Fragment {
     }
 
     private void getUserData() {
-        db.collection("users").document(userId).get()
+
+        storageRef.child("user_images/" + userId + "/avatar/")
+                .getDownloadUrl()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        DocumentSnapshot documentSnapshot = task.getResult();
-                        if (documentSnapshot.exists()) {
-                            user = documentSnapshot.toObject(User.class);
-                            if (user != null) {
-                                // Set user data in text fields
-                                usernameAppBar.setText(user.getUsername());
-                                // TODO: set avatar
-                            }
-                        } else {
-                            Log.d(TAG, "No such document");
+                        avatarUri = task.getResult();
+                        Log.d(TAG, "getUserInformation: " + avatarUri.toString());
+                        Glide.with(this)
+                                .load(avatarUri)
+                                .into(userAvatarAppBar);
+                    } else {
+                        Log.d(TAG, "getUserInformation: Failed to get avatar");
+                    }
+                });
+
+        db.collection("users").document(userId)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Log.w(TAG, "getUserInformation: Listen failed.", error);
+                        return;
+                    }
+
+                    if (value != null && value.exists()) {
+                        user = value.toObject(User.class);
+                        if (user != null) {
+                            usernameAppBar.setText(user.getUsername());
                         }
                     } else {
-                        Log.w(TAG, "Error getting documents.", task.getException());
+                        Log.d(TAG, "getUserInformation: Current data: null");
                     }
                 });
     }
