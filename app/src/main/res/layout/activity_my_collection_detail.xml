@@ -14,7 +14,7 @@
         android:paddingHorizontal="@dimen/padding_15">
 
         <ImageButton
-            android:id="@+id/btn_back_res_my_colls"
+            android:id="@+id/my_coll_detail_btn_back"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
@@ -24,19 +24,19 @@
             tools:ignore="HardcodedText" />
 
         <TextView
-            android:id="@+id/res_my_colls_coll_title"
+            android:id="@+id/my_coll_detail_coll_title"
             style="@style/TitleFont"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="Restaurant name"
+            android:text="Collection name"
             android:textColor="@color/black"
             android:textSize="@dimen/text_20"
             tools:ignore="HardcodedText" />
 
         <ImageButton
-            android:id="@+id/btn_search_res_my_colls"
+            android:id="@+id/my_coll_detail_btn_search"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
@@ -46,19 +46,61 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/my_coll_detail_empty_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_empty_data"
+            android:contentDescription="@string/empty" />
+
+        <TextView
+            style="@style/TextFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="@dimen/margin_20"
+            android:text="@string/no_items"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_18" />
+
+        <Button
+            android:id="@+id/my_coll_detail_btn_add"
+            style="@style/TitleFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="@dimen/margin_20"
+            android:background="@android:color/transparent"
+            android:text="@string/add_some_items"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_18" />
+
+    </LinearLayout>
+
     <RelativeLayout
+        android:id="@+id/my_coll_detail_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/app_bg">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/res_my_colls_list_recyclerview"
+            android:id="@+id/my_coll_detail_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5"
             android:paddingHorizontal="@dimen/padding_5" />
 
         <ProgressBar
-            android:id="@+id/progress_bar_res_my_colls"
+            android:id="@+id/my_coll_detail_progress_bar"
             android:layout_width="@dimen/progress_bar_size"
             android:layout_height="@dimen/progress_bar_size"
             android:layout_centerInParent="true" />

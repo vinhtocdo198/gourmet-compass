@@ -108,5 +108,7 @@
     <string name="edit_avatar">Edit avatar</string>
     <string name="empty">Empty</string>
     <string name="add_your_first_collection">Add your first collection!</string>
+    <string name="no_items">You have no items for now</string>
+    <string name="add_some_items">Add some items here</string>
 
 </resources>

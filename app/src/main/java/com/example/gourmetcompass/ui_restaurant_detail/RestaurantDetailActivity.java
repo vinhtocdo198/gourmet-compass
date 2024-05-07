@@ -29,7 +29,7 @@ import com.example.gourmetcompass.adapters.BottomSheetCollectionsRVAdapter;
 import com.example.gourmetcompass.adapters.ViewPagerAdapter;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.models.Restaurant;
-import com.example.gourmetcompass.models.UserCollection;
+import com.example.gourmetcompass.models.MyCollection;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -59,7 +59,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     Restaurant restaurant;
     TextView resName;
     ArrayList<BottomSheetDialog> bottomSheets;
-    ArrayList<UserCollection> collList;
+    ArrayList<MyCollection> collList;
     String restaurantId, reviewerId;
 
     @Override
@@ -115,7 +115,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         viewPager2 = findViewById(R.id.view_pager);
         tabLayout = findViewById(R.id.tab_layout);
         bottomSheets = new ArrayList<>();
-        collList = new ArrayList<>();
+        collList = new ArrayList<>(); // TODO: might change back
     }
 
     private void openBottomSheet() {
@@ -176,7 +176,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                 existDoneBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        addToExistingCollection();
+                        addToExistingResColl();
                         Toast.makeText(RestaurantDetailActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();
                         dismissAllBottomSheets();
                     }
@@ -194,24 +194,24 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void addToExistingCollection() {
-        for (UserCollection coll : collList) {
-            if (coll.isChecked() && !coll.getRestaurantIds().contains(restaurantId)) {
-                coll.getRestaurantIds().add(restaurantId);
+    private void addToExistingResColl() {
+        for (MyCollection coll : collList) {
+            if (coll.isChecked() && !coll.getRestaurants().contains(restaurantId)) {
+                coll.getRestaurants().add(restaurantId);
                 updateUserCollRes(coll);
             } else if (!coll.isChecked()) {
-                coll.getRestaurantIds().remove(restaurantId);
+                coll.getRestaurants().remove(restaurantId);
                 updateUserCollRes(coll);
             }
         }
     }
 
-    private void updateUserCollRes(UserCollection coll) {
+    private void updateUserCollRes(MyCollection coll) {
         db.collection("users")
                 .document(user.getUid())
                 .collection("collections")
                 .document(coll.getId())
-                .update("restaurantIds", coll.getRestaurantIds())
+                .update("restaurants", coll.getRestaurants())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "Changes saved successfully");
@@ -237,15 +237,15 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                 .collection("collections")
                 .whereEqualTo("type", "restaurant")
                 .orderBy("name")
-                .addSnapshotListener((value, error) -> {
-                    if (error != null) {
-                        Log.e(TAG, "Error fetching collections", error);
+                .addSnapshotListener((value, e) -> {
+                    if (e != null) {
+                        Log.e(TAG, "Error fetching collections", e);
                         return;
                     }
                     collList.clear();
                     if (value != null) {
                         for (QueryDocumentSnapshot doc : value) {
-                            UserCollection collection = doc.toObject(UserCollection.class);
+                            MyCollection collection = doc.toObject(MyCollection.class);
                             collection.setId(doc.getId());
                             collList.add(collection);
                         }

@@ -69,7 +69,6 @@
                     android:textSize="@dimen/text_16" />
 
                 <ImageView
-                    android:id="@+id/dish_star"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/star"

@@ -62,6 +62,7 @@ public class RestaurantMenuFragment extends Fragment {
         recyclerView = view.findViewById(R.id.menu_layout);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
+        menu = new ArrayList<>();
 
         // Fetch restaurant menu
         fetchRestaurantMenu();
@@ -80,7 +81,6 @@ public class RestaurantMenuFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            menu = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Dish dish = document.toObject(Dish.class);
                                 menu.add(dish);

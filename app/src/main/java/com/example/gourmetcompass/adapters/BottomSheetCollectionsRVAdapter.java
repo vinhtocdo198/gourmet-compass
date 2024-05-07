@@ -1,40 +1,28 @@
 package com.example.gourmetcompass.adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gourmetcompass.R;
-import com.example.gourmetcompass.firebase.FirestoreUtil;
-import com.example.gourmetcompass.models.User;
-import com.example.gourmetcompass.models.UserCollection;
-import com.example.gourmetcompass.ui_restaurant_detail.RestaurantDetailActivity;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.gourmetcompass.models.MyCollection;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class BottomSheetCollectionsRVAdapter extends RecyclerView.Adapter<BottomSheetCollectionsRVAdapter.MyViewHolder> {
 
     private static final String TAG = "BottomSheetCollectionsRVAdapter";
     Context context;
-    ArrayList<UserCollection> collList;
+    ArrayList<MyCollection> collList;
     String restaurantId;
 
-    public BottomSheetCollectionsRVAdapter(Context context, ArrayList<UserCollection> collList, String restaurantId) {
+    public BottomSheetCollectionsRVAdapter(Context context, ArrayList<MyCollection> collList, String restaurantId) {
         this.context = context;
         this.collList = collList;
         this.restaurantId = restaurantId;
@@ -49,12 +37,12 @@ public class BottomSheetCollectionsRVAdapter extends RecyclerView.Adapter<Bottom
 
     @Override
     public void onBindViewHolder(@NonNull BottomSheetCollectionsRVAdapter.MyViewHolder holder, int position) {
-        UserCollection userColl = collList.get(position);
+        MyCollection userColl = collList.get(position);
 
         holder.collName.setText(collList.get(position).getName());
 
         // If the restaurant already exists in the collection, set checked to true
-        holder.checkBox.setChecked(userColl.getRestaurantIds().contains(restaurantId));
+        holder.checkBox.setChecked(userColl.getRestaurants().contains(restaurantId));
         userColl.setChecked(holder.checkBox.isChecked());
 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {

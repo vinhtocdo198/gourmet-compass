@@ -23,7 +23,7 @@
             app:cardCornerRadius="20dp">
 
             <ImageView
-                android:id="@+id/res_my_colls_res_img"
+                android:id="@+id/my_coll_detail_ava"
                 android:layout_width="@dimen/dish_ava_size"
                 android:layout_height="@dimen/dish_ava_size"
                 android:background="@drawable/sample_ava"
@@ -49,7 +49,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/res_my_colls_res_title"
+                    android:id="@+id/my_coll_detail_title"
                     style="@style/TitleFont"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                     android:textSize="@dimen/text_16" />
 
                 <TextView
-                    android:id="@+id/dish_ratings"
+                    android:id="@+id/my_coll_detail_ratings"
                     style="@style/TitleFont"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -69,14 +69,13 @@
                     android:textSize="@dimen/text_16" />
 
                 <ImageView
-                    android:id="@+id/dish_star"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/star"
                     android:src="@drawable/ic_star_full" />
 
                 <TextView
-                    android:id="@+id/dish_rating_count"
+                    android:id="@+id/my_coll_detail_rating_count"
                     style="@style/TitleFont"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -91,7 +90,7 @@
 
 
             <TextView
-                android:id="@+id/res_my_colls_res_desc"
+                android:id="@+id/my_coll_detail_desc"
                 style="@style/TextFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -103,7 +102,7 @@
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/res_my_colls_btn_more"
+            android:id="@+id/my_coll_detail_btn_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"

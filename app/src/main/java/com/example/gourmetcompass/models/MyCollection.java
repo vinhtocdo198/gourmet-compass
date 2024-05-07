@@ -2,19 +2,20 @@ package com.example.gourmetcompass.models;
 
 import java.util.ArrayList;
 
-public class UserCollection {
+public class MyCollection {
     String id, name, type;
-    ArrayList<String> restaurantIds;
+    ArrayList<String> restaurants, dishes;
     boolean isChecked;
 
-    public UserCollection() {
+    public MyCollection() {
     }
 
-    public UserCollection(String id, String name, String type, ArrayList<String> restaurantIds, boolean isChecked) {
+    public MyCollection(String id, String name, String type, ArrayList<String> restaurants, ArrayList<String> dishes, boolean isChecked) {
         this.id = id;
         this.name = name;
         this.type = type;
-        this.restaurantIds = restaurantIds;
+        this.restaurants = restaurants;
+        this.dishes = dishes;
         this.isChecked = isChecked;
     }
 
@@ -42,12 +43,20 @@ public class UserCollection {
         this.type = collectionType;
     }
 
-    public ArrayList<String> getRestaurantIds() {
-        return restaurantIds;
+    public ArrayList<String> getRestaurants() {
+        return restaurants;
     }
 
-    public void setRestaurantIds(ArrayList<String> restaurantIds) {
-        this.restaurantIds = restaurantIds;
+    public void setRestaurants(ArrayList<String> restaurants) {
+        this.restaurants = restaurants;
+    }
+
+    public ArrayList<String> getDishes() {
+        return dishes;
+    }
+
+    public void setDishes(ArrayList<String> dishes) {
+        this.dishes = dishes;
     }
 
     public boolean isChecked() {
