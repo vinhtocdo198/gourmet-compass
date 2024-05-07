@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/bottom_sheet"
+    android:id="@+id/btms_remove_coll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_bottom_sheet"
@@ -15,7 +15,7 @@
         android:background="@drawable/ic_drag_handle" />
 
     <Button
-        android:id="@+id/btn_add_review_btms_res"
+        android:id="@+id/btms_btn_remove_from_coll"
         style="@style/TitleFont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

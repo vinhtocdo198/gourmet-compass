@@ -60,7 +60,7 @@
                     android:textSize="@dimen/text_16" />
 
                 <TextView
-                    android:id="@+id/dish_ratings"
+                    android:id="@+id/my_coll_detail_ratings"
                     style="@style/TitleFont"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
                     android:src="@drawable/ic_star_full" />
 
                 <TextView
-                    android:id="@+id/dish_rating_count"
+                    android:id="@+id/my_coll_detail_rating_count"
                     style="@style/TitleFont"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
