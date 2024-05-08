@@ -162,10 +162,11 @@ public class AccountFragment extends Fragment {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         avatarUri = task.getResult();
-                        Log.d(TAG, "getUserInformation: " + avatarUri.toString());
-                        Glide.with(this)
-                                .load(avatarUri)
-                                .into(userAvatarAppBar);
+                        if (getActivity() != null) {
+                            Glide.with(getActivity())
+                                    .load(avatarUri)
+                                    .into(userAvatarAppBar);
+                        }
                     } else {
                         Log.d(TAG, "getUserInformation: Failed to get avatar");
                     }

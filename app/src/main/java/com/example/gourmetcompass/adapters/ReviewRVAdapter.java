@@ -92,7 +92,7 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
         setReviewData(holder, review);
         setReactButtonsStatus(holder, review);
         setReplyButton(holder, review);
-        setReplyData(holder, review);
+//        setReplyData(holder, review);
         holder.repliesRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         holder.repliesRecyclerView.setHasFixedSize(true);
 
