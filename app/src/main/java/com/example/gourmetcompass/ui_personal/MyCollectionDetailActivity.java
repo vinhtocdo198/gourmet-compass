@@ -4,14 +4,16 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,7 +25,7 @@ import com.example.gourmetcompass.adapters.MyCollectionDetailRVAdapter;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.models.Dish;
 import com.example.gourmetcompass.models.Restaurant;
-import com.example.gourmetcompass.ui_general.HomeFragment;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -37,7 +39,7 @@ public class MyCollectionDetailActivity extends AppCompatActivity {
     FirebaseFirestore db;
     FirebaseUser user;
     String collectionId, collectionType;
-    ImageButton backBtn, searchBtn;
+    ImageButton backBtn, searchBtn, moreBtn;
     Button addBtn;
     TextView itemName, collName;
     RecyclerView recyclerView;
@@ -79,6 +81,13 @@ public class MyCollectionDetailActivity extends AppCompatActivity {
             }
         });
 
+        moreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openBottomSheet();
+            }
+        });
+
         // Navigate to home screen if collection is empty
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +99,85 @@ public class MyCollectionDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void openBottomSheet() {
+        BottomSheetDialog bottomSheet = new BottomSheetDialog(MyCollectionDetailActivity.this, R.style.BottomSheetTheme);
+        View sheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_my_coll_detail, findViewById(R.id.btms_my_coll_detail_container));
+        bottomSheet.setContentView(sheetView);
+        bottomSheet.show();
+
+        // Init views
+        Button renameBtn = sheetView.findViewById(R.id.btn_rename_btms_my_coll_detail);
+        Button deleteBtn = sheetView.findViewById(R.id.btn_delete_btms_my_coll_detail);
+
+        renameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openRenameSheet(bottomSheet);
+
+            }
+        });
+
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteCollection();
+                bottomSheet.dismiss();
+                finish();
+                overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
+                Toast.makeText(MyCollectionDetailActivity.this, "Collection deleted", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void openRenameSheet(BottomSheetDialog bottomSheet) {
+        BottomSheetDialog renameSheet = new BottomSheetDialog(MyCollectionDetailActivity.this, R.style.BottomSheetTheme);
+        View renameSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_rename_coll, findViewById(R.id.btms_rename_container));
+        renameSheet.setContentView(renameSheetView);
+        renameSheet.show();
+
+        EditText nameTextField = renameSheetView.findViewById(R.id.btms_rename_text_field);
+        nameTextField.setText(collName.getText().toString());
+
+        Button doneBtn = renameSheetView.findViewById(R.id.btms_rename_btn_done);
+
+        doneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newName = nameTextField.getText().toString();
+                db.collection("users")
+                        .document(user.getUid())
+                        .collection("collections")
+                        .document(collectionId)
+                        .update("name", newName)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                collName.setText(newName);
+                                renameSheet.dismiss();
+                                bottomSheet.dismiss();
+                                Toast.makeText(MyCollectionDetailActivity.this, "Collection updated", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.e(TAG, "Error renaming collection", task.getException());
+                            }
+                        });
+            }
+        });
+    }
+
+    private void deleteCollection() {
+        db.collection("users")
+                .document(user.getUid())
+                .collection("collections")
+                .document(collectionId)
+                .delete()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "Collection deleted");
+                    } else {
+                        Log.e(TAG, "Error deleting collection", task.getException());
+                    }
+                });
+    }
+
     private void initViews() {
         myCollDetailLayout = findViewById(R.id.my_coll_detail_layout);
         myCollDetailEmptyLayout = findViewById(R.id.my_coll_detail_empty_layout);
@@ -97,6 +185,7 @@ public class MyCollectionDetailActivity extends AppCompatActivity {
         collName = findViewById(R.id.my_coll_detail_coll_title);
         backBtn = findViewById(R.id.my_coll_detail_btn_back);
         searchBtn = findViewById(R.id.my_coll_detail_btn_search);
+        moreBtn = findViewById(R.id.my_coll_detail_btn_more);
         itemName = findViewById(R.id.my_coll_detail_title);
         progressBar = findViewById(R.id.my_coll_detail_progress_bar);
         recyclerView = findViewById(R.id.my_coll_detail_recyclerview);
@@ -154,55 +243,68 @@ public class MyCollectionDetailActivity extends AppCompatActivity {
 
     @SuppressLint("NotifyDataSetChanged")
     private void fetchItems(String itemId, String type) {
-        db.collection(type)
-                .document(itemId)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            if (type.equals("restaurants")) {
+        if (type.equals("restaurants")) {
+            db.collection(type)
+                    .document(itemId)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
                                 Restaurant restaurant = document.toObject(Restaurant.class);
-                                restaurant.setId(document.getId());
+                                if (restaurant != null) {
+                                    restaurant.setId(document.getId());
+                                }
                                 itemList.add(restaurant);
-                            } else {
-                                Dish dish = document.toObject(Dish.class);
-                                dish.setId(document.getId());
-                                itemList.add(dish);
+                                adapter = new MyCollectionDetailRVAdapter(MyCollectionDetailActivity.this, itemList, collectionId);
+                                recyclerView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                                progressBar.setVisibility(View.GONE);
                             }
-                            adapter = new MyCollectionDetailRVAdapter(MyCollectionDetailActivity.this, itemList, collectionId);
-                            recyclerView.setAdapter(adapter);
-                            adapter.notifyDataSetChanged();
-                            progressBar.setVisibility(View.GONE);
+                        } else {
+                            Log.e(TAG, "Error getting item from collection", task.getException());
                         }
-                    } else {
-                        Log.e(TAG, "Error getting item from collection", task.getException());
-                    }
-                });
-//                .addSnapshotListener((value, e) -> {
-//                    if (e != null) {
-//                        Log.w(TAG, "Listen failed.", e);
-//                        return;
-//                    }
-//
-//                    if (value != null && value.exists()) {
-//                        if (type.equals("restaurants")) {
-//                            Restaurant restaurant = value.toObject(Restaurant.class);
-//                            restaurant.setId(value.getId());
-//                            itemList.add(restaurant);
-//                        } else {
-//                            Dish dish = value.toObject(Dish.class);
-//                            dish.setId(value.getId());
-//                            itemList.add(dish);
-//                        }
-//                        adapter = new MyCollectionDetailRVAdapter(MyCollectionDetailActivity.this, itemList, collectionId);
-//                        recyclerView.setAdapter(adapter);
-//                        adapter.notifyDataSetChanged();
-//                        progressBar.setVisibility(View.GONE);
-//                    } else {
-//                        Log.d(TAG, "Current data: null");
-//                    }
-//                });
+                    });
+        } else {
+            // Store reference to restaurant in collection
+            db.collection("dishResReferences")
+                    .document(itemId)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            String ofRestaurantId = task.getResult().getString("restaurantId");
+
+                            if (ofRestaurantId != null) {
+                                db.collection("restaurants")
+                                        .document(ofRestaurantId)
+                                        .collection("dishes")
+                                        .document(itemId)
+                                        .get()
+                                        .addOnCompleteListener(task1 -> {
+                                            if (task1.isSuccessful() && task1.getResult().exists()) {
+                                                DocumentSnapshot restaurantDoc = task1.getResult();
+                                                Dish dish = restaurantDoc.toObject(Dish.class);
+                                                if (dish != null) {
+                                                    dish.setId(restaurantDoc.getId());
+                                                    dish.setRestaurantId(ofRestaurantId);
+                                                }
+                                                itemList.add(dish);
+                                                adapter = new MyCollectionDetailRVAdapter(MyCollectionDetailActivity.this, itemList, collectionId);
+                                                recyclerView.setAdapter(adapter);
+                                                adapter.notifyDataSetChanged();
+                                                progressBar.setVisibility(View.GONE);
+
+                                            } else {
+                                                Log.e(TAG, "Error getting restaurant from reference", task1.getException());
+                                            }
+                                        });
+                            }
+
+                        } else {
+                            Log.e(TAG, "Error getting item from collection", task.getException());
+                        }
+                    });
+        }
     }
 
 }

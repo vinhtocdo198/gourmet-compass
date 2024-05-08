@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/bottom_sheet_exist_coll_container"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/btms_rename_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_bottom_sheet"
@@ -13,30 +14,33 @@
         android:layout_gravity="center"
         android:background="@drawable/ic_drag_handle" />
 
-    <Button
-        android:id="@+id/btms_exist_btn_add_new"
+    <TextView
         style="@style/TitleFont"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin_40"
-        android:layout_marginBottom="@dimen/margin_30"
-        android:background="@drawable/btn_orange"
-        android:elevation="5dp"
-        android:text="@string/new_collection"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/margin_20"
+        android:text="@string/rename_collection"
+        android:textColor="@color/title_text"
         android:textSize="@dimen/text_18" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/btms_exist_recyclerview"
+    <EditText
+        android:id="@+id/btms_rename_text_field"
+        style="@style/TextFont"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_15"
-        android:layout_marginBottom="@dimen/margin_10" />
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="@dimen/margin_30"
+        android:layout_marginTop="@dimen/margin_20"
+        android:background="@drawable/border_input_text"
+        android:gravity="center_vertical"
+        android:inputType="textMultiLine"
+        android:padding="@dimen/padding_10"
+        android:text="@string/my_collection"
+        android:textSize="@dimen/text_16"
+        tools:ignore="Autofill,LabelFor" />
 
     <Button
-        android:id="@+id/btms_exist_btn_done"
+        android:id="@+id/btms_rename_btn_done"
         style="@style/TitleFont"
         android:layout_width="130dp"
         android:layout_height="wrap_content"

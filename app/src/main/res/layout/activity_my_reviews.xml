@@ -41,6 +41,7 @@
             android:layout_gravity="center_vertical"
             android:background="@drawable/ic_search"
             android:contentDescription="Check noti"
+            android:visibility="gone"
             tools:ignore="HardcodedText" />
 
     </LinearLayout>

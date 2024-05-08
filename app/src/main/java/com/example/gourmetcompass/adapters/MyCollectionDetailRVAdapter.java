@@ -39,7 +39,6 @@ public class MyCollectionDetailRVAdapter extends RecyclerView.Adapter<MyCollecti
     FirebaseFirestore db;
     FirebaseUser user;
     String userId, collectionId;
-    MyCollectionDetailActivity activity;
 
     public MyCollectionDetailRVAdapter(Context context, ArrayList<Object> itemList, String collectionId) {
         this.context = context;
@@ -71,43 +70,6 @@ public class MyCollectionDetailRVAdapter extends RecyclerView.Adapter<MyCollecti
             holder.itemDesc.setText(restaurant.getDescription());
             holder.itemRatings.setText(String.valueOf(restaurant.getRatings()));
             setResRatings(holder, (Restaurant) item);
-            holder.btnMore.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    BottomSheetDialog bottomSheet = new BottomSheetDialog(context, R.style.BottomSheetTheme);
-                    View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_remove, bottomSheet.findViewById(R.id.btms_remove_coll));
-                    bottomSheet.setContentView(view);
-                    bottomSheet.show();
-
-                    Button btnRemove = view.findViewById(R.id.btms_btn_remove_from_coll);
-                    btnRemove.setOnClickListener(new View.OnClickListener() {
-                        @SuppressLint("NotifyDataSetChanged")
-                        @Override
-                        public void onClick(View v) {
-                            int pos = holder.getAdapterPosition();
-                            if (pos == RecyclerView.NO_POSITION) {
-                                return;
-                            }
-                            db.collection("users")
-                                    .document(userId)
-                                    .collection("collections")
-                                    .document(collectionId)
-                                    .update("restaurants", FieldValue.arrayRemove(((Restaurant) item).getId()))
-                                    .addOnCompleteListener(task -> {
-                                        if (task.isSuccessful()) {
-                                            itemList.remove(pos);
-                                            notifyDataSetChanged();
-                                            Toast.makeText(context, "Removed from collection", Toast.LENGTH_SHORT).show();
-                                            ((MyCollectionDetailActivity) context).setLayout(itemList.size());
-                                        } else {
-                                            Log.e(TAG, "Error getting restaurant from collection", task.getException());
-                                        }
-                                    });
-                            bottomSheet.dismiss();
-                        }
-                    });
-                }
-            });
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -123,8 +85,80 @@ public class MyCollectionDetailRVAdapter extends RecyclerView.Adapter<MyCollecti
             Dish dish = (Dish) item;
             holder.itemName.setText(dish.getName());
             holder.itemDesc.setText(dish.getDescription());
-            // TODO: same for dish
+            holder.itemRatings.setText(String.valueOf(dish.getRatings()));
+            holder.itemRatingCount.setText(String.format(context.getString(R.string.rating_count), dish.getRatingCount()));
+            holder.view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(holder.view.getContext(), RestaurantDetailActivity.class);
+                    intent.putExtra("restaurantId", dish.getRestaurantId());
+                    holder.view.getContext().startActivity(intent);
+                    if (holder.view.getContext() instanceof Activity) {
+                        ((Activity) holder.view.getContext()).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
+                    }
+                }
+            });
         }
+
+        holder.btnMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openRemoveBtms(holder, item);
+            }
+        });
+    }
+
+    private void openRemoveBtms(@NonNull MyViewHolder holder, Object item) {
+        BottomSheetDialog bottomSheet = new BottomSheetDialog(context, R.style.BottomSheetTheme);
+        View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_remove, bottomSheet.findViewById(R.id.btms_remove_coll));
+        bottomSheet.setContentView(view);
+        bottomSheet.show();
+
+        Button btnRemove = view.findViewById(R.id.btms_btn_remove_from_coll);
+        btnRemove.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onClick(View v) {
+                int pos = holder.getAdapterPosition();
+                if (pos == RecyclerView.NO_POSITION) {
+                    return;
+                }
+                if (item instanceof Restaurant) {
+                    db.collection("users")
+                            .document(userId)
+                            .collection("collections")
+                            .document(collectionId)
+                            .update("restaurants", FieldValue.arrayRemove(((Restaurant) item).getId()))
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    itemList.remove(pos);
+                                    notifyDataSetChanged();
+                                    Toast.makeText(context, "Removed from collection", Toast.LENGTH_SHORT).show();
+                                    ((MyCollectionDetailActivity) context).setLayout(itemList.size());
+                                } else {
+                                    Log.e(TAG, "Error getting restaurant from collection", task.getException());
+                                }
+                            });
+                } else if (item instanceof Dish) {
+                    db.collection("users")
+                            .document(userId)
+                            .collection("collections")
+                            .document(collectionId)
+                            .update("dishes", FieldValue.arrayRemove(((Dish) item).getId()))
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    itemList.remove(pos);
+                                    notifyDataSetChanged();
+                                    Toast.makeText(context, "Removed from collection", Toast.LENGTH_SHORT).show();
+                                    ((MyCollectionDetailActivity) context).setLayout(itemList.size());
+                                } else {
+                                    Log.e(TAG, "Error getting restaurant from collection", task.getException());
+                                }
+                            });
+                }
+                bottomSheet.dismiss();
+            }
+        });
     }
 
     private void setResRatings(@NonNull MyViewHolder holder, Restaurant item) {

@@ -33,6 +33,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -91,7 +92,7 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
         setReviewData(holder, review);
         setReactButtonsStatus(holder, review);
         setReplyButton(holder, review);
-        setReplyData(holder, review);
+//        setReplyData(holder, review);
         holder.repliesRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         holder.repliesRecyclerView.setHasFixedSize(true);
 
@@ -120,10 +121,29 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
 
     private void setReplyData(@NonNull MyViewHolder holder, Review review) {
 
+        if(holder.repliesRecyclerView.getAdapter() != null) {
+            return;
+        }
+
         db.collection("restaurants").document(restaurantId)
                 .collection("reviews").document(review.getId())
                 .collection("replies")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        replies = new ArrayList<>();
+//                        for (QueryDocumentSnapshot document : task.getResult()) {
+//                            Reply reply = document.toObject(Reply.class);
+//                            reply.setId(document.getId());
+//                            replies.add(reply);
+//                        }
+//                        replyRVAdapter = new ReplyRVAdapter(context, replies, restaurantId, review.getId());
+//                        holder.repliesRecyclerView.setAdapter(replyRVAdapter);
+//                    } else {
+//                        Log.d(TAG, "Error getting documents: ", task.getException());
+//                    }
+//                });
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
@@ -138,15 +158,13 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
                             for (QueryDocumentSnapshot document : value) {
                                 Reply reply = document.toObject(Reply.class);
                                 reply.setId(document.getId());
-//                                if (!replies.contains(reply)) {
                                 replies.add(reply);
-//                                }
                             }
 //                            if (replyRVAdapter == null) {
 //                                replyRVAdapter = new ReplyRVAdapter(context.getApplicationContext(), replies, restaurantId, review.getId());
 //                                holder.repliesRecyclerView.setAdapter(replyRVAdapter);
 //                            } else {
-////                                replyRVAdapter.updateData(replies);
+//                                replyRVAdapter.updateData(replies);
 //                                replyRVAdapter.notifyDataSetChanged();
 //                            }
                         }
@@ -156,6 +174,37 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
                     }
                 });
     }
+
+//    private void setReplyData(@NonNull MyViewHolder holder, Review review) {
+//
+//        // Use addSnapshotListener for listening to new additions only
+//        db.collection("restaurants").document(restaurantId)
+//                .collection("reviews").document(review.getId())
+//                .collection("replies")
+//                .orderBy("timestamp", Query.Direction.DESCENDING)
+//                .addSnapshotListener((value, e) -> {
+//                    if (e != null) {
+//                        Log.w(TAG, "Listen failed.", e);
+//                        return;
+//                    }
+//
+//                    if (value != null && !value.isEmpty()) {
+//                        replies = new ArrayList<>();
+//                        DocumentChange dc = value.getDocumentChanges().get(0);
+//                        if (dc.getType() == DocumentChange.Type.ADDED) {
+//                            Reply newReply = dc.getDocument().toObject(Reply.class);
+//                            newReply.setId(dc.getDocument().getId());
+//                            replies.add(0, newReply); // Add the new reply at the beginning of the list
+//                            replyRVAdapter.notifyItemInserted(0); // Notify the adapter about the new item at position 0
+//                        }
+//                        for (QueryDocumentSnapshot document : value) {
+//                            Reply reply = document.toObject(Reply.class);
+//                            reply.setId(document.getId());
+//                            replies.add(reply);
+//                        }
+//                    }
+//                });
+//    }
 
     private void dislikeReview(@NonNull MyViewHolder holder, Review review) {
         ArrayList<String> likedUserIds = review.getLikedUserIds();

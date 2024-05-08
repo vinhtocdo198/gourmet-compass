@@ -37,7 +37,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class LogInFragment extends Fragment {
     BeginSignInRequest signInRequest;
     private static final int RC_SIGN_IN = 123;
-    ImageButton googleBtn, facebookBtn;
+    Button googleBtn, facebookBtn;
     GoogleSignInClient mGoogleSignInClient;
     public final String TAG = "LogInFragment";
     EditText emailTextField, passwordTextField;
@@ -65,11 +65,11 @@ public class LogInFragment extends Fragment {
             }
         });
 
-/*Google Sign In*/
+        /*Google Sign In*/
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
-                        .requestEmail()
-                                .build();
+                .requestEmail()
+                .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this.getActivity(), gso);
         googleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,13 +135,11 @@ public class LogInFragment extends Fragment {
     }
 
 
-
     private void initViews(View view) {
         emailTextField = view.findViewById(R.id.email_log_in);
         passwordTextField = view.findViewById(R.id.password_log_in);
         logInBtn = view.findViewById(R.id.btn_log_in_mid);
         signUpBtn = view.findViewById(R.id.btn_sign_up_bot);
-        facebookBtn = view.findViewById(R.id.facebook_btn);
         googleBtn = view.findViewById(R.id.google_btn);
     }
 
@@ -152,12 +150,13 @@ public class LogInFragment extends Fragment {
         fragmentTransaction.replace(R.id.main_frame_layout, fragment);
         fragmentTransaction.commit();
     }
-    private void signIn(){
+
+    private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Handle Google Sign-In result
@@ -170,11 +169,13 @@ public class LogInFragment extends Fragment {
             } catch (ApiException e) {
                 // Google Sign-In failed, update UI accordingly
                 Toast.makeText(getContext(), "Google sign in failed", Toast.LENGTH_SHORT).show();
+                Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+                Log.w(TAG, "signInResult:failed message=" + e.getMessage());
             }
         }
     }
 
-    private void firebaseAuthWithGoogle(String idToken){
+    private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {

@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="@dimen/padding_30">
+        android:paddingHorizontal="@dimen/padding_20">
 
         <TextView
             style="@style/TextFont"
@@ -88,21 +88,23 @@
     <Button
         android:id="@+id/btn_log_in_mid"
         style="@style/TitleFont"
-        android:layout_width="130dp"
-        android:layout_height="48dp"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="@dimen/margin_20"
         android:layout_marginTop="@dimen/margin_30"
         android:background="@drawable/btn_orange"
         android:elevation="5dp"
         android:text="@string/log_in"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_18" />
+        android:textSize="@dimen/text_20" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginHorizontal="@dimen/margin_20"
         android:layout_marginTop="@dimen/margin_15"
         android:gravity="center"
         android:orientation="horizontal">
@@ -130,53 +132,66 @@
 
     </LinearLayout>
 
-    <TextView
+    <!--    <TextView-->
+    <!--        style="@style/TitleFont"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:layout_marginTop="@dimen/margin_5"-->
+    <!--        android:text="Log in with"-->
+    <!--        android:textColor="@color/black"-->
+    <!--        android:textSize="@dimen/text_16" />-->
+
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="center_horizontal"-->
+    <!--        android:layout_marginHorizontal="@dimen/margin_30"-->
+    <!--        android:orientation="horizontal"-->
+    <!--        android:paddingHorizontal="@dimen/padding_50">-->
+
+    <!--        <TextView-->
+    <!--            style="@style/TitleFont"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_gravity="center"-->
+    <!--            android:text="Log in with"-->
+    <!--            android:textColor="@color/black"-->
+    <!--            android:textSize="@dimen/text_16" />-->
+
+    <!--        <ImageButton-->
+    <!--            android:id="@+id/btn_google_log_in"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="64dp"-->
+    <!--            android:layout_gravity="center"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:background="@android:color/transparent"-->
+    <!--            android:contentDescription="Google login"-->
+    <!--            android:src="@drawable/ic_gg" />-->
+
+    <!--    </LinearLayout>-->
+
+    <Button
+        android:id="@+id/google_btn"
         style="@style/TitleFont"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin_5"
-        android:text="Log in with"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_16" />
-
-    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginHorizontal="@dimen/margin_30"
-        android:layout_marginTop="@dimen/margin_15"
-        android:orientation="horizontal"
-        android:paddingHorizontal="@dimen/padding_50">
-
-        <ImageButton
-            android:id="@+id/facebook_btn"
-            android:layout_width="48dp"
-            android:layout_height="64dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:contentDescription="Facebook login"
-            android:src="@drawable/ic_fb" />
-
-        <ImageButton
-            android:id="@+id/google_btn"
-            android:layout_width="48dp"
-            android:layout_height="64dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:contentDescription="Google login"
-            android:src="@drawable/ic_gg" />
-
-    </LinearLayout>
+        android:layout_height="65dp"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:layout_marginVertical="@dimen/margin_15"
+        android:background="@drawable/border_gg_sign_in"
+        android:drawableStart="@drawable/ic_gg"
+        android:paddingHorizontal="@dimen/padding_30"
+        android:paddingVertical="@dimen/padding_10"
+        android:text="Log in with Google"
+        android:textAllCaps="false"
+        android:textSize="@dimen/text_18" />
 
     <TextView
         style="@style/TitleFont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:layout_marginTop="@dimen/margin_15"
+        android:layout_marginTop="@dimen/margin_25"
         android:layout_marginEnd="@dimen/margin_30"
         android:text="Don't have an account?"
         android:textColor="@color/input_text_border"

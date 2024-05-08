@@ -124,19 +124,19 @@ public class MyCollectionsActivity extends AppCompatActivity {
         String collName = nameTextField.getText().toString();
 
         // Create a new collection with type restaurant
-        Map<String, Object> collection = new HashMap<>();
-        collection.put("type", type);
-        collection.put("name", collName);
+        Map<String, Object> newColl = new HashMap<>();
+        newColl.put("type", type);
+        newColl.put("name", collName);
         if (type.equals("restaurant")) {
-            collection.put(type + "s", new ArrayList<>());
+            newColl.put(type + "s", new ArrayList<>());
         } else {
-            collection.put(type + "es", new ArrayList<>());
+            newColl.put(type + "es", new ArrayList<>());
         }
 
         // Add to firestore
         db.collection("users").document(user.getUid())
                 .collection("collections")
-                .add(collection)
+                .add(newColl)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "Collection created");
@@ -152,8 +152,7 @@ public class MyCollectionsActivity extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        int size = task.getResult().size();
-                        nameTextField.setText(getString(R.string.my_collection, size + 1));
+                        nameTextField.setText(getString(R.string.my_collection, task.getResult().size() + 1));
                     }
                 });
     }

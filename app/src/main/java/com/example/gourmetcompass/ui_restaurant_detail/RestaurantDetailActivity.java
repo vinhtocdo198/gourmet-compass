@@ -71,7 +71,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         db = FirestoreUtil.getInstance().getFirestore();
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            reviewerId = user.getUid(); // Get current user id
+            reviewerId = user.getUid();
         }
 
         // Get restaurant id from intent
@@ -115,7 +115,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         viewPager2 = findViewById(R.id.view_pager);
         tabLayout = findViewById(R.id.tab_layout);
         bottomSheets = new ArrayList<>();
-        collList = new ArrayList<>(); // TODO: might change back
+        collList = new ArrayList<>();
     }
 
     private void openBottomSheet() {
@@ -132,55 +132,23 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         addToCollBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: if a collection exists
-                // Open inner bottom sheet
-                BottomSheetDialog existCollBottomSheet = new BottomSheetDialog(RestaurantDetailActivity.this, R.style.BottomSheetTheme);
-                View existCollSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_exist_coll, findViewById(R.id.bottom_sheet_exist_coll_container));
-                existCollBottomSheet.setContentView(existCollSheetView);
-                existCollBottomSheet.show();
-                bottomSheets.add(existCollBottomSheet);
 
-                Button addNewCollBtn = existCollSheetView.findViewById(R.id.btms_exist_btn_add_new);
-                Button existDoneBtn = existCollSheetView.findViewById(R.id.btms_exist_btn_done);
-
-                // New collection button in the second bottom sheet
-                addNewCollBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        BottomSheetDialog newCollBottomSheet = new BottomSheetDialog(RestaurantDetailActivity.this, R.style.BottomSheetTheme);
-                        View newCollSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_new_coll, findViewById(R.id.bottom_sheet_new_coll_container));
-                        newCollBottomSheet.setContentView(newCollSheetView);
-                        newCollBottomSheet.show();
-                        bottomSheets.add(newCollBottomSheet);
-
-                        Button newDoneBtn = newCollSheetView.findViewById(R.id.btms_new_btn_done);
-                        EditText textField = newCollBottomSheet.findViewById(R.id.btms_new_text_field);
-
-                        newDoneBtn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (textField != null && textField.getText().toString().isEmpty()) {
-                                    Toast.makeText(RestaurantDetailActivity.this, "Collection must have a name", Toast.LENGTH_SHORT).show();
+                db.collection("users")
+                        .document(user.getUid())
+                        .collection("collections")
+                        .whereEqualTo("type", "restaurant")
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().isEmpty()) {
+                                    openNewCollBtms();
                                 } else {
-                                    dismissAllBottomSheets();
-                                    // TODO: add to coll
-                                    Toast.makeText(RestaurantDetailActivity.this, "Added to collection", Toast.LENGTH_SHORT).show();
+                                    openExistingCollBtms();
                                 }
+                            } else {
+                                Log.e(TAG, "Failed to fetch collections", task.getException());
                             }
                         });
-                    }
-                });
-
-                // Recycler view of user collections and done button to add to collections
-                showUserCollList(existCollSheetView);
-                existDoneBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        addToExistingResColl();
-                        Toast.makeText(RestaurantDetailActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();
-                        dismissAllBottomSheets();
-                    }
-                });
             }
         });
 
@@ -192,6 +160,101 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                 openAddReviewDialog();
             }
         });
+    }
+
+    private void openExistingCollBtms() {
+        // Open inner bottom sheet
+        BottomSheetDialog existCollBottomSheet = new BottomSheetDialog(RestaurantDetailActivity.this, R.style.BottomSheetTheme);
+        View existCollSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_exist_coll, findViewById(R.id.bottom_sheet_exist_coll_container));
+        existCollBottomSheet.setContentView(existCollSheetView);
+        existCollBottomSheet.show();
+        bottomSheets.add(existCollBottomSheet);
+
+        Button addNewCollBtn = existCollSheetView.findViewById(R.id.btms_exist_btn_add_new);
+        Button existDoneBtn = existCollSheetView.findViewById(R.id.btms_exist_btn_done);
+
+        // New collection button in the second bottom sheet
+        addNewCollBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openNewCollBtms();
+            }
+        });
+
+        // Recycler view of user collections and done button to add to collections
+        showUserCollList(existCollSheetView);
+        existDoneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addToExistingResColl();
+                Toast.makeText(RestaurantDetailActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();
+                dismissAllBottomSheets();
+            }
+        });
+    }
+
+    private void openNewCollBtms() {
+        BottomSheetDialog newCollBottomSheet = new BottomSheetDialog(RestaurantDetailActivity.this, R.style.BottomSheetTheme);
+        View newCollSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_new_coll, findViewById(R.id.bottom_sheet_new_coll_container));
+        newCollBottomSheet.setContentView(newCollSheetView);
+        newCollBottomSheet.show();
+        bottomSheets.add(newCollBottomSheet);
+
+        Button newDoneBtn = newCollSheetView.findViewById(R.id.btms_new_btn_done);
+        EditText textField = newCollBottomSheet.findViewById(R.id.btms_new_text_field);
+        setDefaultNewCollName(textField);
+
+        // Add the restaurant to the newly created collection and all checked collections
+        newDoneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (textField != null) {
+                    String collName = textField.getText().toString();
+                    if (collName.isEmpty()) {
+                        Toast.makeText(RestaurantDetailActivity.this, "Collection must have a name", Toast.LENGTH_SHORT).show();
+                    } else {
+                        addToNewResColl(collName);
+                        addToExistingResColl();
+                        dismissAllBottomSheets();
+                        Toast.makeText(RestaurantDetailActivity.this, "Added to collection", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+    }
+
+    private void addToNewResColl(String collName) {
+        Map<String, Object> newColl = new HashMap<>();
+        newColl.put("type", "restaurant");
+        newColl.put("name", collName);
+        ArrayList<String> resList = new ArrayList<>();
+        resList.add(restaurantId);
+        newColl.put("restaurants", resList);
+        db.collection("users")
+                .document(user.getUid())
+                .collection("collections")
+                .add(newColl)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "Changes saved successfully");
+                    } else {
+                        Log.e(TAG, "Failed to add collection", task.getException());
+                    }
+                });
+    }
+
+    private void setDefaultNewCollName(EditText textField) {
+        db.collection("users")
+                .document(user.getUid())
+                .collection("collections")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && textField != null) {
+                        textField.setText(getString(R.string.my_collection, task.getResult().size() + 1));
+                    } else {
+                        Log.e(TAG, "Failed to fetch collections", task.getException());
+                    }
+                });
     }
 
     private void addToExistingResColl() {
@@ -225,7 +288,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         RecyclerView recyclerView = existCollSheetView.findViewById(R.id.btms_exist_recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(RestaurantDetailActivity.this));
-        BottomSheetCollectionsRVAdapter adapter = new BottomSheetCollectionsRVAdapter(RestaurantDetailActivity.this, collList, restaurantId);
+        BottomSheetCollectionsRVAdapter adapter =
+                new BottomSheetCollectionsRVAdapter(RestaurantDetailActivity.this, collList, restaurantId, "restaurant");
         recyclerView.setAdapter(adapter);
         fetchCollectionList(adapter);
     }
@@ -319,22 +383,35 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         review.put("reviewerId", reviewerId);
         review.put("likedUserIds", new ArrayList<String>());
         review.put("dislikedUserIds", new ArrayList<String>());
+        review.put("restaurantId", restaurantId);
 
-        // Add to db
+        // Add review to db
         db.collection("restaurants").document(restaurantId).
                 collection("reviews")
                 .add(review)
-                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(RestaurantDetailActivity.this, "Review added", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(RestaurantDetailActivity.this, "Failed to add review", Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+
+                        // Add to user's review list
+                        String reviewId = ((DocumentReference) task.getResult()).getId();
+                        db.collection("users")
+                                .document(reviewerId)
+                                .collection("reviews")
+                                .document(reviewId)
+                                .set(review)
+                                .addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        Log.d(TAG, "Review reference added to user successfully");
+                                    } else {
+                                        Log.e(TAG, "Failed to add review reference to user", task1.getException());
+                                    }
+                                });
+
+                        Toast.makeText(RestaurantDetailActivity.this, "Review added", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(RestaurantDetailActivity.this, "Failed to add review", Toast.LENGTH_SHORT).show();
                     }
                 });
-
     }
 
     private void switchFragment(int index) {

@@ -30,6 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:text="Collection name"
             android:textColor="@color/black"
             android:textSize="@dimen/text_20"
@@ -42,6 +44,15 @@
             android:layout_gravity="center_vertical"
             android:background="@drawable/ic_search"
             android:contentDescription="Check noti"
+            tools:ignore="HardcodedText" />
+
+        <ImageButton
+            android:id="@+id/my_coll_detail_btn_more"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/ic_more"
+            android:contentDescription="Open bottom sheet"
             tools:ignore="HardcodedText" />
 
     </LinearLayout>

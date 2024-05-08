@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/btms_dish_container"
+    android:id="@+id/btms_my_coll_detail_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_bottom_sheet"
@@ -14,20 +14,21 @@
         android:background="@drawable/ic_drag_handle" />
 
     <Button
-        android:id="@+id/btn_add_btms_dish"
+        android:id="@+id/btn_rename_btms_my_coll_detail"
+        style="@style/TitleFont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_20"
         android:layout_marginTop="@dimen/margin_20"
         android:background="@drawable/btn_bottom_sheet"
         android:elevation="5dp"
-        style="@style/TitleFont"
-        android:text="@string/add_to_collection"
+        android:text="@string/rename_collection"
         android:textAllCaps="false"
         android:textSize="@dimen/text_16" />
 
     <Button
-        android:id="@+id/btn_rate_btms_dish"
+        android:id="@+id/btn_delete_btms_my_coll_detail"
+        style="@style/TitleFont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_20"
@@ -35,8 +36,7 @@
         android:layout_marginBottom="@dimen/margin_20"
         android:background="@drawable/btn_bottom_sheet"
         android:elevation="5dp"
-        style="@style/TitleFont"
-        android:text="@string/rate_this_dish"
+        android:text="@string/delete_collection"
         android:textAllCaps="false"
         android:textSize="@dimen/text_16" />
 
