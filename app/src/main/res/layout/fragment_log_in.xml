@@ -150,6 +150,7 @@
         android:paddingHorizontal="@dimen/padding_50">
 
         <ImageButton
+            android:id="@+id/facebook_btn"
             android:layout_width="48dp"
             android:layout_height="64dp"
             android:layout_gravity="center"
@@ -159,6 +160,7 @@
             android:src="@drawable/ic_fb" />
 
         <ImageButton
+            android:id="@+id/google_btn"
             android:layout_width="48dp"
             android:layout_height="64dp"
             android:layout_gravity="center"
