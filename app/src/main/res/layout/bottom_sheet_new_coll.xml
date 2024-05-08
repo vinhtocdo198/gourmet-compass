@@ -9,7 +9,6 @@
     android:paddingTop="@dimen/padding_20">
 
     <View
-        android:id="@+id/drag_handle"
         android:layout_width="50dp"
         android:layout_height="5dp"
         android:layout_gravity="center"
@@ -26,7 +25,7 @@
         android:textSize="@dimen/text_18" />
 
     <EditText
-        android:id="@+id/text_field"
+        android:id="@+id/btms_new_text_field"
         style="@style/TextFont"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -41,7 +40,7 @@
         tools:ignore="Autofill,LabelFor" />
 
     <Button
-        android:id="@+id/btn_new_done"
+        android:id="@+id/btms_new_btn_done"
         style="@style/TitleFont"
         android:layout_width="130dp"
         android:layout_height="wrap_content"

@@ -12,7 +12,7 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.example.gourmetcompass.R;
 
-public class RestaurantSearchListActivity extends AppCompatActivity {
+public class SearchResultActivity extends AppCompatActivity {
 
     String searchQuery;
     TextView searchTextResult, resultQuantity;

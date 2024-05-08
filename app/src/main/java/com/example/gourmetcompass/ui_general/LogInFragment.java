@@ -169,7 +169,7 @@ public class LogInFragment extends Fragment {
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 // Google Sign-In failed, update UI accordingly
-                Log.w(TAG, "Google sign in failed", e);
+                Toast.makeText(getContext(), "Google sign in failed", Toast.LENGTH_SHORT).show();
             }
         }
     }
