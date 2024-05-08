@@ -3,6 +3,7 @@ package com.example.gourmetcompass.adapters;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,8 +23,10 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
+import com.example.gourmetcompass.firebase.StorageUtil;
 import com.example.gourmetcompass.models.Reply;
 import com.example.gourmetcompass.models.Review;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +41,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,6 +58,9 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
     String restaurantId, reviewerId;
     FirebaseUser user;
     FirebaseFirestore db;
+    StorageReference storageRef;
+    Uri reviewerAvaUri;
+    ArrayList<Uri> reviewImgUris;
 
     public ReviewRVAdapter(Context context, ArrayList<Review> reviews, String restaurantId) {
         this.context = context;
@@ -78,14 +85,15 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
         // Init firebase services
         db = FirestoreUtil.getInstance().getFirestore();
         user = FirebaseAuth.getInstance().getCurrentUser();
+        storageRef = StorageUtil.getInstance().getStorage().getReference();
 
         // Fetch review data
         setReviewData(holder, review);
         setReactButtonsStatus(holder, review);
         setReplyButton(holder, review);
         setReplyData(holder, review);
-
-        // TODO: add image view for reviewer profile picture
+        holder.repliesRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        holder.repliesRecyclerView.setHasFixedSize(true);
 
         holder.replyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,8 +119,6 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
     }
 
     private void setReplyData(@NonNull MyViewHolder holder, Review review) {
-        holder.repliesRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        holder.repliesRecyclerView.setHasFixedSize(true);
 
         db.collection("restaurants").document(restaurantId)
                 .collection("reviews").document(review.getId())
@@ -132,8 +138,17 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
                             for (QueryDocumentSnapshot document : value) {
                                 Reply reply = document.toObject(Reply.class);
                                 reply.setId(document.getId());
+//                                if (!replies.contains(reply)) {
                                 replies.add(reply);
+//                                }
                             }
+//                            if (replyRVAdapter == null) {
+//                                replyRVAdapter = new ReplyRVAdapter(context.getApplicationContext(), replies, restaurantId, review.getId());
+//                                holder.repliesRecyclerView.setAdapter(replyRVAdapter);
+//                            } else {
+////                                replyRVAdapter.updateData(replies);
+//                                replyRVAdapter.notifyDataSetChanged();
+//                            }
                         }
                         replyRVAdapter = new ReplyRVAdapter(context, replies, restaurantId, review.getId());
                         holder.repliesRecyclerView.setAdapter(replyRVAdapter);
@@ -147,14 +162,14 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
         ArrayList<String> dislikedUserIds = review.getDislikedUserIds();
         if (dislikedUserIds.contains(user.getUid())) {
             dislikedUserIds.remove(user.getUid());
-            holder.dislikeButton.setBackgroundResource(R.drawable.btn_review);
+            holder.dislikeButton.setBackgroundResource(R.drawable.btn_react);
         } else {
             dislikedUserIds.add(user.getUid());
             holder.dislikeButton.setBackgroundResource(R.drawable.btn_react_pressed);
 
             if (likedUserIds.contains(user.getUid())) {
                 likedUserIds.remove(user.getUid());
-                holder.likeButton.setBackgroundResource(R.drawable.btn_review);
+                holder.likeButton.setBackgroundResource(R.drawable.btn_react);
             }
         }
 
@@ -168,7 +183,6 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
                         if (task.isSuccessful()) {
                             holder.likeButton.setText(String.format(context.getString(R.string.react_count), review.getLikedUserIds().size()));
                             holder.dislikeButton.setText(String.format(context.getString(R.string.react_count), review.getDislikedUserIds().size()));
-                            Log.d(TAG, "DocumentSnapshot successfully updated!");
                         } else {
                             Log.d(TAG, "Error updating document", task.getException());
                         }
@@ -181,14 +195,14 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
         ArrayList<String> dislikedUserIds = review.getDislikedUserIds();
         if (likedUserIds.contains(user.getUid())) {
             likedUserIds.remove(user.getUid());
-            holder.likeButton.setBackgroundResource(R.drawable.btn_review);
-        } else if (!likedUserIds.contains(user.getUid())) {
+            holder.likeButton.setBackgroundResource(R.drawable.btn_react);
+        } else {
             likedUserIds.add(user.getUid());
             holder.likeButton.setBackgroundResource(R.drawable.btn_react_pressed);
 
             if (dislikedUserIds.contains(user.getUid())) {
                 dislikedUserIds.remove(user.getUid());
-                holder.dislikeButton.setBackgroundResource(R.drawable.btn_review);
+                holder.dislikeButton.setBackgroundResource(R.drawable.btn_react);
             }
         }
 
@@ -202,7 +216,6 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
                         if (task.isSuccessful()) {
                             holder.likeButton.setText(String.format(context.getString(R.string.react_count), likedUserIds.size()));
                             holder.dislikeButton.setText(String.format(context.getString(R.string.react_count), dislikedUserIds.size()));
-                            Log.d(TAG, "DocumentSnapshot successfully updated!");
                         } else {
                             Log.d(TAG, "Error updating document", task.getException());
                         }
@@ -213,7 +226,8 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
     private void setReactButtonsStatus(@NonNull MyViewHolder holder, Review review) {
         db.collection("restaurants").document(restaurantId)
                 .collection("reviews").document(review.getId())
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @SuppressWarnings("unchecked")
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -249,9 +263,9 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
                 .collection("replies")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (error != null) {
-                            Log.w(TAG, "Listen failed.", error);
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed.", e);
                             return;
                         }
                         if (value != null) {
@@ -264,14 +278,16 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
     private void setReviewData(@NonNull MyViewHolder holder, Review review) {
         db.collection("restaurants").document(restaurantId)
                 .collection("reviews").document(review.getId())
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                // Get the current username
+                                // Get the reviewer username and avatar
                                 reviewerId = document.getString("reviewerId");
+                                setReviewAvatar(reviewerId, holder);
                                 setReviewerUsername(reviewerId, holder);
 
                                 // Calculate the time passed since the review was posted
@@ -292,9 +308,25 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
                 });
     }
 
+    private void setReviewAvatar(String reviewerId, MyViewHolder holder) {
+        storageRef.child("user_images/" + reviewerId + "/avatar/")
+                .getDownloadUrl()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        reviewerAvaUri = task.getResult();
+                        Glide.with(context.getApplicationContext())
+                                .load(reviewerAvaUri)
+                                .into(holder.reviewerAvaImg);
+                    } else {
+                        Log.d(TAG, "getUserInformation: Failed to get avatar");
+                    }
+                });
+    }
+
     private void setReviewerUsername(String reviewerId, @NonNull MyViewHolder holder) {
         db.collection("users").document(reviewerId)
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
@@ -422,6 +454,10 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
                         }
                     }
                 });
+    }
+
+    public void updateData(ArrayList<Review> newReviews) {
+        this.reviews = newReviews;
     }
 
     @Override

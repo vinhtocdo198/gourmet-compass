@@ -21,6 +21,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Locale;
+
 public class RestaurantDetailFragment extends Fragment {
 
     private static final String TAG = "RestaurantDetailFragment";
@@ -108,53 +110,57 @@ public class RestaurantDetailFragment extends Fragment {
     private void getTotalRatings() {
         db.collection("restaurants").document(restaurantId)
                 .collection("reviews")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(TAG, "Listen failed.", e);
-                            return;
-                        }
+                .addSnapshotListener((value, e) -> {
+                    if (e != null) {
+                        Log.w(TAG, "Listen failed.", e);
+                        return;
+                    }
 
-                        if (value != null) {
-                            int rate1Count = 0, rate2Count = 0, rate3Count = 0, rate4Count = 0, rate5Count = 0;
-                            float averageRatings, totalRatings = 0;
-                            int totalReviews = 0;
+                    if (value != null) {
+                        RestaurantDetailActivity activity = (RestaurantDetailActivity) getActivity();
+                        int rate1Count = 0, rate2Count = 0, rate3Count = 0, rate4Count = 0, rate5Count = 0;
+                        float averageRatings, totalRatings = 0;
+                        int totalReviews = 0;
 
-                            for (QueryDocumentSnapshot document : value) {
-                                Review review = document.toObject(Review.class);
-                                switch (review.getRatings()) {
-                                    case "1.0":
-                                        rate1Count++;
-                                        break;
-                                    case "2.0":
-                                        rate2Count++;
-                                        break;
-                                    case "3.0":
-                                        rate3Count++;
-                                        break;
-                                    case "4.0":
-                                        rate4Count++;
-                                        break;
-                                    case "5.0":
-                                        rate5Count++;
-                                        break;
-                                }
-                                totalRatings += Float.parseFloat(review.getRatings());
-                                totalReviews++;
-                                averageRatings = totalRatings / totalReviews;
-                                ratingsTitle.setText(String.format(requireContext().getString(R.string.ratings_title), averageRatings));
+                        for (QueryDocumentSnapshot document : value) {
+                            Review review = document.toObject(Review.class);
+                            switch (review.getRatings()) {
+                                case "1.0":
+                                    rate1Count++;
+                                    break;
+                                case "2.0":
+                                    rate2Count++;
+                                    break;
+                                case "3.0":
+                                    rate3Count++;
+                                    break;
+                                case "4.0":
+                                    rate4Count++;
+                                    break;
+                                case "5.0":
+                                    rate5Count++;
+                                    break;
                             }
-
-                            rate1.setText(String.format(requireContext().getString(R.string.rating_count), rate1Count));
-                            rate2.setText(String.format(requireContext().getString(R.string.rating_count), rate2Count));
-                            rate3.setText(String.format(requireContext().getString(R.string.rating_count), rate3Count));
-                            rate4.setText(String.format(requireContext().getString(R.string.rating_count), rate4Count));
-                            rate5.setText(String.format(requireContext().getString(R.string.rating_count), rate5Count));
-
-                        } else {
-                            Log.d(TAG, "Current data: null");
+                            totalRatings += Float.parseFloat(review.getRatings());
+                            totalReviews++;
                         }
+
+                        if (activity != null) {
+                            if (totalReviews == 0) {
+                                ratingsTitle.setText(R.string.ratings_n_a);
+                            } else {
+                                averageRatings = totalRatings / totalReviews;
+                                ratingsTitle.setText(String.format(activity.getString(R.string.ratings_title), averageRatings));
+                            }
+                            rate1.setText(String.format(activity.getString(R.string.rating_count), rate1Count));
+                            rate2.setText(String.format(activity.getString(R.string.rating_count), rate2Count));
+                            rate3.setText(String.format(activity.getString(R.string.rating_count), rate3Count));
+                            rate4.setText(String.format(activity.getString(R.string.rating_count), rate4Count));
+                            rate5.setText(String.format(activity.getString(R.string.rating_count), rate5Count));
+                        }
+
+                    } else {
+                        Log.d(TAG, "Current data: null");
                     }
                 });
     }

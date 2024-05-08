@@ -1,7 +1,6 @@
 package com.example.gourmetcompass.ui_general;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -50,7 +49,7 @@ public class BrowseFragment extends Fragment {
                 || (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
 
             // The user has clicked "Enter", start the new activity
-            Intent intent = new Intent(getActivity(), RestaurantSearchListActivity.class);
+            Intent intent = new Intent(getActivity(), SearchResultActivity.class);
             intent.putExtra("searchQuery", v.getText().toString());
             startActivity(intent);
             if (getActivity() != null) {

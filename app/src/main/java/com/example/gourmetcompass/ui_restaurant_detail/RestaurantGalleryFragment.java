@@ -31,7 +31,6 @@ public class RestaurantGalleryFragment extends Fragment {
     RecyclerView recyclerView;
     GalleryRVAdapter adapter;
     ArrayList<String> imageUrls;
-    FirebaseStorage storage;
     StorageReference storageRef;
     ProgressBar progressBar;
 
@@ -51,8 +50,7 @@ public class RestaurantGalleryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_restaurant_gallery, container, false);
 
         db = FirestoreUtil.getInstance().getFirestore();
-        storage = StorageUtil.getInstance().getStorage();
-        storageRef = storage.getReference();
+        storageRef = StorageUtil.getInstance().getStorage().getReference();
 
         // Get the restaurant object from the arguments
         if (getArguments() != null) {

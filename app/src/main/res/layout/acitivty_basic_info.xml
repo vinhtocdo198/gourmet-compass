@@ -45,13 +45,19 @@
         android:elevation="10dp"
         app:cardCornerRadius="60dp">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/avatar_basic_info"
             android:layout_width="@dimen/user_ava_size"
             android:layout_height="@dimen/user_ava_size"
             android:background="@drawable/ic_default_avatar"
             android:contentDescription="@string/user_avatar"
             android:scaleType="centerCrop" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar_basic_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
     </androidx.cardview.widget.CardView>
 
