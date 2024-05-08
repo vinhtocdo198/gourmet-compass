@@ -83,6 +83,7 @@ public class RestaurantMenuFragment extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Dish dish = document.toObject(Dish.class);
+                                dish.setId(document.getId());
                                 menu.add(dish);
                             }
                             adapter = new MenuRVAdapter(getContext(), menu);

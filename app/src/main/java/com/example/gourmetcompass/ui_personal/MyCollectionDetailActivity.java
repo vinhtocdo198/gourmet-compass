@@ -11,9 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +25,6 @@ import com.example.gourmetcompass.adapters.MyCollectionDetailRVAdapter;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.models.Dish;
 import com.example.gourmetcompass.models.Restaurant;
-import com.example.gourmetcompass.ui_general.HomeFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -246,55 +243,68 @@ public class MyCollectionDetailActivity extends AppCompatActivity {
 
     @SuppressLint("NotifyDataSetChanged")
     private void fetchItems(String itemId, String type) {
-        db.collection(type)
-                .document(itemId)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            if (type.equals("restaurants")) {
+        if (type.equals("restaurants")) {
+            db.collection(type)
+                    .document(itemId)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
                                 Restaurant restaurant = document.toObject(Restaurant.class);
-                                restaurant.setId(document.getId());
+                                if (restaurant != null) {
+                                    restaurant.setId(document.getId());
+                                }
                                 itemList.add(restaurant);
-                            } else {
-                                Dish dish = document.toObject(Dish.class);
-                                dish.setId(document.getId());
-                                itemList.add(dish);
+                                adapter = new MyCollectionDetailRVAdapter(MyCollectionDetailActivity.this, itemList, collectionId);
+                                recyclerView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                                progressBar.setVisibility(View.GONE);
                             }
-                            adapter = new MyCollectionDetailRVAdapter(MyCollectionDetailActivity.this, itemList, collectionId);
-                            recyclerView.setAdapter(adapter);
-                            adapter.notifyDataSetChanged();
-                            progressBar.setVisibility(View.GONE);
+                        } else {
+                            Log.e(TAG, "Error getting item from collection", task.getException());
                         }
-                    } else {
-                        Log.e(TAG, "Error getting item from collection", task.getException());
-                    }
-                });
-//                .addSnapshotListener((value, e) -> {
-//                    if (e != null) {
-//                        Log.w(TAG, "Listen failed.", e);
-//                        return;
-//                    }
-//
-//                    if (value != null && value.exists()) {
-//                        if (type.equals("restaurants")) {
-//                            Restaurant restaurant = value.toObject(Restaurant.class);
-//                            restaurant.setId(value.getId());
-//                            itemList.add(restaurant);
-//                        } else {
-//                            Dish dish = value.toObject(Dish.class);
-//                            dish.setId(value.getId());
-//                            itemList.add(dish);
-//                        }
-//                        adapter = new MyCollectionDetailRVAdapter(MyCollectionDetailActivity.this, itemList, collectionId);
-//                        recyclerView.setAdapter(adapter);
-//                        adapter.notifyDataSetChanged();
-//                        progressBar.setVisibility(View.GONE);
-//                    } else {
-//                        Log.d(TAG, "Current data: null");
-//                    }
-//                });
+                    });
+        } else {
+            // Store reference to restaurant in collection
+            db.collection("dishResReferences")
+                    .document(itemId)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            String ofRestaurantId = task.getResult().getString("restaurantId");
+
+                            if (ofRestaurantId != null) {
+                                db.collection("restaurants")
+                                        .document(ofRestaurantId)
+                                        .collection("dishes")
+                                        .document(itemId)
+                                        .get()
+                                        .addOnCompleteListener(task1 -> {
+                                            if (task1.isSuccessful() && task1.getResult().exists()) {
+                                                DocumentSnapshot restaurantDoc = task1.getResult();
+                                                Dish dish = restaurantDoc.toObject(Dish.class);
+                                                if (dish != null) {
+                                                    dish.setId(restaurantDoc.getId());
+                                                    dish.setRestaurantId(ofRestaurantId);
+                                                }
+                                                itemList.add(dish);
+                                                adapter = new MyCollectionDetailRVAdapter(MyCollectionDetailActivity.this, itemList, collectionId);
+                                                recyclerView.setAdapter(adapter);
+                                                adapter.notifyDataSetChanged();
+                                                progressBar.setVisibility(View.GONE);
+
+                                            } else {
+                                                Log.e(TAG, "Error getting restaurant from reference", task1.getException());
+                                            }
+                                        });
+                            }
+
+                        } else {
+                            Log.e(TAG, "Error getting item from collection", task.getException());
+                        }
+                    });
+        }
     }
 
 }

@@ -7,18 +7,6 @@ public class MyCollection {
     ArrayList<String> restaurants, dishes;
     boolean isChecked;
 
-    public MyCollection() {
-    }
-
-    public MyCollection(String id, String name, String type, ArrayList<String> restaurants, ArrayList<String> dishes, boolean isChecked) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.restaurants = restaurants;
-        this.dishes = dishes;
-        this.isChecked = isChecked;
-    }
-
     public String getId() {
         return id;
     }
