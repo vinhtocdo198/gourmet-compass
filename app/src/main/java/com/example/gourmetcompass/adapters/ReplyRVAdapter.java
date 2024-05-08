@@ -69,6 +69,33 @@ public class ReplyRVAdapter extends RecyclerView.Adapter<ReplyRVAdapter.MyViewHo
         db.collection("restaurants").document(restaurantId)
                 .collection("reviews").document(reviewId)
                 .collection("replies").document(reply.getId())
+//                .addSnapshotListener((value, e) -> {
+//                    if (e != null) {
+//                        Log.w(TAG, "Listen failed.", e);
+//                        return;
+//                    }
+//
+//                    if (value != null && value.exists()) {
+//                        String replierId = value.getString("replierId");
+//                        String description = value.getString("description");
+//
+//                        // Get the replier username and avatar
+//                        setReplierAvatar(replierId, holder);
+//                        setReplierUsername(replierId, holder);
+//                        holder.replyContent.setText(description);
+//
+//                        // Calculate the time passed since the review was posted
+//                        Long timestamp = value.getLong("timestamp");
+//                        if (timestamp != null) {
+//                            holder.replyTime.setText(getTimePassed(timestamp));
+//                        } else {
+//                            // Handle the case where timestamp is null
+//                            holder.replyTime.setText("N/A");
+//                        }
+//                    } else {
+//                        Log.d(TAG, "No such document");
+//                    }
+//                });
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

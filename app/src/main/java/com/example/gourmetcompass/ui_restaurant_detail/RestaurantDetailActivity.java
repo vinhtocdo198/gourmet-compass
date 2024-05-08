@@ -115,7 +115,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         viewPager2 = findViewById(R.id.view_pager);
         tabLayout = findViewById(R.id.tab_layout);
         bottomSheets = new ArrayList<>();
-        collList = new ArrayList<>(); // TODO: might change back
+        collList = new ArrayList<>();
     }
 
     private void openBottomSheet() {

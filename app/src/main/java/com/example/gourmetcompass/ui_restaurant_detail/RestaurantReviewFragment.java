@@ -118,9 +118,6 @@ public class RestaurantReviewFragment extends Fragment {
                                     adapter.notifyDataSetChanged();
                                 }
                             }
-//                            adapter = new ReviewRVAdapter(activity, reviews, restaurantId);
-//                            recyclerView.setAdapter(adapter);
-//                            adapter.notifyDataSetChanged();
                             progressBar.setVisibility(View.GONE);
 
                             // Show empty icon if there are no reviews
