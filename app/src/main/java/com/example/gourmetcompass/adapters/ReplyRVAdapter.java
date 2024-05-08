@@ -1,6 +1,7 @@
 package com.example.gourmetcompass.adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +12,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
+import com.example.gourmetcompass.firebase.StorageUtil;
 import com.example.gourmetcompass.models.Reply;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.gourmetcompass.models.Review;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +35,8 @@ public class ReplyRVAdapter extends RecyclerView.Adapter<ReplyRVAdapter.MyViewHo
     String restaurantId, reviewId;
     FirebaseUser user;
     FirebaseFirestore db;
+    StorageReference storageRef;
+    Uri replierAvaUri;
 
     public ReplyRVAdapter(Context context, ArrayList<Reply> replies, String restaurantId, String reviewId) {
         this.context = context;
@@ -54,37 +59,57 @@ public class ReplyRVAdapter extends RecyclerView.Adapter<ReplyRVAdapter.MyViewHo
         // Init firebase services
         db = FirestoreUtil.getInstance().getFirestore();
         user = FirebaseAuth.getInstance().getCurrentUser();
+        storageRef = StorageUtil.getInstance().getStorage().getReference();
 
+        // Fetch reply data
+        setReplyData(holder, reply);
+    }
+
+    private void setReplyData(@NonNull MyViewHolder holder, Reply reply) {
         db.collection("restaurants").document(restaurantId)
                 .collection("reviews").document(reviewId)
                 .collection("replies").document(reply.getId())
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                String replierId = document.getString("replierId");
-                                String description = document.getString("description");
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            String replierId = document.getString("replierId");
+                            String description = document.getString("description");
 
-                                setReplierUsername(replierId, holder);
-                                holder.replyContent.setText(description);
+                            // Get the replier username and avatar
+                            setReplierAvatar(replierId, holder);
+                            setReplierUsername(replierId, holder);
+                            holder.replyContent.setText(description);
 
-                                // Calculate the time passed since the review was posted
-                                Long timestamp = document.getLong("timestamp");
-                                if (timestamp != null) {
-                                    holder.replyTime.setText(getTimePassed(timestamp));
-                                } else {
-                                    // Handle the case where timestamp is null
-                                    holder.replyTime.setText("N/A");
-                                }
+                            // Calculate the time passed since the review was posted
+                            Long timestamp = document.getLong("timestamp");
+                            if (timestamp != null) {
+                                holder.replyTime.setText(getTimePassed(timestamp));
                             } else {
-                                Log.d(TAG, "No such document");
+                                // Handle the case where timestamp is null
+                                holder.replyTime.setText("N/A");
                             }
                         } else {
-                            Log.d(TAG, "Get failed with ", task.getException());
+                            Log.d(TAG, "No such document");
                         }
+                    } else {
+                        Log.d(TAG, "Get failed with ", task.getException());
+                    }
+                });
+    }
+
+    private void setReplierAvatar(String replierId, MyViewHolder holder) {
+        storageRef.child("user_images/" + replierId + "/avatar/")
+                .getDownloadUrl()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        replierAvaUri = task.getResult();
+                        Glide.with(context)
+                                .load(replierAvaUri)
+                                .into(holder.replierAvaImg);
+                    } else {
+                        Log.d(TAG, "getUserInformation: Failed to get avatar");
                     }
                 });
     }
@@ -92,20 +117,17 @@ public class ReplyRVAdapter extends RecyclerView.Adapter<ReplyRVAdapter.MyViewHo
     private void setReplierUsername(String replierId, @NonNull ReplyRVAdapter.MyViewHolder holder) {
         db.collection("users").document(replierId)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                String replierName = document.getString("username");
-                                holder.replierName.setText(replierName);
-                            } else {
-                                Log.d(TAG, "No such document");
-                            }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            String replierName = document.getString("username");
+                            holder.replierName.setText(replierName);
                         } else {
-                            Log.d(TAG, "Get failed with ", task.getException());
+                            Log.d(TAG, "No such document");
                         }
+                    } else {
+                        Log.d(TAG, "Get failed with ", task.getException());
                     }
                 });
     }
@@ -129,6 +151,10 @@ public class ReplyRVAdapter extends RecyclerView.Adapter<ReplyRVAdapter.MyViewHo
         } else {
             return days + "d";
         }
+    }
+
+    public void updateData(ArrayList<Reply> newReplies) {
+        this.replies = newReplies;
     }
 
     @Override

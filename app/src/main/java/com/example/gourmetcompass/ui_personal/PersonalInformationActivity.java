@@ -1,11 +1,10 @@
 package com.example.gourmetcompass.ui_personal;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -27,17 +26,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
-
-import android.Manifest;
-
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.firebase.StorageUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
-
-import java.io.ByteArrayOutputStream;
 
 public class PersonalInformationActivity extends AppCompatActivity {
 
@@ -165,6 +159,7 @@ public class PersonalInformationActivity extends AppCompatActivity {
                 }
             });
 
+    // Set avatar image after taking photo
     ActivityResultLauncher<Intent> mTakePicture = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {

@@ -6,7 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,6 +42,8 @@ public class RestaurantReviewFragment extends Fragment {
     RecyclerView recyclerView;
     ReviewRVAdapter adapter;
     ProgressBar progressBar;
+    RelativeLayout reviewLayout;
+    LinearLayout reviewEmptyLayout;
 
     public static RestaurantReviewFragment newInstance(String restaurantId) {
         RestaurantReviewFragment fragment = new RestaurantReviewFragment();
@@ -63,15 +67,22 @@ public class RestaurantReviewFragment extends Fragment {
             restaurantId = getArguments().getString("restaurantId");
         }
 
-        progressBar = view.findViewById(R.id.review_progress_bar);
-        recyclerView = view.findViewById(R.id.review_layout);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
+        // Init views
+        initViews(view);
 
         // Fetch restaurant reviews
         fetchRestaurantReviews();
 
         return view;
+    }
+
+    private void initViews(View view) {
+        reviewLayout = view.findViewById(R.id.review_fragment_layout);
+        reviewEmptyLayout = view.findViewById(R.id.review_empty_layout);
+        progressBar = view.findViewById(R.id.review_progress_bar);
+        recyclerView = view.findViewById(R.id.review_layout);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
     }
 
     private void fetchRestaurantReviews() {
@@ -91,16 +102,36 @@ public class RestaurantReviewFragment extends Fragment {
                         }
 
                         if (value != null) {
+                            RestaurantDetailActivity activity = (RestaurantDetailActivity) getActivity();
                             reviews = new ArrayList<>();
                             for (QueryDocumentSnapshot document : value) {
                                 Review review = document.toObject(Review.class);
                                 review.setId(document.getId());
                                 reviews.add(review);
                             }
-                            adapter = new ReviewRVAdapter(getContext(), reviews, restaurantId);
-                            recyclerView.setAdapter(adapter);
-                            adapter.notifyDataSetChanged();
+                            if (activity != null) {
+                                if (adapter == null) {
+                                    adapter = new ReviewRVAdapter(activity, reviews, restaurantId);
+                                    recyclerView.setAdapter(adapter);
+                                } else {
+                                    adapter.updateData(reviews);
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+//                            adapter = new ReviewRVAdapter(activity, reviews, restaurantId);
+//                            recyclerView.setAdapter(adapter);
+//                            adapter.notifyDataSetChanged();
                             progressBar.setVisibility(View.GONE);
+
+                            // Show empty icon if there are no reviews
+                            if (reviews.isEmpty()) {
+                                reviewLayout.setVisibility(View.GONE);
+                                reviewEmptyLayout.setVisibility(View.VISIBLE);
+                            } else {
+                                reviewLayout.setVisibility(View.VISIBLE);
+                                reviewEmptyLayout.setVisibility(View.GONE);
+                            }
+
                         } else {
                             Log.d(TAG, "Current data: null");
                         }
