@@ -21,7 +21,6 @@ import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.models.Dish;
 import com.example.gourmetcompass.models.MyCollection;
-import com.example.gourmetcompass.ui_restaurant_detail.RestaurantDetailActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,7 +40,7 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
     FirebaseFirestore db;
     FirebaseUser user;
     ArrayList<MyCollection> collList;
-    String dishId;
+//    String dishId;
 
     public MenuRVAdapter(Context context, ArrayList<Dish> menu) {
         this.context = context;
@@ -59,7 +58,7 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
     public void onBindViewHolder(@NonNull MenuRVAdapter.MyViewHolder holder, int position) {
         Dish dish = menu.get(position);
 
-        dishId = dish.getId();
+//        String dishId = dish.getId();
 
         // Init firebase services
         db = FirestoreUtil.getInstance().getFirestore();
@@ -74,18 +73,19 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
         holder.dishImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openBottomSheet(holder);
+                openBottomSheet(holder, dish);
 
             }
         });
     }
 
-    private void openBottomSheet(@NonNull MyViewHolder holder) {
+    private void openBottomSheet(@NonNull MyViewHolder holder, Dish dish) {
         BottomSheetDialog outerBottomSheet = new BottomSheetDialog(context, R.style.BottomSheetTheme);
         View outerSheetView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_dish, holder.itemView.findViewById(R.id.btms_dish_container));
         outerBottomSheet.setContentView(outerSheetView);
         outerBottomSheet.show();
         bottomSheets.add(outerBottomSheet);
+        Log.d(TAG, "openBottomSheet: " + dish.getId());
 
         Button addToCollBtn = outerSheetView.findViewById(R.id.btn_add_btms_dish);
         Button addReviewBtn = outerSheetView.findViewById(R.id.btn_rate_btms_dish);
@@ -101,9 +101,9 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 if (task.getResult().isEmpty()) {
-                                    openNewCollBtms(holder);
+                                    openNewCollBtms(holder, dish);
                                 } else {
-                                    openExistingCollBtms(holder);
+                                    openExistingCollBtms(holder, dish);
                                 }
                             } else {
                                 Log.e(TAG, "Failed to fetch collections", task.getException());
@@ -120,7 +120,7 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
         });
     }
 
-    private void openExistingCollBtms(@NonNull MyViewHolder holder) {
+    private void openExistingCollBtms(@NonNull MyViewHolder holder, Dish dish) {
         // Open inner bottom sheet
         BottomSheetDialog existCollBottomSheet = new BottomSheetDialog(context, R.style.BottomSheetTheme);
         View existCollSheetView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_exist_coll, holder.itemView.findViewById(R.id.bottom_sheet_exist_coll_container));
@@ -135,23 +135,23 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
         addNewCollBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openNewCollBtms(holder);
+                openNewCollBtms(holder, dish);
             }
         });
 
         // Recycler view of user collections and done button to add to collections
-        showUserCollList(existCollSheetView);
+        showUserCollList(existCollSheetView, dish);
         existDoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToExistingResColl();
+                addToExistingDishColl(dish);
                 Toast.makeText(context, "Changes saved", Toast.LENGTH_SHORT).show();
                 dismissAllBottomSheets();
             }
         });
     }
 
-    private void updateUserCollRes(MyCollection coll) {
+    private void updateUserCollDish(MyCollection coll) {
         db.collection("users")
                 .document(user.getUid())
                 .collection("collections")
@@ -166,19 +166,19 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
                 });
     }
 
-    private void addToExistingResColl() {
+    private void addToExistingDishColl(Dish dish) {
         for (MyCollection coll : collList) {
-            if (coll.isChecked() && !coll.getDishes().contains(dishId)) {
-                coll.getDishes().add(dishId);
-                updateUserCollRes(coll);
+            if (coll.isChecked() && !coll.getDishes().contains(dish.getId())) {
+                coll.getDishes().add(dish.getId());
+                updateUserCollDish(coll);
             } else if (!coll.isChecked()) {
-                coll.getDishes().remove(dishId);
-                updateUserCollRes(coll);
+                coll.getDishes().remove(dish.getId());
+                updateUserCollDish(coll);
             }
         }
     }
 
-    private void openNewCollBtms(@NonNull MyViewHolder holder) {
+    private void openNewCollBtms(@NonNull MyViewHolder holder, Dish dish) {
         BottomSheetDialog newCollBottomSheet = new BottomSheetDialog(context, R.style.BottomSheetTheme);
         View newCollSheetView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_new_coll, holder.itemView.findViewById(R.id.bottom_sheet_new_coll_container));
         newCollBottomSheet.setContentView(newCollSheetView);
@@ -198,8 +198,8 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
                     if (collName.isEmpty()) {
                         Toast.makeText(context, "Collection must have a name", Toast.LENGTH_SHORT).show();
                     } else {
-                        addToNewResColl(collName);
-                        addToExistingResColl();
+                        addToNewDishColl(collName, dish);
+                        addToExistingDishColl(dish);
                         dismissAllBottomSheets();
                         Toast.makeText(context, "Added to collection", Toast.LENGTH_SHORT).show();
                     }
@@ -208,12 +208,12 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
         });
     }
 
-    private void addToNewResColl(String collName) {
+    private void addToNewDishColl(String collName, Dish dish) {
         Map<String, Object> newColl = new HashMap<>();
         newColl.put("type", "dish");
         newColl.put("name", collName);
         ArrayList<String> dishList = new ArrayList<>();
-        dishList.add(dishId);
+        dishList.add(dish.getId());
         newColl.put("dishes", dishList);
         db.collection("users")
                 .document(user.getUid())
@@ -228,11 +228,11 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
                 });
     }
 
-    private void showUserCollList(View existCollSheetView) {
+    private void showUserCollList(View existCollSheetView, Dish dish) {
         RecyclerView recyclerView = existCollSheetView.findViewById(R.id.btms_exist_recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        BottomSheetCollectionsRVAdapter adapter = new BottomSheetCollectionsRVAdapter(context, collList, dishId, "dish");
+        BottomSheetCollectionsRVAdapter adapter = new BottomSheetCollectionsRVAdapter(context, collList, dish.getId(), "dish");
         recyclerView.setAdapter(adapter);
         fetchCollectionList(adapter);
     }

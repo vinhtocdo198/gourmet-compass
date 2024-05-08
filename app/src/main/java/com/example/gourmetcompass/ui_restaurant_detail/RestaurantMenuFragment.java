@@ -74,7 +74,8 @@ public class RestaurantMenuFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        db.collection("restaurants").document(restaurantId).collection("dishes")
+        db.collection("restaurants").document(restaurantId)
+                .collection("dishes")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @SuppressLint("NotifyDataSetChanged")

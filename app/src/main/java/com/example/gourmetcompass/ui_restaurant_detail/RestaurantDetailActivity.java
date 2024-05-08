@@ -383,22 +383,35 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         review.put("reviewerId", reviewerId);
         review.put("likedUserIds", new ArrayList<String>());
         review.put("dislikedUserIds", new ArrayList<String>());
+        review.put("restaurantId", restaurantId);
 
-        // Add to db
+        // Add review to db
         db.collection("restaurants").document(restaurantId).
                 collection("reviews")
                 .add(review)
-                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(RestaurantDetailActivity.this, "Review added", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(RestaurantDetailActivity.this, "Failed to add review", Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+
+                        // Add to user's review list
+                        String reviewId = ((DocumentReference) task.getResult()).getId();
+                        db.collection("users")
+                                .document(reviewerId)
+                                .collection("reviews")
+                                .document(reviewId)
+                                .set(review)
+                                .addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        Log.d(TAG, "Review reference added to user successfully");
+                                    } else {
+                                        Log.e(TAG, "Failed to add review reference to user", task1.getException());
+                                    }
+                                });
+
+                        Toast.makeText(RestaurantDetailActivity.this, "Review added", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(RestaurantDetailActivity.this, "Failed to add review", Toast.LENGTH_SHORT).show();
                     }
                 });
-
     }
 
     private void switchFragment(int index) {
