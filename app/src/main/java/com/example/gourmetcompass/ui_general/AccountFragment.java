@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.firebase.StorageUtil;
@@ -165,6 +166,7 @@ public class AccountFragment extends Fragment {
                         if (getActivity() != null) {
                             Glide.with(getActivity())
                                     .load(avatarUri)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .into(userAvatarAppBar);
                         }
                     } else {

@@ -26,6 +26,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.firebase.StorageUtil;
@@ -200,6 +201,7 @@ public class PersonalInformationActivity extends AppCompatActivity {
                         Log.d(TAG, "getUserInformation: " + avatarUri.toString());
                         Glide.with(this)
                                 .load(avatarUri)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(userAvatar);
                         progressBar.setVisibility(View.GONE);
                     } else {

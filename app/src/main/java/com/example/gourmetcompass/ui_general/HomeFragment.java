@@ -23,10 +23,8 @@ import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.models.Restaurant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -54,9 +52,9 @@ public class HomeFragment extends Fragment {
         db = FirestoreUtil.getInstance().getFirestore();
 
         // Fetch data from db into 3 RecyclerViews
-        initRecyclerView(view.findViewById(R.id.first_scroll));
-        initRecyclerView(view.findViewById(R.id.second_scroll));
-        initRecyclerView(view.findViewById(R.id.third_scroll));
+        initGourmetsChoiceRV(view.findViewById(R.id.first_scroll));
+        initTopRatedRV(view.findViewById(R.id.second_scroll));
+        initNewlyOpenedRV(view.findViewById(R.id.third_scroll));
 
         // Navigate to browse fragment
         searchImgBtn.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +73,7 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void initRecyclerView(RecyclerView recyclerView) {
+    private void initNewlyOpenedRV(@NonNull RecyclerView recyclerView) {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
@@ -83,27 +81,95 @@ public class HomeFragment extends Fragment {
         HomeRVAdapter adapter = new HomeRVAdapter(getContext(), list);
         recyclerView.setAdapter(adapter);
 
-        fetchRestaurantList(list, adapter);
+        getNewlyOpenedRes(list, adapter);
     }
 
-    private void fetchRestaurantList(ArrayList<Restaurant> list, HomeRVAdapter adapter) {
+    private void getNewlyOpenedRes(ArrayList<Restaurant> list, HomeRVAdapter adapter) {
         db.collection("restaurants")
+                .limit(10)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Restaurant restaurant = document.toObject(Restaurant.class);
-                        restaurant.setId(document.getId());
-                        list.add(restaurant);
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Restaurant restaurant = document.toObject(Restaurant.class);
+                                restaurant.setId(document.getId());
+                                list.add(restaurant);
+                            }
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Log.d("Firestore error", "Error getting documents: ", task.getException());
+                        }
                     }
-                    adapter.notifyDataSetChanged();
-                } else {
-                    Log.d("Firestore error", "Error getting documents: ", task.getException());
-                }
-            }
-        });
+                });
+    }
+
+    private void initGourmetsChoiceRV(@NonNull RecyclerView recyclerView) {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        ArrayList<Restaurant> list = new ArrayList<>();
+        HomeRVAdapter adapter = new HomeRVAdapter(getContext(), list);
+        recyclerView.setAdapter(adapter);
+
+        getGourmetsChoiceRes(list, adapter);
+    }
+
+    private void getGourmetsChoiceRes(ArrayList<Restaurant> list, HomeRVAdapter adapter) {
+        db.collection("restaurants")
+                .limit(10)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Restaurant restaurant = document.toObject(Restaurant.class);
+                                restaurant.setId(document.getId());
+                                list.add(restaurant);
+                            }
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Log.d("Firestore error", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private void initTopRatedRV(@NonNull RecyclerView recyclerView) {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        ArrayList<Restaurant> list = new ArrayList<>();
+        HomeRVAdapter adapter = new HomeRVAdapter(getContext(), list);
+        recyclerView.setAdapter(adapter);
+
+        getTopRatedRes(list, adapter);
+    }
+
+    private void getTopRatedRes(ArrayList<Restaurant> list, HomeRVAdapter adapter) {
+        db.collection("restaurants")
+                .orderBy("ratings", Query.Direction.DESCENDING)
+                .limit(10)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Restaurant restaurant = document.toObject(Restaurant.class);
+                                restaurant.setId(document.getId());
+                                list.add(restaurant);
+                            }
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Log.d("Firestore error", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 }

@@ -57,16 +57,21 @@ public class RestaurantGalleryFragment extends Fragment {
             restaurantId = getArguments().getString("restaurantId");
         }
 
-        progressBar = view.findViewById(R.id.gallery_progress_bar);
-        recyclerView = view.findViewById(R.id.gallery_layout);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        recyclerView.setHasFixedSize(true);
-        imageUrls = new ArrayList<>();
+        // Init views
+        initViews(view);
 
         // Fetch gallery images from Firebase Storage
         fetchGalleryImages();
 
         return view;
+    }
+
+    private void initViews(View view) {
+        progressBar = view.findViewById(R.id.gallery_progress_bar);
+        recyclerView = view.findViewById(R.id.gallery_layout);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        recyclerView.setHasFixedSize(true);
+        imageUrls = new ArrayList<>();
     }
 
     // TODO: update restaurant id from storage

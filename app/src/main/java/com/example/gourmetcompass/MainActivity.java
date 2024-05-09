@@ -1,6 +1,10 @@
 package com.example.gourmetcompass;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,17 +13,24 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.example.gourmetcompass.databinding.ActivityMainBinding;
+import com.example.gourmetcompass.firebase.FirestoreUtil;
+import com.example.gourmetcompass.firebase.StorageUtil;
+import com.example.gourmetcompass.models.User;
 import com.example.gourmetcompass.ui_general.BrowseFragment;
 import com.example.gourmetcompass.ui_general.HomeFragment;
 import com.example.gourmetcompass.ui_general.LogInFragment;
 import com.example.gourmetcompass.ui_general.MapFragment;
 import com.example.gourmetcompass.ui_general.NotificationFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.StorageReference;
 
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
-//    Button detailBtn;
 //    Button mapBtn;
 
     @Override
@@ -57,17 +68,6 @@ public class MainActivity extends AppCompatActivity {
             replaceFragment(selectedFragment);
             return true;
         });
-
-        // Create a new Button
-
-//        detailBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // Start the AnotherActivity when the Button is clicked
-//                Intent intent = new Intent(MainActivity.this, RestaurantDetailActivity.class);
-//                startActivity(intent);
-//            }
-//        });
 
 //        mapBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override

@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.firebase.StorageUtil;
@@ -365,6 +366,8 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
                         reviewerAvaUri = task.getResult();
                         Glide.with(context.getApplicationContext())
                                 .load(reviewerAvaUri)
+                                .placeholder(R.drawable.ic_default_avatar)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(holder.reviewerAvaImg);
                     } else {
                         Log.d(TAG, "getUserInformation: Failed to get avatar");
