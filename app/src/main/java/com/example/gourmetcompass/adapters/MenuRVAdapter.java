@@ -40,7 +40,6 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
     FirebaseFirestore db;
     FirebaseUser user;
     ArrayList<MyCollection> collList;
-//    String dishId;
 
     public MenuRVAdapter(Context context, ArrayList<Dish> menu) {
         this.context = context;

@@ -2,21 +2,7 @@ package com.example.gourmetcompass.models;
 
 public class Restaurant {
     private String id, name, description, address, phoneNo, openingHours, ratings, category, tag;
-
-    public Restaurant() {
-    }
-
-    public Restaurant(String id, String name, String description, String address, String phoneNo, String openingHours, String ratings, String category, String tag) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.address = address;
-        this.phoneNo = phoneNo;
-        this.openingHours = openingHours;
-        this.ratings = ratings;
-        this.category = category;
-        this.tag = tag;
-    }
+    boolean isGourmetsChoice;
 
     public String getId() {
         return id;
@@ -88,6 +74,14 @@ public class Restaurant {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public boolean isGourmetsChoice() {
+        return isGourmetsChoice;
+    }
+
+    public void setGourmetsChoice(boolean gourmetsChoice) {
+        isGourmetsChoice = gourmetsChoice;
     }
 
 }
