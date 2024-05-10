@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -30,6 +29,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.firebase.StorageUtil;
+import com.example.gourmetcompass.utils.BottomSheetUtil;
+import com.example.gourmetcompass.utils.EditTextUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
@@ -39,7 +40,7 @@ public class PersonalInformationActivity extends AppCompatActivity {
     private static final String TAG = "PersonalInformationActivity";
     ImageButton backBtn;
     Button saveBtn;
-    EditText usernameTextField, emailTextField, phoneTextField;
+    EditTextUtil usernameTextField, emailTextField, phoneTextField;
     ImageView userAvatar;
     FirebaseFirestore db;
     StorageReference storageRef;
@@ -84,15 +85,25 @@ public class PersonalInformationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveNewUserInfo();
+                clearAllFocus();
                 Toast.makeText(PersonalInformationActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void saveNewUserInfo() {
-        String newUsername = usernameTextField.getText().toString();
-        String newEmail = emailTextField.getText().toString();
-        String newPhone = phoneTextField.getText().toString();
+        String newUsername = usernameTextField.getText();
+        String newPhone = phoneTextField.getText();
+
+        // Check user's information
+        if (newUsername.length() < 6 || newUsername.length() > 36) {
+            Toast.makeText(PersonalInformationActivity.this, "Username's length must be between 6 and 36 letters", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (newPhone.length() < 10 || newPhone.length() > 11) {
+            Toast.makeText(PersonalInformationActivity.this, "Invalid phone number format", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         // Save avatar
         if (avatarUri != null) {
@@ -109,7 +120,6 @@ public class PersonalInformationActivity extends AppCompatActivity {
 
         db.collection("users").document(userId)
                 .update("username", newUsername,
-                        "email", newEmail,
                         "phone", newPhone)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -120,11 +130,16 @@ public class PersonalInformationActivity extends AppCompatActivity {
                 });
     }
 
+    private void clearAllFocus() {
+        usernameTextField.clearFocus();
+        phoneTextField.clearFocus();
+    }
+
     private void openBottomSheet() {
         BottomSheetDialog bottomSheet = new BottomSheetDialog(PersonalInformationActivity.this, R.style.BottomSheetTheme);
         View sheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_user_avatar, findViewById(R.id.btms_user_avatar_container));
         bottomSheet.setContentView(sheetView);
-        bottomSheet.show();
+        BottomSheetUtil.openBottomSheet(bottomSheet);
 
         Button takePhotoBtn = sheetView.findViewById(R.id.btn_take_photo);
         Button choosePhotoBtn = sheetView.findViewById(R.id.btn_photo_lib);
@@ -183,11 +198,17 @@ public class PersonalInformationActivity extends AppCompatActivity {
     private void initViews() {
         backBtn = findViewById(R.id.btn_back_basic_info);
         saveBtn = findViewById(R.id.btn_save_basic_info);
-        usernameTextField = findViewById(R.id.username_basic_info);
-        emailTextField = findViewById(R.id.email_basic_info);
-        phoneTextField = findViewById(R.id.phone_basic_info);
         userAvatar = findViewById(R.id.avatar_basic_info);
         progressBar = findViewById(R.id.progress_bar_basic_info);
+
+        // Text fields
+        emailTextField = findViewById(R.id.email_basic_info);
+        emailTextField.setEnabled(false);
+        usernameTextField = findViewById(R.id.username_basic_info);
+        usernameTextField.setHint("Enter Username");
+        phoneTextField = findViewById(R.id.phone_basic_info);
+        phoneTextField.setHint("Enter Phone Number");
+        phoneTextField.setInputType("number");
     }
 
     private void getUserInformation() {

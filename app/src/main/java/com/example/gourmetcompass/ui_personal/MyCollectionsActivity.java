@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -21,6 +20,8 @@ import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.MyCollectionsRVAdapter;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.models.MyCollection;
+import com.example.gourmetcompass.utils.BottomSheetUtil;
+import com.example.gourmetcompass.utils.EditTextUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -91,13 +92,14 @@ public class MyCollectionsActivity extends AppCompatActivity {
         BottomSheetDialog bottomSheet = new BottomSheetDialog(MyCollectionsActivity.this, R.style.BottomSheetTheme);
         View sheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_my_colls, findViewById(R.id.btms_res_container));
         bottomSheet.setContentView(sheetView);
-        bottomSheet.show();
+        BottomSheetUtil.openBottomSheet(bottomSheet);
 
         // Init views
         Button doneBtn = sheetView.findViewById(R.id.btn_done_my_colls);
         RadioGroup radioGroup = sheetView.findViewById(R.id.radio_group_my_colls);
-        EditText nameTextField = sheetView.findViewById(R.id.btms_coll_name_my_colls);
-
+        EditTextUtil nameTextField = sheetView.findViewById(R.id.btms_coll_name_my_colls);
+        nameTextField.setHeight(150);
+        nameTextField.setHint("Enter collection name");
         setDefaultCollName(nameTextField);
 
         doneBtn.setOnClickListener(new View.OnClickListener() {
@@ -120,8 +122,8 @@ public class MyCollectionsActivity extends AppCompatActivity {
         });
     }
 
-    private void createNewCollection(EditText nameTextField, String type) {
-        String collName = nameTextField.getText().toString();
+    private void createNewCollection(EditTextUtil nameTextField, String type) {
+        String collName = nameTextField.getText();
 
         // Create a new collection with type restaurant
         Map<String, Object> newColl = new HashMap<>();
@@ -146,7 +148,7 @@ public class MyCollectionsActivity extends AppCompatActivity {
                 });
     }
 
-    private void setDefaultCollName(EditText nameTextField) {
+    private void setDefaultCollName(EditTextUtil nameTextField) {
         db.collection("users").document(user.getUid())
                 .collection("collections")
                 .get()

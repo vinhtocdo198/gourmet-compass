@@ -23,6 +23,7 @@ import com.example.gourmetcompass.models.Dish;
 import com.example.gourmetcompass.models.Restaurant;
 import com.example.gourmetcompass.ui_personal.MyCollectionDetailActivity;
 import com.example.gourmetcompass.ui_restaurant_detail.RestaurantDetailActivity;
+import com.example.gourmetcompass.utils.BottomSheetUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -112,7 +113,7 @@ public class MyCollectionDetailRVAdapter extends RecyclerView.Adapter<MyCollecti
         BottomSheetDialog bottomSheet = new BottomSheetDialog(context, R.style.BottomSheetTheme);
         View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_remove, bottomSheet.findViewById(R.id.btms_remove_coll));
         bottomSheet.setContentView(view);
-        bottomSheet.show();
+        BottomSheetUtil.openBottomSheet(bottomSheet);
 
         Button btnRemove = view.findViewById(R.id.btms_btn_remove_from_coll);
         btnRemove.setOnClickListener(new View.OnClickListener() {

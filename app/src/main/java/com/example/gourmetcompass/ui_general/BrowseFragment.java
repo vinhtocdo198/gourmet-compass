@@ -11,15 +11,19 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gourmetcompass.MainActivity;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.CategoryRVAdapter;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.models.RestaurantCategory;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -33,6 +37,7 @@ public class BrowseFragment extends Fragment {
     CategoryRVAdapter adapter;
     ArrayList<RestaurantCategory> categoryList;
     FirebaseFirestore db;
+    FirebaseUser user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,6 +46,7 @@ public class BrowseFragment extends Fragment {
 
         // Init firebase services
         db = FirestoreUtil.getInstance().getFirestore();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         // Init views
         initViews(view);
@@ -52,6 +58,16 @@ public class BrowseFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO: hide icon
+                if (hasFocus) {
+                    if (user != null) {
+                        Log.d(TAG, "onFocusChange: " + "User is logged in");
+                    } else {
+                        if (getContext() instanceof MainActivity) {
+                            ((MainActivity) getContext()).selectBottomNavItem(R.id.account_fragment);
+                        }
+                        Toast.makeText(getContext(), "Log in to see our restaurants", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
 

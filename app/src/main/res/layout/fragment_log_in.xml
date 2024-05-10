@@ -33,19 +33,10 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_18" />
 
-        <EditText
+        <com.example.gourmetcompass.utils.EditTextUtil
             android:id="@+id/email_log_in"
-            style="@style/TextFont"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_15"
-            android:autofillHints="emailAddress"
-            android:background="@drawable/input_text_field"
-            android:hint="Enter email"
-            android:inputType="textEmailAddress"
-            android:padding="12dp"
-            android:selectAllOnFocus="true"
-            android:textColor="@color/black" />
+            android:layout_height="wrap_content" />
 
         <TextView
             style="@style/TextFont"
@@ -56,21 +47,11 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_18" />
 
-
-        <EditText
+        <com.example.gourmetcompass.utils.EditTextUtil
             android:id="@+id/password_log_in"
-            style="@style/TextFont"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_15"
-            android:autofillHints="password"
-            android:background="@drawable/input_text_field"
-            android:drawableEnd="@drawable/ic_eye"
-            android:hint="Enter password"
-            android:inputType="textPassword"
-            android:padding="12dp"
-            android:selectAllOnFocus="true"
-            android:textColor="@color/black" />
+            android:layout_height="wrap_content" />
+
 
     </LinearLayout>
 

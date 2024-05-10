@@ -1,23 +1,25 @@
 package com.example.gourmetcompass.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.gourmetcompass.MainActivity;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.models.RestaurantCategory;
 import com.example.gourmetcompass.ui_general.SearchResultActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -26,6 +28,7 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.My
     private static final String TAG = "CategoryRVAdapter";
     Context context;
     ArrayList<RestaurantCategory> categoryList;
+    FirebaseUser user;
 
     public CategoryRVAdapter(Context context, ArrayList<RestaurantCategory> categoryList) {
         this.context = context;
@@ -43,6 +46,9 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.My
     public void onBindViewHolder(@NonNull CategoryRVAdapter.MyViewHolder holder, int position) {
         RestaurantCategory category = categoryList.get(position);
 
+        // Init firebase services
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
         holder.categoryName.setText(category.getName());
         Glide.with(context)
                 .load(category.getImageUrl())
@@ -53,12 +59,18 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.My
         holder.categoryImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: " + category.getName());
-                Intent intent = new Intent(context, SearchResultActivity.class);
-                intent.putExtra("searchQuery", category.getName());
-                context.startActivity(intent);
-                if (context instanceof Activity) {
-                    ((Activity) context).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
+                if (user != null) {
+                    Intent intent = new Intent(context, SearchResultActivity.class);
+                    intent.putExtra("searchQuery", category.getName());
+                    context.startActivity(intent);
+                    if (context instanceof MainActivity) {
+                        ((MainActivity) context).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
+                    }
+                } else {
+                    if (context instanceof MainActivity) {
+                        ((MainActivity) context).selectBottomNavItem(R.id.account_fragment);
+                    }
+                    Toast.makeText(context, "Log in to see our restaurants", Toast.LENGTH_SHORT).show();
                 }
             }
         });
