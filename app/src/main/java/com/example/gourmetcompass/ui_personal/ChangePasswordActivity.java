@@ -3,16 +3,13 @@ package com.example.gourmetcompass.ui_personal;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gourmetcompass.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.gourmetcompass.utils.EditTextUtil;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,7 +19,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     ImageButton backBtn;
     Button saveBtn;
-    EditText currPassTextField, newPassTextField, cfPassTextField;
+    EditTextUtil currPassTextField, newPassTextField, cfPassTextField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +47,17 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     private void changePassword() {
-        String currPass = currPassTextField.getText().toString();
-        String newPass = newPassTextField.getText().toString();
-        String cfPass = cfPassTextField.getText().toString();
+        String currPass = currPassTextField.getText();
+        String newPass = newPassTextField.getText();
+        String cfPass = cfPassTextField.getText();
 
         if (currPass.isEmpty() || newPass.isEmpty() || cfPass.isEmpty()) {
             Toast.makeText(ChangePasswordActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(currPass.equals(newPass)){
+            Toast.makeText(ChangePasswordActivity.this, "New password must be different from current password", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -78,27 +80,21 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 // Check if the current password is correct
                 AuthCredential credential = EmailAuthProvider.getCredential(email, currPass);
                 user.reauthenticate(credential)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    // If the current password is correct, change the password
-                                    user.updatePassword(newPass)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Toast.makeText(ChangePasswordActivity.this, "Password changed successfully", Toast.LENGTH_SHORT).show();
-                                                        finish();
-                                                        overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
-                                                    } else {
-                                                        Toast.makeText(ChangePasswordActivity.this, "Failed to change password", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                }
-                                            });
-                                } else {
-                                    Toast.makeText(ChangePasswordActivity.this, "Current password is incorrect", Toast.LENGTH_SHORT).show();
-                                }
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                // If the current password is correct, change the password
+                                user.updatePassword(newPass)
+                                        .addOnCompleteListener(task1 -> {
+                                            if (task1.isSuccessful()) {
+                                                Toast.makeText(ChangePasswordActivity.this, "Password changed successfully", Toast.LENGTH_SHORT).show();
+                                                finish();
+                                                overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
+                                            } else {
+                                                Toast.makeText(ChangePasswordActivity.this, "Failed to change password", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            } else {
+                                Toast.makeText(ChangePasswordActivity.this, "Current password is incorrect", Toast.LENGTH_SHORT).show();
                             }
                         });
             }
@@ -108,8 +104,17 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private void initViews() {
         backBtn = findViewById(R.id.btn_back_change_password);
         saveBtn = findViewById(R.id.btn_save_change_password);
+
         currPassTextField = findViewById(R.id.curr_pass_change_pass);
+        currPassTextField.setInputType("password");
+        currPassTextField.setHint("Enter current password");
+
         newPassTextField = findViewById(R.id.new_pass_change_pass);
+        newPassTextField.setInputType("password");
+        newPassTextField.setHint("Enter new password");
+
         cfPassTextField = findViewById(R.id.cf_new_pass_change_pass);
+        cfPassTextField.setInputType("password");
+        cfPassTextField.setHint("Confirm new password");
     }
 }

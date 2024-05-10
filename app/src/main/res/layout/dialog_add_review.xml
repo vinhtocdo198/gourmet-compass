@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_10"
-        android:background="@drawable/border_input_text"
+        android:background="@drawable/input_text_field"
         android:gravity="top|start"
         android:hint="@string/description"
         android:inputType="textMultiLine"

@@ -18,7 +18,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,16 +27,15 @@ import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.BottomSheetCollectionsRVAdapter;
 import com.example.gourmetcompass.adapters.ViewPagerAdapter;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
-import com.example.gourmetcompass.models.Restaurant;
 import com.example.gourmetcompass.models.MyCollection;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.gourmetcompass.models.Restaurant;
+import com.example.gourmetcompass.utils.BottomSheetUtil;
+import com.example.gourmetcompass.utils.EditTextUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -122,7 +120,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         BottomSheetDialog outerBottomSheet = new BottomSheetDialog(RestaurantDetailActivity.this, R.style.BottomSheetTheme);
         View outerSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_restaurant, findViewById(R.id.btms_res_container));
         outerBottomSheet.setContentView(outerSheetView);
-        outerBottomSheet.show();
+        BottomSheetUtil.openBottomSheet(outerBottomSheet);
         bottomSheets.add(outerBottomSheet);
 
         // Bottom sheet buttons
@@ -167,7 +165,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         BottomSheetDialog existCollBottomSheet = new BottomSheetDialog(RestaurantDetailActivity.this, R.style.BottomSheetTheme);
         View existCollSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_exist_coll, findViewById(R.id.bottom_sheet_exist_coll_container));
         existCollBottomSheet.setContentView(existCollSheetView);
-        existCollBottomSheet.show();
+        BottomSheetUtil.openBottomSheet(existCollBottomSheet);
         bottomSheets.add(existCollBottomSheet);
 
         Button addNewCollBtn = existCollSheetView.findViewById(R.id.btms_exist_btn_add_new);
@@ -197,27 +195,27 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         BottomSheetDialog newCollBottomSheet = new BottomSheetDialog(RestaurantDetailActivity.this, R.style.BottomSheetTheme);
         View newCollSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_new_coll, findViewById(R.id.bottom_sheet_new_coll_container));
         newCollBottomSheet.setContentView(newCollSheetView);
-        newCollBottomSheet.show();
+        BottomSheetUtil.openBottomSheet(newCollBottomSheet);
         bottomSheets.add(newCollBottomSheet);
 
         Button newDoneBtn = newCollSheetView.findViewById(R.id.btms_new_btn_done);
-        EditText textField = newCollBottomSheet.findViewById(R.id.btms_new_text_field);
-        setDefaultNewCollName(textField);
+        EditTextUtil nameTextField = newCollSheetView.findViewById(R.id.btms_new_text_field);
+        nameTextField.setHeight(150);
+        nameTextField.setHint("Enter collection name");
+        setDefaultNewCollName(nameTextField);
 
         // Add the restaurant to the newly created collection and all checked collections
         newDoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (textField != null) {
-                    String collName = textField.getText().toString();
-                    if (collName.isEmpty()) {
-                        Toast.makeText(RestaurantDetailActivity.this, "Collection must have a name", Toast.LENGTH_SHORT).show();
-                    } else {
-                        addToNewResColl(collName);
-                        addToExistingResColl();
-                        dismissAllBottomSheets();
-                        Toast.makeText(RestaurantDetailActivity.this, "Added to collection", Toast.LENGTH_SHORT).show();
-                    }
+                String collName = nameTextField.getText();
+                if (collName.isEmpty()) {
+                    Toast.makeText(RestaurantDetailActivity.this, "Collection must have a name", Toast.LENGTH_SHORT).show();
+                } else {
+                    addToNewResColl(collName);
+                    addToExistingResColl();
+                    dismissAllBottomSheets();
+                    Toast.makeText(RestaurantDetailActivity.this, "Added to collection", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -243,7 +241,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                 });
     }
 
-    private void setDefaultNewCollName(EditText textField) {
+    private void setDefaultNewCollName(EditTextUtil textField) {
         db.collection("users")
                 .document(user.getUid())
                 .collection("collections")
@@ -393,7 +391,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
 
                         // Add to user's review list
-                        String reviewId = ((DocumentReference) task.getResult()).getId();
+                        String reviewId = task.getResult().getId();
                         db.collection("users")
                                 .document(reviewerId)
                                 .collection("reviews")
@@ -433,27 +431,24 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private void getRestaurantDetail(String restaurantId) {
         db.collection("restaurants").document(restaurantId)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot documentSnapshot = task.getResult();
-                            if (documentSnapshot.exists()) {
-                                restaurant = documentSnapshot.toObject(Restaurant.class);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if (documentSnapshot.exists()) {
+                            restaurant = documentSnapshot.toObject(Restaurant.class);
 
-                                if (restaurant != null) {
-                                    resName.setText(restaurant.getName());
-                                }
-                                viewPagerAdapter = new ViewPagerAdapter(RestaurantDetailActivity.this, restaurantId);
-                                viewPager2.setAdapter(viewPagerAdapter);
-                                new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> tab.setText(titles[position])).attach();
-
-                            } else {
-                                Log.d(TAG, "No such document");
+                            if (restaurant != null) {
+                                resName.setText(restaurant.getName());
                             }
+                            viewPagerAdapter = new ViewPagerAdapter(RestaurantDetailActivity.this, restaurantId);
+                            viewPager2.setAdapter(viewPagerAdapter);
+                            new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> tab.setText(titles[position])).attach();
+
                         } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
+                            Log.d(TAG, "No such document");
                         }
+                    } else {
+                        Log.w(TAG, "Error getting documents.", task.getException());
                     }
                 });
     }

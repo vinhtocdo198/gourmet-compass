@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -25,6 +24,8 @@ import com.example.gourmetcompass.adapters.MyCollectionDetailRVAdapter;
 import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.models.Dish;
 import com.example.gourmetcompass.models.Restaurant;
+import com.example.gourmetcompass.utils.BottomSheetUtil;
+import com.example.gourmetcompass.utils.EditTextUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -103,7 +104,7 @@ public class MyCollectionDetailActivity extends AppCompatActivity {
         BottomSheetDialog bottomSheet = new BottomSheetDialog(MyCollectionDetailActivity.this, R.style.BottomSheetTheme);
         View sheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_my_coll_detail, findViewById(R.id.btms_my_coll_detail_container));
         bottomSheet.setContentView(sheetView);
-        bottomSheet.show();
+        BottomSheetUtil.openBottomSheet(bottomSheet);
 
         // Init views
         Button renameBtn = sheetView.findViewById(R.id.btn_rename_btms_my_coll_detail);
@@ -133,9 +134,11 @@ public class MyCollectionDetailActivity extends AppCompatActivity {
         BottomSheetDialog renameSheet = new BottomSheetDialog(MyCollectionDetailActivity.this, R.style.BottomSheetTheme);
         View renameSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_rename_coll, findViewById(R.id.btms_rename_container));
         renameSheet.setContentView(renameSheetView);
-        renameSheet.show();
+        BottomSheetUtil.openBottomSheet(renameSheet);
 
-        EditText nameTextField = renameSheetView.findViewById(R.id.btms_rename_text_field);
+        EditTextUtil nameTextField = renameSheetView.findViewById(R.id.btms_rename_text_field);
+        nameTextField.setHeight(150);
+        nameTextField.setHint("Enter collection name");
         nameTextField.setText(collName.getText().toString());
 
         Button doneBtn = renameSheetView.findViewById(R.id.btms_rename_btn_done);
@@ -143,7 +146,11 @@ public class MyCollectionDetailActivity extends AppCompatActivity {
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newName = nameTextField.getText().toString();
+                String newName = nameTextField.getText();
+                if (newName.isEmpty()) {
+                    Toast.makeText(MyCollectionDetailActivity.this, "Name cannot be empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 db.collection("users")
                         .document(user.getUid())
                         .collection("collections")

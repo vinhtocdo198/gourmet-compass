@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +19,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.gourmetcompass.R;
+import com.example.gourmetcompass.utils.EditTextUtil;
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -31,16 +31,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LogInFragment extends Fragment {
     BeginSignInRequest signInRequest;
     private static final int RC_SIGN_IN = 123;
-    Button googleBtn, facebookBtn;
+    Button googleBtn;
     GoogleSignInClient mGoogleSignInClient;
     public final String TAG = "LogInFragment";
-    EditText emailTextField, passwordTextField;
+    EditTextUtil emailTextField, passwordTextField;
     Button logInBtn, signUpBtn;
     FirebaseAuth mAuth;
     TextView forgotPass;
@@ -82,42 +83,46 @@ public class LogInFragment extends Fragment {
         logInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email, password;
-                email = String.valueOf(LogInFragment.this.emailTextField.getText()).trim();
-                password = String.valueOf(LogInFragment.this.passwordTextField.getText()).trim();
-
-                if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getActivity(), "Please fill in your email!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(getActivity(), "Please fill in your password!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    if (user != null) {
-                                        // Pass user data to account fragment
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("userId", user.getUid());
-                                        replaceFragment(new AccountFragment(), bundle);
-                                    }
-                                    Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(getActivity(), "Email or password incorrect. Please check again", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+                logIn();
             }
         });
 
         return view;
+    }
+
+    private void logIn() {
+        String email, password;
+        email = String.valueOf(LogInFragment.this.emailTextField.getText()).trim();
+        password = String.valueOf(LogInFragment.this.passwordTextField.getText()).trim();
+
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(getActivity(), "Please fill in your email!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(getActivity(), "Please fill in your password!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (user != null) {
+                                // Pass user data to account fragment
+                                Bundle bundle = new Bundle();
+                                bundle.putString("userId", user.getUid());
+                                replaceFragment(new AccountFragment(), bundle);
+                            }
+                            Toast.makeText(getActivity(), "Logged in successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(getActivity(), "Incorrect credentials. Please check again", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     @Override
@@ -137,7 +142,11 @@ public class LogInFragment extends Fragment {
 
     private void initViews(View view) {
         emailTextField = view.findViewById(R.id.email_log_in);
+        emailTextField.setHint("Enter email");
         passwordTextField = view.findViewById(R.id.password_log_in);
+        passwordTextField.setInputType("password");
+        passwordTextField.setHint("Enter password");
+
         logInBtn = view.findViewById(R.id.btn_log_in_mid);
         signUpBtn = view.findViewById(R.id.btn_sign_up_bot);
         googleBtn = view.findViewById(R.id.google_btn);

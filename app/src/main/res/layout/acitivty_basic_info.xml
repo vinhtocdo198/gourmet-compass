@@ -72,52 +72,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_5"
-            android:text="Username:"
+            android:text="Email:"
             android:textColor="@color/black"
             android:textSize="@dimen/text_18"
             tools:ignore="HardcodedText" />
 
-        <EditText
-            android:id="@+id/username_basic_info"
-            style="@style/TextFont"
+        <com.example.gourmetcompass.utils.EditTextUtil
+            android:id="@+id/email_basic_info"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_15"
-            android:autofillHints="username"
-            android:background="@drawable/input_text_field"
-            android:drawableEnd="@drawable/ic_edit_text"
-            android:hint="Enter username"
-            android:inputType="text"
-            android:padding="12dp"
-            android:selectAllOnFocus="true"
-            android:textColor="@color/black"
-            tools:ignore="HardcodedText" />
+            android:layout_height="wrap_content" />
 
         <TextView
             style="@style/TextFont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_5"
-            android:text="Email:"
+            android:text="Username:"
             android:textColor="@color/black"
             android:textSize="@dimen/text_18"
             tools:ignore="HardcodedText" />
 
-        <EditText
-            android:id="@+id/email_basic_info"
-            style="@style/TextFont"
+        <com.example.gourmetcompass.utils.EditTextUtil
+            android:id="@+id/username_basic_info"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_15"
-            android:autofillHints="emailAddress"
-            android:background="@drawable/input_text_field"
-            android:drawableEnd="@drawable/ic_edit_text"
-            android:hint="Enter email"
-            android:inputType="textEmailAddress"
-            android:padding="12dp"
-            android:selectAllOnFocus="true"
-            android:textColor="@color/black"
-            tools:ignore="HardcodedText" />
+            android:layout_height="wrap_content" />
 
         <TextView
             style="@style/TextFont"
@@ -129,22 +107,10 @@
             android:textSize="@dimen/text_18"
             tools:ignore="HardcodedText" />
 
-
-        <EditText
+        <com.example.gourmetcompass.utils.EditTextUtil
             android:id="@+id/phone_basic_info"
-            style="@style/TextFont"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_15"
-            android:autofillHints="phone"
-            android:background="@drawable/input_text_field"
-            android:drawableEnd="@drawable/ic_edit_text"
-            android:hint="Enter phone number"
-            android:inputType="phone"
-            android:padding="12dp"
-            android:selectAllOnFocus="true"
-            android:textColor="@color/black"
-            tools:ignore="HardcodedText" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
