@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.MyReviewsRVAdapter;
-import com.example.gourmetcompass.firebase.FirestoreUtil;
+import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.example.gourmetcompass.models.Review;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,19 +47,13 @@ public class MyReviewsActivity extends AppCompatActivity {
 
         fetchReviewData();
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
-            }
+        backBtn.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
         });
 
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Search
-            }
+        searchBtn.setOnClickListener(v -> {
+            // Search
         });
 
     }

@@ -10,20 +10,15 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gourmetcompass.R;
-import com.example.gourmetcompass.adapters.MenuRVAdapter;
 import com.example.gourmetcompass.adapters.ReviewRVAdapter;
-import com.example.gourmetcompass.firebase.FirestoreUtil;
-import com.example.gourmetcompass.models.Dish;
+import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.example.gourmetcompass.models.Review;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;

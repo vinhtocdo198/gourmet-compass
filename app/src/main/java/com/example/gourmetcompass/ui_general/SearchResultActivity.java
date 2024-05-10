@@ -1,7 +1,6 @@
 package com.example.gourmetcompass.ui_general;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -31,12 +30,9 @@ public class SearchResultActivity extends AppCompatActivity {
         // Init views
         initViews();
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
-            }
+        backBtn.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
         });
 
         // Set search text result and quantity
@@ -60,19 +56,16 @@ public class SearchResultActivity extends AppCompatActivity {
     private void setupFilterBtn(Button button) {
         // Initially, the button is not clicked
         button.setTag(false);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isClicked = (boolean) button.getTag();
-                if (isClicked) {
-                    // If the button was previously clicked, reset its background and update its state
-                    button.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_filter, null));
-                    button.setTag(false);
-                } else {
-                    // If the button was not previously clicked, change its background and update its state
-                    button.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_filter_full, null));
-                    button.setTag(true);
-                }
+        button.setOnClickListener(v -> {
+            boolean isClicked = (boolean) button.getTag();
+            if (isClicked) {
+                // If the button was previously clicked, reset its background and update its state
+                button.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_filter, null));
+                button.setTag(false);
+            } else {
+                // If the button was not previously clicked, change its background and update its state
+                button.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_filter_full, null));
+                button.setTag(true);
             }
         });
     }

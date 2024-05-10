@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +30,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
@@ -59,12 +57,7 @@ public class LogInFragment extends Fragment {
         // Init views
         initViews(view);
 
-        signUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                replaceFragment(new SignUpFragment(), null);
-            }
-        });
+        signUpBtn.setOnClickListener(view1 -> replaceFragment(new SignUpFragment(), null));
 
         /*Google Sign In*/
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -72,20 +65,10 @@ public class LogInFragment extends Fragment {
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this.getActivity(), gso);
-        googleBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signIn();
-            }
-        });
+        googleBtn.setOnClickListener(view12 -> signIn());
 
 
-        logInBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                logIn();
-            }
-        });
+        logInBtn.setOnClickListener(view13 -> logIn());
 
         return view;
     }
@@ -105,22 +88,19 @@ public class LogInFragment extends Fragment {
         }
 
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            if (user != null) {
-                                // Pass user data to account fragment
-                                Bundle bundle = new Bundle();
-                                bundle.putString("userId", user.getUid());
-                                replaceFragment(new AccountFragment(), bundle);
-                            }
-                            Toast.makeText(getActivity(), "Logged in successfully", Toast.LENGTH_SHORT).show();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(getActivity(), "Incorrect credentials. Please check again", Toast.LENGTH_SHORT).show();
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null) {
+                            // Pass user data to account fragment
+                            Bundle bundle = new Bundle();
+                            bundle.putString("userId", user.getUid());
+                            replaceFragment(new AccountFragment(), bundle);
                         }
+                        Toast.makeText(getActivity(), "Logged in successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Toast.makeText(getActivity(), "Incorrect credentials. Please check again", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

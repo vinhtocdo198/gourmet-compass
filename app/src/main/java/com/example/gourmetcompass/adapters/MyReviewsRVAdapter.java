@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gourmetcompass.R;
-import com.example.gourmetcompass.firebase.FirestoreUtil;
+import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.example.gourmetcompass.models.Review;
 import com.example.gourmetcompass.ui_restaurant_detail.RestaurantDetailActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,15 +54,12 @@ public class MyReviewsRVAdapter extends RecyclerView.Adapter<MyReviewsRVAdapter.
         holder.reviewTime.setText(getTimePassed(review.getTimestamp()));
         // TODO: set restaurant image
 
-        holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(holder.view.getContext(), RestaurantDetailActivity.class);
-                intent.putExtra("restaurantId", review.getRestaurantId());
-                holder.view.getContext().startActivity(intent);
-                if (holder.view.getContext() instanceof Activity) {
-                    ((Activity) holder.view.getContext()).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
-                }
+        holder.view.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.view.getContext(), RestaurantDetailActivity.class);
+            intent.putExtra("restaurantId", review.getRestaurantId());
+            holder.view.getContext().startActivity(intent);
+            if (holder.view.getContext() instanceof Activity) {
+                ((Activity) holder.view.getContext()).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
             }
         });
     }

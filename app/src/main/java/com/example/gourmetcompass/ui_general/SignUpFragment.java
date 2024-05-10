@@ -16,13 +16,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.gourmetcompass.R;
-import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.utils.EditTextUtil;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
@@ -51,19 +46,9 @@ public class SignUpFragment extends Fragment {
         // Init views
         initViews(view);
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                replaceFragment(new LogInFragment(), null);
-            }
-        });
+        loginBtn.setOnClickListener(view1 -> replaceFragment(new LogInFragment(), null));
 
-        signUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signUp();
-            }
-        });
+        signUpBtn.setOnClickListener(view12 -> signUp());
 
         return view;
     }
@@ -97,45 +82,32 @@ public class SignUpFragment extends Fragment {
             cfPasswordTextField.setText("");
         } else {
             mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                if (user != null) {
-                                    // Create a new user with a phone number and username
-                                    Map<String, Object> userMap = new HashMap<>();
-                                    userMap.put("username", username);
-                                    userMap.put("email", email);
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (user != null) {
+                                // Create a new user with a phone number and username
+                                Map<String, Object> userMap = new HashMap<>();
+                                userMap.put("username", username);
+                                userMap.put("email", email);
 
-                                    // Add a new document with a generated ID
-                                    db.collection("users")
-                                            .document(user.getUid())
-                                            .set(userMap)
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d(TAG, "DocumentSnapshot added with ID: " + user.getUid());
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w(TAG, "Error adding document", e);
-                                                }
-                                            });
+                                // Add a new document with a generated ID
+                                db.collection("users")
+                                        .document(user.getUid())
+                                        .set(userMap)
+                                        .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot added with ID: " + user.getUid()))
+                                        .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
 
-                                    // Pass user data to account fragment
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("userId", user.getUid());
-                                    replaceFragment(new AccountFragment(), bundle);
-                                }
+                                // Pass user data to account fragment
+                                Bundle bundle = new Bundle();
+                                bundle.putString("userId", user.getUid());
+                                replaceFragment(new AccountFragment(), bundle);
+                            }
+                        } else {
+                            if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                Toast.makeText(getActivity(), "This email is already in use. Please use a different email", Toast.LENGTH_SHORT).show();
                             } else {
-                                if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                                    Toast.makeText(getActivity(), "This email is already in use. Please use a different email", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Log.w(TAG, "Failed to create a new account", task.getException());
-                                }
+                                Log.w(TAG, "Failed to create a new account", task.getException());
                             }
                         }
                     });

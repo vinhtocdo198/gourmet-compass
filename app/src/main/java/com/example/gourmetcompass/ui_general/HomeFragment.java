@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gourmetcompass.MainActivity;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.HomeRVAdapter;
-import com.example.gourmetcompass.firebase.FirestoreUtil;
+import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.example.gourmetcompass.models.Restaurant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -57,17 +57,14 @@ public class HomeFragment extends Fragment {
         initNewlyOpenedRV(view.findViewById(R.id.third_scroll));
 
         // Navigate to browse fragment
-        searchImgBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BrowseFragment browseFragment = new BrowseFragment();
-                FragmentManager fragmentManager = getParentFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.main_frame_layout, browseFragment);
-                fragmentTransaction.commit();
-                if (getActivity() != null) {
-                    ((MainActivity) getActivity()).selectBottomNavItem(R.id.browse_fragment);
-                }
+        searchImgBtn.setOnClickListener(v -> {
+            BrowseFragment browseFragment = new BrowseFragment();
+            FragmentManager fragmentManager = getParentFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.main_frame_layout, browseFragment);
+            fragmentTransaction.commit();
+            if (getActivity() != null) {
+                ((MainActivity) getActivity()).selectBottomNavItem(R.id.browse_fragment);
             }
         });
 

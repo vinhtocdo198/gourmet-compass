@@ -48,26 +48,23 @@ public class HomeRVAdapter extends RecyclerView.Adapter<HomeRVAdapter.MyViewHold
 
 
         holder.resName.setText(restaurant.getName());
-        holder.resImgBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navigate to RestaurantDetailActivity
-                int pos = holder.getAdapterPosition();
-                if (pos != RecyclerView.NO_POSITION) {
-                    if (user != null) {
-                        Intent intent = new Intent(context, RestaurantDetailActivity.class);
-                        intent.putExtra("restaurantId", restaurantList.get(pos).getId());
-                        context.startActivity(intent);
-                        if (context instanceof MainActivity) {
-                            ((MainActivity) context).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
-                        }
-                    } else {
-                        // Navigate to LogInFragment if user is not logged in
-                        if (context instanceof MainActivity) {
-                            ((MainActivity) context).selectBottomNavItem(R.id.account_fragment);
-                        }
-                        Toast.makeText(context, "Log in to see our restaurants", Toast.LENGTH_SHORT).show();
+        holder.resImgBtn.setOnClickListener(v -> {
+            // Navigate to RestaurantDetailActivity
+            int pos = holder.getAdapterPosition();
+            if (pos != RecyclerView.NO_POSITION) {
+                if (user != null) {
+                    Intent intent = new Intent(context, RestaurantDetailActivity.class);
+                    intent.putExtra("restaurantId", restaurantList.get(pos).getId());
+                    context.startActivity(intent);
+                    if (context instanceof MainActivity) {
+                        ((MainActivity) context).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
                     }
+                } else {
+                    // Navigate to LogInFragment if user is not logged in
+                    if (context instanceof MainActivity) {
+                        ((MainActivity) context).selectBottomNavItem(R.id.account_fragment);
+                    }
+                    Toast.makeText(context, "Log in to see our restaurants", Toast.LENGTH_SHORT).show();
                 }
             }
         });

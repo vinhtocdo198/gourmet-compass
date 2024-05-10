@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -27,10 +28,10 @@ import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gourmetcompass.R;
-import com.example.gourmetcompass.firebase.FirestoreUtil;
-import com.example.gourmetcompass.firebase.StorageUtil;
 import com.example.gourmetcompass.utils.BottomSheetUtil;
 import com.example.gourmetcompass.utils.EditTextUtil;
+import com.example.gourmetcompass.utils.FirestoreUtil;
+import com.example.gourmetcompass.utils.StorageUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
@@ -47,6 +48,7 @@ public class PersonalInformationActivity extends AppCompatActivity {
     String userId;
     Uri avatarUri;
     ProgressBar progressBar;
+    LinearLayout basicInfoContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,32 +64,21 @@ public class PersonalInformationActivity extends AppCompatActivity {
 
         // Init views
         initViews();
+        basicInfoContainer.setOnClickListener(v -> clearAllFocus());
 
         // Get user information
         getUserInformation();
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
-            }
+        backBtn.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
         });
 
-        userAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openBottomSheet();
-            }
-        });
+        userAvatar.setOnClickListener(v -> openBottomSheet());
 
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveNewUserInfo();
-                clearAllFocus();
-                Toast.makeText(PersonalInformationActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();
-            }
+        saveBtn.setOnClickListener(v -> {
+            saveNewUserInfo();
+            clearAllFocus();
         });
     }
 
@@ -144,24 +135,18 @@ public class PersonalInformationActivity extends AppCompatActivity {
         Button takePhotoBtn = sheetView.findViewById(R.id.btn_take_photo);
         Button choosePhotoBtn = sheetView.findViewById(R.id.btn_photo_lib);
 
-        takePhotoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(PersonalInformationActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                    openCamera();
-                } else {
-                    ActivityCompat.requestPermissions(PersonalInformationActivity.this, new String[]{Manifest.permission.CAMERA}, 100);
-                }
-                bottomSheet.dismiss();
+        takePhotoBtn.setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(PersonalInformationActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                openCamera();
+            } else {
+                ActivityCompat.requestPermissions(PersonalInformationActivity.this, new String[]{Manifest.permission.CAMERA}, 100);
             }
+            bottomSheet.dismiss();
         });
 
-        choosePhotoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mGetImage.launch("image/*");
-                bottomSheet.dismiss();
-            }
+        choosePhotoBtn.setOnClickListener(v -> {
+            mGetImage.launch("image/*");
+            bottomSheet.dismiss();
         });
     }
 
@@ -196,6 +181,7 @@ public class PersonalInformationActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        basicInfoContainer = findViewById(R.id.basic_info_layout);
         backBtn = findViewById(R.id.btn_back_basic_info);
         saveBtn = findViewById(R.id.btn_save_basic_info);
         userAvatar = findViewById(R.id.avatar_basic_info);

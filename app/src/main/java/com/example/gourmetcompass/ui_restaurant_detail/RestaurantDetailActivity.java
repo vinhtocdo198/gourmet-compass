@@ -26,7 +26,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.BottomSheetCollectionsRVAdapter;
 import com.example.gourmetcompass.adapters.ViewPagerAdapter;
-import com.example.gourmetcompass.firebase.FirestoreUtil;
+import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.example.gourmetcompass.models.MyCollection;
 import com.example.gourmetcompass.models.Restaurant;
 import com.example.gourmetcompass.utils.BottomSheetUtil;
@@ -78,27 +78,14 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         // Init views
         initViews();
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
-            }
+        backBtn.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
         });
 
-        plusBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openBottomSheet();
-            }
-        });
+        plusBtn.setOnClickListener(v -> openBottomSheet());
 
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switchFragment(1);
-            }
-        });
+        searchBtn.setOnClickListener(v -> switchFragment(1));
 
         // Fetch details of the restaurant
         getRestaurantDetail(restaurantId);
@@ -127,36 +114,27 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         Button addToCollBtn = outerSheetView.findViewById(R.id.btn_add_btms_res);
         Button addReviewBtn = outerSheetView.findViewById(R.id.btn_add_review_btms_res);
 
-        addToCollBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        addToCollBtn.setOnClickListener(v -> db.collection("users")
+                .document(user.getUid())
+                .collection("collections")
+                .whereEqualTo("type", "restaurant")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().isEmpty()) {
+                            openNewCollBtms();
+                        } else {
+                            openExistingCollBtms();
+                        }
+                    } else {
+                        Log.e(TAG, "Failed to fetch collections", task.getException());
+                    }
+                }));
 
-                db.collection("users")
-                        .document(user.getUid())
-                        .collection("collections")
-                        .whereEqualTo("type", "restaurant")
-                        .get()
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                if (task.getResult().isEmpty()) {
-                                    openNewCollBtms();
-                                } else {
-                                    openExistingCollBtms();
-                                }
-                            } else {
-                                Log.e(TAG, "Failed to fetch collections", task.getException());
-                            }
-                        });
-            }
-        });
-
-        addReviewBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switchFragment(3);
-                outerBottomSheet.dismiss();
-                openAddReviewDialog();
-            }
+        addReviewBtn.setOnClickListener(v -> {
+            switchFragment(3);
+            outerBottomSheet.dismiss();
+            openAddReviewDialog();
         });
     }
 
@@ -172,22 +150,14 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         Button existDoneBtn = existCollSheetView.findViewById(R.id.btms_exist_btn_done);
 
         // New collection button in the second bottom sheet
-        addNewCollBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openNewCollBtms();
-            }
-        });
+        addNewCollBtn.setOnClickListener(v -> openNewCollBtms());
 
         // Recycler view of user collections and done button to add to collections
         showUserCollList(existCollSheetView);
-        existDoneBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addToExistingResColl();
-                Toast.makeText(RestaurantDetailActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();
-                dismissAllBottomSheets();
-            }
+        existDoneBtn.setOnClickListener(v -> {
+            addToExistingResColl();
+            Toast.makeText(RestaurantDetailActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();
+            dismissAllBottomSheets();
         });
     }
 
@@ -205,18 +175,15 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         setDefaultNewCollName(nameTextField);
 
         // Add the restaurant to the newly created collection and all checked collections
-        newDoneBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String collName = nameTextField.getText();
-                if (collName.isEmpty()) {
-                    Toast.makeText(RestaurantDetailActivity.this, "Collection must have a name", Toast.LENGTH_SHORT).show();
-                } else {
-                    addToNewResColl(collName);
-                    addToExistingResColl();
-                    dismissAllBottomSheets();
-                    Toast.makeText(RestaurantDetailActivity.this, "Added to collection", Toast.LENGTH_SHORT).show();
-                }
+        newDoneBtn.setOnClickListener(v -> {
+            String collName = nameTextField.getText();
+            if (collName.isEmpty()) {
+                Toast.makeText(RestaurantDetailActivity.this, "Collection must have a name", Toast.LENGTH_SHORT).show();
+            } else {
+                addToNewResColl(collName);
+                addToExistingResColl();
+                dismissAllBottomSheets();
+                Toast.makeText(RestaurantDetailActivity.this, "Added to collection", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -340,33 +307,22 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         EditText reviewTextField = reviewDialog.findViewById(R.id.dialog_text_add_review);
         RatingBar ratingBar = reviewDialog.findViewById(R.id.rating_bar_add_review);
 
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                reviewDialog.dismiss();
+        cancelBtn.setOnClickListener(v -> reviewDialog.dismiss());
+
+        submitBtn.setOnClickListener(v -> {
+            String reviewContent = reviewTextField.getText().toString();
+            String ratings = String.valueOf(ratingBar.getRating());
+            if (reviewContent.isEmpty()) {
+                Toast.makeText(RestaurantDetailActivity.this, "Review cannot be empty", Toast.LENGTH_SHORT).show();
+                return;
             }
+            submitReview(reviewContent, ratings);
+
+            reviewDialog.dismiss();
         });
 
-        submitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String reviewContent = reviewTextField.getText().toString();
-                String ratings = String.valueOf(ratingBar.getRating());
-                if (reviewContent.isEmpty()) {
-                    Toast.makeText(RestaurantDetailActivity.this, "Review cannot be empty", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                submitReview(reviewContent, ratings);
-
-                reviewDialog.dismiss();
-            }
-        });
-
-        uploadImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: Handle the upload image action
-            }
+        uploadImg.setOnClickListener(v -> {
+            // TODO: Handle the upload image action
         });
 
         reviewDialog.show();

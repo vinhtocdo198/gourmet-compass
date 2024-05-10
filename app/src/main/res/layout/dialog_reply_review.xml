@@ -4,7 +4,7 @@
     android:id="@+id/dialog_reply_review"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/dialog_bg"
+    android:background="@drawable/bg_dialog"
     android:orientation="vertical"
     android:paddingHorizontal="@dimen/padding_15"
     android:paddingVertical="@dimen/padding_20">

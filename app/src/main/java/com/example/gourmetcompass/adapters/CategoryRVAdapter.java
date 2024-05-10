@@ -25,7 +25,6 @@ import java.util.ArrayList;
 
 public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.MyViewHolder> {
 
-    private static final String TAG = "CategoryRVAdapter";
     Context context;
     ArrayList<RestaurantCategory> categoryList;
     FirebaseUser user;
@@ -56,22 +55,19 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.My
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.categoryImg);
 
-        holder.categoryImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (user != null) {
-                    Intent intent = new Intent(context, SearchResultActivity.class);
-                    intent.putExtra("searchQuery", category.getName());
-                    context.startActivity(intent);
-                    if (context instanceof MainActivity) {
-                        ((MainActivity) context).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
-                    }
-                } else {
-                    if (context instanceof MainActivity) {
-                        ((MainActivity) context).selectBottomNavItem(R.id.account_fragment);
-                    }
-                    Toast.makeText(context, "Log in to see our restaurants", Toast.LENGTH_SHORT).show();
+        holder.categoryImg.setOnClickListener(v -> {
+            if (user != null) {
+                Intent intent = new Intent(context, SearchResultActivity.class);
+                intent.putExtra("searchQuery", category.getName());
+                context.startActivity(intent);
+                if (context instanceof MainActivity) {
+                    ((MainActivity) context).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
                 }
+            } else {
+                if (context instanceof MainActivity) {
+                    ((MainActivity) context).selectBottomNavItem(R.id.account_fragment);
+                }
+                Toast.makeText(context, "Log in to see our restaurants", Toast.LENGTH_SHORT).show();
             }
         });
     }

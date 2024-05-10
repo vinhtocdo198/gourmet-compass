@@ -1,9 +1,9 @@
 package com.example.gourmetcompass.ui_personal;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +20,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     ImageButton backBtn;
     Button saveBtn;
     EditTextUtil currPassTextField, newPassTextField, cfPassTextField;
+    LinearLayout changePassLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,20 +29,16 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
         // Init views
         initViews();
+        changePassLayout.setOnClickListener(v -> clearAllFocus());
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
-            }
+        backBtn.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
         });
 
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changePassword();
-            }
+        saveBtn.setOnClickListener(v -> {
+            changePassword();
+            clearAllFocus();
         });
 
     }
@@ -56,7 +53,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             return;
         }
 
-        if(currPass.equals(newPass)){
+        if (currPass.equals(newPass)) {
             Toast.makeText(ChangePasswordActivity.this, "New password must be different from current password", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -102,6 +99,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        changePassLayout = findViewById(R.id.change_password_layout);
         backBtn = findViewById(R.id.btn_back_change_password);
         saveBtn = findViewById(R.id.btn_save_change_password);
 
@@ -116,5 +114,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
         cfPassTextField = findViewById(R.id.cf_new_pass_change_pass);
         cfPassTextField.setInputType("password");
         cfPassTextField.setHint("Confirm new password");
+    }
+
+    private void clearAllFocus() {
+        currPassTextField.clearFocus();
+        newPassTextField.clearFocus();
+        cfPassTextField.clearFocus();
     }
 }

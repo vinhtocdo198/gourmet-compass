@@ -7,21 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.gourmetcompass.R;
-import com.example.gourmetcompass.firebase.FirestoreUtil;
 import com.example.gourmetcompass.models.Restaurant;
 import com.example.gourmetcompass.models.Review;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
+import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.Locale;
 
 public class RestaurantDetailFragment extends Fragment {
 
@@ -89,20 +82,17 @@ public class RestaurantDetailFragment extends Fragment {
 
     private void fetchRestaurantDetail() {
         db.collection("restaurants").document(restaurantId)
-                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(TAG, "Listen failed.", e);
-                            return;
-                        }
+                .addSnapshotListener((value, e) -> {
+                    if (e != null) {
+                        Log.w(TAG, "Listen failed.", e);
+                        return;
+                    }
 
-                        if (value != null && value.exists()) {
-                            restaurant = value.toObject(Restaurant.class);
-                            setViews();
-                        } else {
-                            Log.d(TAG, "Current data: null");
-                        }
+                    if (value != null && value.exists()) {
+                        restaurant = value.toObject(Restaurant.class);
+                        setViews();
+                    } else {
+                        Log.d(TAG, "Current data: null");
                     }
                 });
     }

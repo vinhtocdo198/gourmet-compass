@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gourmetcompass.R;
-import com.example.gourmetcompass.firebase.FirestoreUtil;
+import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.example.gourmetcompass.models.Dish;
 import com.example.gourmetcompass.models.MyCollection;
 import com.example.gourmetcompass.utils.BottomSheetUtil;
@@ -70,13 +70,7 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
         holder.dishDesc.setText(dish.getDescription());
         holder.dishRatings.setText(String.valueOf((int) Float.parseFloat(dish.getRatings())));
         holder.dishRatingCount.setText(String.format(context.getString(R.string.rating_count), dish.getRatingCount()));
-        holder.dishImgBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openBottomSheet(holder, dish);
-
-            }
-        });
+        holder.dishImgBtn.setOnClickListener(v -> openBottomSheet(holder, dish));
     }
 
     private void openBottomSheet(@NonNull MyViewHolder holder, Dish dish) {
@@ -90,33 +84,25 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
         Button addToCollBtn = outerSheetView.findViewById(R.id.btn_add_btms_dish);
         Button addReviewBtn = outerSheetView.findViewById(R.id.btn_rate_btms_dish);
 
-        addToCollBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                db.collection("users")
-                        .document(user.getUid())
-                        .collection("collections")
-                        .whereEqualTo("type", "dish")
-                        .get()
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                if (task.getResult().isEmpty()) {
-                                    openNewCollBtms(holder, dish);
-                                } else {
-                                    openExistingCollBtms(holder, dish);
-                                }
-                            } else {
-                                Log.e(TAG, "Failed to fetch collections", task.getException());
-                            }
-                        });
-            }
-        });
+        addToCollBtn.setOnClickListener(v -> db.collection("users")
+                .document(user.getUid())
+                .collection("collections")
+                .whereEqualTo("type", "dish")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().isEmpty()) {
+                            openNewCollBtms(holder, dish);
+                        } else {
+                            openExistingCollBtms(holder, dish);
+                        }
+                    } else {
+                        Log.e(TAG, "Failed to fetch collections", task.getException());
+                    }
+                }));
 
-        addReviewBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
+        addReviewBtn.setOnClickListener(v -> {
+            // TODO: add ratings
         });
     }
 
@@ -132,22 +118,14 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
         Button existDoneBtn = existCollSheetView.findViewById(R.id.btms_exist_btn_done);
 
         // New collection button in the second bottom sheet
-        addNewCollBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openNewCollBtms(holder, dish);
-            }
-        });
+        addNewCollBtn.setOnClickListener(v -> openNewCollBtms(holder, dish));
 
         // Recycler view of user collections and done button to add to collections
         showUserCollList(existCollSheetView, dish);
-        existDoneBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addToExistingDishColl(dish);
-                Toast.makeText(context, "Changes saved", Toast.LENGTH_SHORT).show();
-                dismissAllBottomSheets();
-            }
+        existDoneBtn.setOnClickListener(v -> {
+            addToExistingDishColl(dish);
+            Toast.makeText(context, "Changes saved", Toast.LENGTH_SHORT).show();
+            dismissAllBottomSheets();
         });
     }
 
@@ -192,18 +170,15 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
         setDefaultNewCollName(nameTextField);
 
         // Add the restaurant to the newly created collection and all checked collections
-        newDoneBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String collName = nameTextField.getText();
-                if (collName.isEmpty()) {
-                    Toast.makeText(context, "Collection must have a name", Toast.LENGTH_SHORT).show();
-                } else {
-                    addToNewDishColl(collName, dish);
-                    addToExistingDishColl(dish);
-                    dismissAllBottomSheets();
-                    Toast.makeText(context, "Added to collection", Toast.LENGTH_SHORT).show();
-                }
+        newDoneBtn.setOnClickListener(v -> {
+            String collName = nameTextField.getText();
+            if (collName.isEmpty()) {
+                Toast.makeText(context, "Collection must have a name", Toast.LENGTH_SHORT).show();
+            } else {
+                addToNewDishColl(collName, dish);
+                addToExistingDishColl(dish);
+                dismissAllBottomSheets();
+                Toast.makeText(context, "Added to collection", Toast.LENGTH_SHORT).show();
             }
         });
     }
