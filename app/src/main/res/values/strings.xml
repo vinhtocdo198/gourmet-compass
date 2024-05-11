@@ -91,5 +91,7 @@
     <string name="rename_collection">Rename collection</string>
     <string name="delete_collection">Delete collection</string>
     <string name="top_categories">Top categories</string>
+    <string name="_1_result">1 result</string>
+    <string name="empty_search">No results</string>
 
 </resources>
