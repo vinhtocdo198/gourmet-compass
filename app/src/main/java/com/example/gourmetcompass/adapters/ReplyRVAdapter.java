@@ -14,10 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.gourmetcompass.R;
-import com.example.gourmetcompass.firebase.FirestoreUtil;
-import com.example.gourmetcompass.firebase.StorageUtil;
+import com.example.gourmetcompass.utils.FirestoreUtil;
+import com.example.gourmetcompass.utils.StorageUtil;
 import com.example.gourmetcompass.models.Reply;
-import com.example.gourmetcompass.models.Review;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;

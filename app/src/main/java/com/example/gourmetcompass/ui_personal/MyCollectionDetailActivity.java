@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gourmetcompass.MainActivity;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.MyCollectionDetailRVAdapter;
-import com.example.gourmetcompass.firebase.FirestoreUtil;
+import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.example.gourmetcompass.models.Dish;
 import com.example.gourmetcompass.models.Restaurant;
 import com.example.gourmetcompass.utils.BottomSheetUtil;
@@ -67,36 +67,22 @@ public class MyCollectionDetailActivity extends AppCompatActivity {
         initViews();
         collName.setText(getIntent().getStringExtra("collectionName"));
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
-            }
+        backBtn.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
         });
 
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        searchBtn.setOnClickListener(v -> {
 
-            }
         });
 
-        moreBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openBottomSheet();
-            }
-        });
+        moreBtn.setOnClickListener(v -> openBottomSheet());
 
         // Navigate to home screen if collection is empty
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MyCollectionDetailActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        addBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(MyCollectionDetailActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 
@@ -110,23 +96,14 @@ public class MyCollectionDetailActivity extends AppCompatActivity {
         Button renameBtn = sheetView.findViewById(R.id.btn_rename_btms_my_coll_detail);
         Button deleteBtn = sheetView.findViewById(R.id.btn_delete_btms_my_coll_detail);
 
-        renameBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openRenameSheet(bottomSheet);
+        renameBtn.setOnClickListener(v -> openRenameSheet(bottomSheet));
 
-            }
-        });
-
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteCollection();
-                bottomSheet.dismiss();
-                finish();
-                overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
-                Toast.makeText(MyCollectionDetailActivity.this, "Collection deleted", Toast.LENGTH_SHORT).show();
-            }
+        deleteBtn.setOnClickListener(v -> {
+            deleteCollection();
+            bottomSheet.dismiss();
+            finish();
+            overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
+            Toast.makeText(MyCollectionDetailActivity.this, "Collection deleted", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -143,30 +120,27 @@ public class MyCollectionDetailActivity extends AppCompatActivity {
 
         Button doneBtn = renameSheetView.findViewById(R.id.btms_rename_btn_done);
 
-        doneBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String newName = nameTextField.getText();
-                if (newName.isEmpty()) {
-                    Toast.makeText(MyCollectionDetailActivity.this, "Name cannot be empty", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                db.collection("users")
-                        .document(user.getUid())
-                        .collection("collections")
-                        .document(collectionId)
-                        .update("name", newName)
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                collName.setText(newName);
-                                renameSheet.dismiss();
-                                bottomSheet.dismiss();
-                                Toast.makeText(MyCollectionDetailActivity.this, "Collection updated", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Log.e(TAG, "Error renaming collection", task.getException());
-                            }
-                        });
+        doneBtn.setOnClickListener(v -> {
+            String newName = nameTextField.getText();
+            if (newName.isEmpty()) {
+                Toast.makeText(MyCollectionDetailActivity.this, "Name cannot be empty", Toast.LENGTH_SHORT).show();
+                return;
             }
+            db.collection("users")
+                    .document(user.getUid())
+                    .collection("collections")
+                    .document(collectionId)
+                    .update("name", newName)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            collName.setText(newName);
+                            renameSheet.dismiss();
+                            bottomSheet.dismiss();
+                            Toast.makeText(MyCollectionDetailActivity.this, "Collection updated", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.e(TAG, "Error renaming collection", task.getException());
+                        }
+                    });
         });
     }
 

@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.MyCollectionsRVAdapter;
-import com.example.gourmetcompass.firebase.FirestoreUtil;
+import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.example.gourmetcompass.models.MyCollection;
 import com.example.gourmetcompass.utils.BottomSheetUtil;
 import com.example.gourmetcompass.utils.EditTextUtil;
@@ -53,27 +53,16 @@ public class MyCollectionsActivity extends AppCompatActivity {
         // Init views
         initViews();
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
-            }
+        backBtn.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
         });
 
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Search
-            }
+        searchBtn.setOnClickListener(v -> {
+            // Search
         });
 
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openBottomSheet();
-            }
-        });
+        addBtn.setOnClickListener(v -> openBottomSheet());
 
     }
 
@@ -102,22 +91,19 @@ public class MyCollectionsActivity extends AppCompatActivity {
         nameTextField.setHint("Enter collection name");
         setDefaultCollName(nameTextField);
 
-        doneBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int checkedId = radioGroup.getCheckedRadioButtonId();
+        doneBtn.setOnClickListener(v -> {
+            int checkedId = radioGroup.getCheckedRadioButtonId();
 
-                if (checkedId == R.id.radio_restaurant) {
-                    createNewCollection(nameTextField, "restaurant");
-                    bottomSheet.dismiss();
-                    Toast.makeText(MyCollectionsActivity.this, "Collection created", Toast.LENGTH_SHORT).show();
-                } else if (checkedId == R.id.radio_dish) {
-                    createNewCollection(nameTextField, "dish");
-                    bottomSheet.dismiss();
-                    Toast.makeText(MyCollectionsActivity.this, "Collection created", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MyCollectionsActivity.this, "Please choose a type", Toast.LENGTH_SHORT).show();
-                }
+            if (checkedId == R.id.radio_restaurant) {
+                createNewCollection(nameTextField, "restaurant");
+                bottomSheet.dismiss();
+                Toast.makeText(MyCollectionsActivity.this, "Collection created", Toast.LENGTH_SHORT).show();
+            } else if (checkedId == R.id.radio_dish) {
+                createNewCollection(nameTextField, "dish");
+                bottomSheet.dismiss();
+                Toast.makeText(MyCollectionsActivity.this, "Collection created", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MyCollectionsActivity.this, "Please choose a type", Toast.LENGTH_SHORT).show();
             }
         });
     }

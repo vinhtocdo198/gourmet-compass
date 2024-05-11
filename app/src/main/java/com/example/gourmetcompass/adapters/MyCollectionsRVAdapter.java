@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 public class MyCollectionsRVAdapter extends RecyclerView.Adapter<MyCollectionsRVAdapter.MyViewHolder> {
 
-    private final String TAG = "MyCollectionsRVAdapter";
     Context context;
     ArrayList<MyCollection> collList;
 
@@ -40,17 +39,14 @@ public class MyCollectionsRVAdapter extends RecyclerView.Adapter<MyCollectionsRV
         MyCollection collection = collList.get(position);
 
         holder.collNameBtn.setText(collList.get(position).getName());
-        holder.collNameBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, MyCollectionDetailActivity.class);
-                intent.putExtra("collectionId", collection.getId());
-                intent.putExtra("collectionName", collection.getName());
-                intent.putExtra("collectionType", collection.getType());
-                context.startActivity(intent);
-                if (context instanceof Activity) {
-                    ((Activity) context).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
-                }
+        holder.collNameBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(context, MyCollectionDetailActivity.class);
+            intent.putExtra("collectionId", collection.getId());
+            intent.putExtra("collectionName", collection.getName());
+            intent.putExtra("collectionType", collection.getType());
+            context.startActivity(intent);
+            if (context instanceof Activity) {
+                ((Activity) context).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
             }
         });
     }

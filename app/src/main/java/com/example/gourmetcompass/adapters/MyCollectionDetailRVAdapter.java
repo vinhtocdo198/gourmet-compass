@@ -18,7 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gourmetcompass.R;
-import com.example.gourmetcompass.firebase.FirestoreUtil;
+import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.example.gourmetcompass.models.Dish;
 import com.example.gourmetcompass.models.Restaurant;
 import com.example.gourmetcompass.ui_personal.MyCollectionDetailActivity;
@@ -71,15 +71,12 @@ public class MyCollectionDetailRVAdapter extends RecyclerView.Adapter<MyCollecti
             holder.itemDesc.setText(restaurant.getDescription());
             holder.itemRatings.setText(String.valueOf(restaurant.getRatings()));
             setResRatings(holder, (Restaurant) item);
-            holder.view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(holder.view.getContext(), RestaurantDetailActivity.class);
-                    intent.putExtra("restaurantId", restaurant.getId());
-                    holder.view.getContext().startActivity(intent);
-                    if (holder.view.getContext() instanceof Activity) {
-                        ((Activity) holder.view.getContext()).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
-                    }
+            holder.itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(holder.itemView.getContext(), RestaurantDetailActivity.class);
+                intent.putExtra("restaurantId", restaurant.getId());
+                holder.itemView.getContext().startActivity(intent);
+                if (holder.itemView.getContext() instanceof Activity) {
+                    ((Activity) holder.itemView.getContext()).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
                 }
             });
         } else if (item instanceof Dish) {
@@ -88,25 +85,17 @@ public class MyCollectionDetailRVAdapter extends RecyclerView.Adapter<MyCollecti
             holder.itemDesc.setText(dish.getDescription());
             holder.itemRatings.setText(String.valueOf(dish.getRatings()));
             holder.itemRatingCount.setText(String.format(context.getString(R.string.rating_count), dish.getRatingCount()));
-            holder.view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(holder.view.getContext(), RestaurantDetailActivity.class);
-                    intent.putExtra("restaurantId", dish.getRestaurantId());
-                    holder.view.getContext().startActivity(intent);
-                    if (holder.view.getContext() instanceof Activity) {
-                        ((Activity) holder.view.getContext()).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
-                    }
+            holder.itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(holder.itemView.getContext(), RestaurantDetailActivity.class);
+                intent.putExtra("restaurantId", dish.getRestaurantId());
+                holder.itemView.getContext().startActivity(intent);
+                if (holder.itemView.getContext() instanceof Activity) {
+                    ((Activity) holder.itemView.getContext()).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
                 }
             });
         }
 
-        holder.btnMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openRemoveBtms(holder, item);
-            }
-        });
+        holder.btnMore.setOnClickListener(v -> openRemoveBtms(holder, item));
     }
 
     private void openRemoveBtms(@NonNull MyViewHolder holder, Object item) {
@@ -169,7 +158,12 @@ public class MyCollectionDetailRVAdapter extends RecyclerView.Adapter<MyCollecti
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        holder.itemRatingCount.setText(String.format(context.getString(R.string.rating_count), task.getResult().size()));
+                        int reviewCount = task.getResult().size();
+                        if (reviewCount > 0) {
+                            holder.itemRatingCount.setText(String.format(context.getString(R.string.rating_count), reviewCount));
+                        } else {
+                            holder.itemRatingCount.setText("(N/A)");
+                        }
                     }
                 });
     }
@@ -180,8 +174,6 @@ public class MyCollectionDetailRVAdapter extends RecyclerView.Adapter<MyCollecti
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-
-        View view;
         ImageView itemImg;
         ImageButton btnMore;
         TextView itemName, itemDesc, itemRatings, itemRatingCount;
@@ -189,7 +181,6 @@ public class MyCollectionDetailRVAdapter extends RecyclerView.Adapter<MyCollecti
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            view = itemView;
             itemImg = itemView.findViewById(R.id.my_coll_detail_ava);
             itemName = itemView.findViewById(R.id.my_coll_detail_title);
             itemDesc = itemView.findViewById(R.id.my_coll_detail_desc);

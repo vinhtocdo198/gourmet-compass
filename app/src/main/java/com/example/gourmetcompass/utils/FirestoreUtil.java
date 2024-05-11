@@ -1,4 +1,4 @@
-package com.example.gourmetcompass.firebase;
+package com.example.gourmetcompass.utils;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 

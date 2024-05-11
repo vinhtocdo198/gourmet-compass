@@ -14,10 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.GalleryRVAdapter;
-import com.example.gourmetcompass.firebase.FirestoreUtil;
-import com.example.gourmetcompass.firebase.StorageUtil;
+import com.example.gourmetcompass.utils.FirestoreUtil;
+import com.example.gourmetcompass.utils.StorageUtil;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;

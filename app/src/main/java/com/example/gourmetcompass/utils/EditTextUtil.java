@@ -1,10 +1,15 @@
 package com.example.gourmetcompass.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -58,6 +63,10 @@ public class EditTextUtil extends RelativeLayout {
         });
     }
 
+    public EditText getTextField() {
+        return textField;
+    }
+
     public void setText(String text) {
         textField.setText(text);
     }
@@ -98,5 +107,20 @@ public class EditTextUtil extends RelativeLayout {
 
     public void setHeight(int height) {
         textField.setHeight(height);
+    }
+
+    public void setIconEnd(int icon) {
+        iconEnd.setImageResource(icon);
+    }
+
+    public ImageView getIconEnd() {
+        return iconEnd;
+    }
+
+    public void setSearchBarBackground() {
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.border_search_bar);
+        setHeight(140);
+        textField.setBackground(drawable);
+        textField.setPadding(60, 0, 60, 0);
     }
 }

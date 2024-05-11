@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 public class BottomSheetCollectionsRVAdapter extends RecyclerView.Adapter<BottomSheetCollectionsRVAdapter.MyViewHolder> {
 
-    private static final String TAG = "BottomSheetCollectionsRVAdapter";
     Context context;
     ArrayList<MyCollection> collList;
     String itemId;
@@ -51,12 +50,7 @@ public class BottomSheetCollectionsRVAdapter extends RecyclerView.Adapter<Bottom
         }
         userColl.setChecked(holder.checkBox.isChecked());
 
-        holder.checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userColl.setChecked(holder.checkBox.isChecked());
-            }
-        });
+        holder.checkBox.setOnClickListener(v -> userColl.setChecked(holder.checkBox.isChecked()));
     }
 
     @Override

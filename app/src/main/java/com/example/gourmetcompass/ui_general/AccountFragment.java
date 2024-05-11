@@ -19,8 +19,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gourmetcompass.R;
-import com.example.gourmetcompass.firebase.FirestoreUtil;
-import com.example.gourmetcompass.firebase.StorageUtil;
+import com.example.gourmetcompass.utils.FirestoreUtil;
+import com.example.gourmetcompass.utils.StorageUtil;
 import com.example.gourmetcompass.models.User;
 import com.example.gourmetcompass.ui_personal.ChangePasswordActivity;
 import com.example.gourmetcompass.ui_personal.MyCollectionsActivity;
@@ -28,7 +28,6 @@ import com.example.gourmetcompass.ui_personal.MyReviewsActivity;
 import com.example.gourmetcompass.ui_personal.PersonalInformationActivity;
 import com.example.gourmetcompass.ui_personal.RequestAddRestaurantActivity;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
 
@@ -70,54 +69,36 @@ public class AccountFragment extends Fragment {
         getUserData();
 
         // Navigation to personal screens
-        personalInfoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Open personal information activity
-                startActivitySlideIn(PersonalInformationActivity.class);
-            }
+        personalInfoBtn.setOnClickListener(v -> {
+            // Open personal information activity
+            startActivitySlideIn(PersonalInformationActivity.class);
         });
 
-        myCollectionsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Open my collections activity
-                startActivitySlideIn(MyCollectionsActivity.class);
-            }
+        myCollectionsBtn.setOnClickListener(v -> {
+            // Open my collections activity
+            startActivitySlideIn(MyCollectionsActivity.class);
         });
 
-        myReviewsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Open my reviews activity
-                startActivitySlideIn(MyReviewsActivity.class);
-            }
+        myReviewsBtn.setOnClickListener(v -> {
+            // Open my reviews activity
+            startActivitySlideIn(MyReviewsActivity.class);
         });
 
-        changePasswordBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Open change password activity
-                startActivitySlideIn(ChangePasswordActivity.class);
-            }
+        changePasswordBtn.setOnClickListener(v -> {
+            // Open change password activity
+            startActivitySlideIn(ChangePasswordActivity.class);
         });
 
-        requestBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Open request activity
-                startActivitySlideIn(RequestAddRestaurantActivity.class);
-            }
+        requestBtn.setOnClickListener(v -> {
+            // Open request activity
+            startActivitySlideIn(RequestAddRestaurantActivity.class);
         });
 
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Log out of the account
-                Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
-                mAuth.signOut();
-                replaceFragment(new LogInFragment());
-            }
+        logoutBtn.setOnClickListener(v -> {
+            // Log out of the account
+            Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
+            mAuth.signOut();
+            replaceFragment(new LogInFragment());
         });
 
         return view;

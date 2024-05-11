@@ -23,6 +23,7 @@ firebaseAuth = "23.0.0"
 glide = "5.0.0-rc01"
 playServicesAuth = "21.1.1"
 firebaseAppcheckSafetynet = "16.1.2"
+algoliasearchAndroid = "3.27.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -48,6 +49,7 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 firebase-appcheck-safetynet = { group = "com.google.firebase", name = "firebase-appcheck-safetynet", version.ref = "firebaseAppcheckSafetynet" }
+algoliasearch-android = { group = "com.algolia", name = "algoliasearch-android", version.ref = "algoliasearchAndroid" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
