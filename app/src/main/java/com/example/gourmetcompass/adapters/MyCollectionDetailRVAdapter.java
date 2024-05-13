@@ -69,7 +69,6 @@ public class MyCollectionDetailRVAdapter extends RecyclerView.Adapter<MyCollecti
             Restaurant restaurant = (Restaurant) item;
             holder.itemName.setText(restaurant.getName());
             holder.itemDesc.setText(restaurant.getDescription());
-            holder.itemRatings.setText(String.valueOf(restaurant.getRatings()));
             setResRatings(holder, (Restaurant) item);
             holder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(holder.itemView.getContext(), RestaurantDetailActivity.class);
@@ -159,10 +158,11 @@ public class MyCollectionDetailRVAdapter extends RecyclerView.Adapter<MyCollecti
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         int reviewCount = task.getResult().size();
+                        holder.itemRatingCount.setText(String.format(context.getString(R.string.rating_count), reviewCount));
                         if (reviewCount > 0) {
-                            holder.itemRatingCount.setText(String.format(context.getString(R.string.rating_count), reviewCount));
+                            holder.itemRatings.setText(String.valueOf(item.getRatings()));
                         } else {
-                            holder.itemRatingCount.setText("(N/A)");
+                            holder.itemRatings.setText("N/A");
                         }
                     }
                 });

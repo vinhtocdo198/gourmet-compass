@@ -37,7 +37,7 @@ public class MyCollectionsActivity extends AppCompatActivity {
     private static final String TAG = "MyCollectionsActivity";
     FirebaseFirestore db;
     FirebaseUser user;
-    ImageButton backBtn, searchBtn, addBtn;
+    ImageButton backBtn, addBtn;
     ScrollView myCollLayout;
     LinearLayout myCollEmptyLayout;
 
@@ -58,17 +58,12 @@ public class MyCollectionsActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
         });
 
-        searchBtn.setOnClickListener(v -> {
-            // Search
-        });
-
         addBtn.setOnClickListener(v -> openBottomSheet());
 
     }
 
     private void initViews() {
         backBtn = findViewById(R.id.btn_back_my_collections);
-        searchBtn = findViewById(R.id.btn_search_my_collections);
         addBtn = findViewById(R.id.btn_add_my_collections);
         myCollLayout = findViewById(R.id.my_coll_layout);
         myCollEmptyLayout = findViewById(R.id.my_coll_empty_layout);

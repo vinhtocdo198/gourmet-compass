@@ -70,11 +70,13 @@ public class RestaurantMenuFragment extends Fragment {
         return view;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void fetchRestaurantMenu() {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        db.collection("restaurants").document(restaurantId)
+        db.collection("restaurants")
+                .document(restaurantId)
                 .collection("dishes")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -87,7 +89,7 @@ public class RestaurantMenuFragment extends Fragment {
                                 dish.setId(document.getId());
                                 menu.add(dish);
                             }
-                            adapter = new MenuRVAdapter(getContext(), menu);
+                            adapter = new MenuRVAdapter(getContext(), menu, restaurantId);
                             recyclerView.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
                             progressBar.setVisibility(View.GONE);

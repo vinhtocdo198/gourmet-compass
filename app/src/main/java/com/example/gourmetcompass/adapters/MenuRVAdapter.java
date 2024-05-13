@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,11 +23,13 @@ import com.example.gourmetcompass.models.Dish;
 import com.example.gourmetcompass.models.MyCollection;
 import com.example.gourmetcompass.utils.BottomSheetUtil;
 import com.example.gourmetcompass.utils.EditTextUtil;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,10 +44,12 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
     FirebaseFirestore db;
     FirebaseUser user;
     ArrayList<MyCollection> collList;
+    String restaurantId;
 
-    public MenuRVAdapter(Context context, ArrayList<Dish> menu) {
+    public MenuRVAdapter(Context context, ArrayList<Dish> menu, String restaurantId) {
         this.context = context;
         this.menu = menu;
+        this.restaurantId = restaurantId;
     }
 
     @NonNull
@@ -58,8 +63,6 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
     public void onBindViewHolder(@NonNull MenuRVAdapter.MyViewHolder holder, int position) {
         Dish dish = menu.get(position);
 
-//        String dishId = dish.getId();
-
         // Init firebase services
         db = FirestoreUtil.getInstance().getFirestore();
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -68,9 +71,36 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
         collList = new ArrayList<>();
         holder.dishName.setText(dish.getName());
         holder.dishDesc.setText(dish.getDescription());
-        holder.dishRatings.setText(String.valueOf((int) Float.parseFloat(dish.getRatings())));
-        holder.dishRatingCount.setText(String.format(context.getString(R.string.rating_count), dish.getRatingCount()));
+        setDishRatings(holder, dish);
         holder.dishImgBtn.setOnClickListener(v -> openBottomSheet(holder, dish));
+    }
+
+    private void setDishRatings(@NonNull MyViewHolder holder, Dish dish) {
+        db.collection("restaurants")
+                .document(restaurantId)
+                .collection("dishes")
+                .document(dish.getId())
+                .collection("ratings")
+                .addSnapshotListener((value, e) -> {
+                    if (e != null) {
+                        Log.e(TAG, "Failed to fetch ratings", e);
+                        return;
+                    }
+                    if (value != null) {
+                        int size = value.size();
+                        float totalRating = 0;
+                        for (QueryDocumentSnapshot doc : value) {
+                            totalRating += Float.parseFloat(doc.getString("rate"));
+                        }
+                        if (size == 0) {
+                            holder.dishRatings.setText("N/A");
+                        } else {
+                            float avgRating = totalRating / size;
+                            holder.dishRatings.setText(String.valueOf(avgRating));
+                        }
+                        holder.dishRatingCount.setText(String.format(context.getString(R.string.rating_count), size));
+                    }
+                });
     }
 
     private void openBottomSheet(@NonNull MyViewHolder holder, Dish dish) {
@@ -79,7 +109,6 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
         outerBottomSheet.setContentView(outerSheetView);
         BottomSheetUtil.openBottomSheet(outerBottomSheet);
         bottomSheets.add(outerBottomSheet);
-        Log.d(TAG, "openBottomSheet: " + dish.getId());
 
         Button addToCollBtn = outerSheetView.findViewById(R.id.btn_add_btms_dish);
         Button addReviewBtn = outerSheetView.findViewById(R.id.btn_rate_btms_dish);
@@ -102,8 +131,108 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
                 }));
 
         addReviewBtn.setOnClickListener(v -> {
-            // TODO: add ratings
+            BottomSheetDialog rateBottomSheet = new BottomSheetDialog(context, R.style.BottomSheetTheme);
+            View reviewSheetView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_rate_dish, holder.itemView.findViewById(R.id.btms_rate_dish_container));
+            rateBottomSheet.setContentView(reviewSheetView);
+            BottomSheetUtil.openBottomSheet(rateBottomSheet);
+            bottomSheets.add(rateBottomSheet);
+
+            Button cancelBtn = reviewSheetView.findViewById(R.id.btn_cancel_rate_dish);
+            Button submitBtn = reviewSheetView.findViewById(R.id.btn_submit_rate_dish);
+            RatingBar ratingBar = reviewSheetView.findViewById(R.id.rating_bar_dish);
+            setExistingRating(dish, ratingBar);
+
+            cancelBtn.setOnClickListener(v1 -> rateBottomSheet.dismiss());
+            submitBtn.setOnClickListener(v2 -> {
+                String ratings = String.valueOf(ratingBar.getRating());
+                submitRating(dish.getId(), ratings);
+                dismissAllBottomSheets();
+            });
         });
+    }
+
+    private void setExistingRating(Dish dish, RatingBar ratingBar) {
+        db.collection("restaurants")
+                .document(restaurantId)
+                .collection("dishes")
+                .document(dish.getId())
+                .collection("ratings")
+                .whereEqualTo("userId", user.getUid())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (!task.getResult().isEmpty()) {
+                            // The user has already rated the dish, so set the rating of the RatingBar
+                            String rating = task.getResult().getDocuments().get(0).getString("rate");
+                            ratingBar.setRating(Float.parseFloat(rating));
+                        }
+                    } else {
+                        Log.e(TAG, "Failed to fetch user rating", task.getException());
+                    }
+                });
+    }
+
+    private void submitRating(String dishId, String ratings) {
+        // Check if the user has already rated the dish
+        db.collection("restaurants")
+                .document(restaurantId)
+                .collection("dishes")
+                .document(dishId)
+                .collection("ratings")
+                .whereEqualTo("userId", user.getUid())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().isEmpty()) {
+                            // The user hasn't rated the dish yet, so create a new rating
+                            addNewDishRating(dishId, ratings);
+                        } else {
+                            // The user has already rated the dish, so update the existing rating
+                            updateDishRating(dishId, ratings, task);
+                        }
+                    } else {
+                        Log.e(TAG, "Failed to check if user has already rated the dish", task.getException());
+                    }
+                });
+    }
+
+    private void updateDishRating(String dishId, String ratings, Task<QuerySnapshot> task) {
+        String ratingId = task.getResult().getDocuments().get(0).getId();
+
+        db.collection("restaurants")
+                .document(restaurantId)
+                .collection("dishes")
+                .document(dishId)
+                .collection("ratings")
+                .document(ratingId)
+                .update("rate", ratings)
+                .addOnCompleteListener(updateTask -> {
+                    if (updateTask.isSuccessful()) {
+                        Toast.makeText(context, "Rating updated", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.e(TAG, "Failed to update rating", updateTask.getException());
+                    }
+                });
+    }
+
+    private void addNewDishRating(String dishId, String ratings) {
+        Map<String, Object> newRating = new HashMap<>();
+        newRating.put("userId", user.getUid());
+        newRating.put("rate", ratings);
+
+        db.collection("restaurants")
+                .document(restaurantId)
+                .collection("dishes")
+                .document(dishId)
+                .collection("ratings")
+                .add(newRating)
+                .addOnCompleteListener(addTask -> {
+                    if (addTask.isSuccessful()) {
+                        Toast.makeText(context, "Rating added", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.e(TAG, "Failed to submit rating", addTask.getException());
+                    }
+                });
     }
 
     private void openExistingCollBtms(@NonNull MyViewHolder holder, Dish dish) {
