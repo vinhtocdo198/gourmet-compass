@@ -1,24 +1,33 @@
 package com.example.gourmetcompass.ui_restaurant_detail;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -59,6 +68,10 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     ArrayList<BottomSheetDialog> bottomSheets;
     ArrayList<MyCollection> collList;
     String restaurantId, reviewerId;
+    LinearLayout appBarLayout;
+    ImageView resImgBg;
+    EditTextUtil searchBarUtil;
+    ConstraintLayout resDetailContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,11 +98,86 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
         plusBtn.setOnClickListener(v -> openBottomSheet());
 
-        searchBtn.setOnClickListener(v -> switchFragment(1));
+        searchBtn.setOnClickListener(v -> setUpSearchBar());
+        hideKeyboardAndLoseFocusTabLayout();
 
         // Fetch details of the restaurant
         getRestaurantDetail(restaurantId);
 
+    }
+
+    private void setUpSearchBar() {
+        switchFragment(1);
+        searchBarUtil.setVisibility(View.VISIBLE);
+        appBarLayout.setVisibility(View.GONE);
+
+        searchBarUtil.setHint("Search menu");
+        searchBarUtil.setSearchBarBackground();
+        searchBarUtil.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(searchBarUtil.getTextField(), InputMethodManager.SHOW_IMPLICIT);
+        searchBarUtil.getTextField().setOnFocusChangeListener((v2, hasFocus) -> {
+            if (hasFocus) {
+                searchBarUtil.setIconEnd(R.drawable.ic_clear_text);
+                searchBarUtil.getIconEnd().setOnClickListener(v12 -> searchBarUtil.getTextField().setText(""));
+            } else {
+                searchBarUtil.setText("");
+                searchBarUtil.setVisibility(View.GONE);
+                appBarLayout.setVisibility(View.VISIBLE);
+            }
+        });
+        searchBarUtil.getTextField().setOnEditorActionListener(this::showSearchResults);
+        hideKeyboardAndLoseFocus(resDetailContainer);
+    }
+
+    private void hideKeyboardAndLoseFocusTabLayout() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                searchBarUtil.setVisibility(View.GONE);
+                appBarLayout.setVisibility(View.VISIBLE);
+                searchBarUtil.getTextField().clearFocus();
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(searchBarUtil.getTextField().getWindowToken(), 0);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
+    }
+
+    private void hideKeyboardAndLoseFocus(View container) {
+        container.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                v.performClick();
+            }
+            searchBarUtil.getTextField().clearFocus();
+            InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(searchBarUtil.getTextField().getWindowToken(), 0);
+            return false;
+        });
+    }
+
+    private boolean showSearchResults(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_DONE
+                || actionId == EditorInfo.IME_ACTION_SEARCH
+                || (event != null
+                && event.getAction() == KeyEvent.ACTION_DOWN
+                && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+
+            String query = v.getText().toString();
+            // Pass the search query to the menu fragment
+            RestaurantMenuFragment restaurantMenuFragment = viewPagerAdapter.getRestaurantMenuFragment();
+            restaurantMenuFragment.updateSearchQuery(query);
+
+            return true;
+        }
+        return false;
     }
 
     private void initViews() {
@@ -99,8 +187,13 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         backBtn = findViewById(R.id.btn_back);
         viewPager2 = findViewById(R.id.view_pager);
         tabLayout = findViewById(R.id.tab_layout);
+        appBarLayout = findViewById(R.id.app_bar_layout);
+        resImgBg = findViewById(R.id.res_img_bg);
+        resDetailContainer = findViewById(R.id.res_detail_container);
         bottomSheets = new ArrayList<>();
         collList = new ArrayList<>();
+        searchBarUtil = findViewById(R.id.search_bar_menu);
+        searchBarUtil.setVisibility(View.GONE);
     }
 
     private void openBottomSheet() {
@@ -303,7 +396,6 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         // Init views
         Button cancelBtn = reviewDialog.findViewById(R.id.btn_cancel_add_review);
         Button submitBtn = reviewDialog.findViewById(R.id.btn_submit_add_review);
-        Button uploadImg = reviewDialog.findViewById(R.id.btn_upload_add_review);
         EditText reviewTextField = reviewDialog.findViewById(R.id.dialog_text_add_review);
         RatingBar ratingBar = reviewDialog.findViewById(R.id.rating_bar_add_review);
 
@@ -317,53 +409,68 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                 return;
             }
             submitReview(reviewContent, ratings);
-
             reviewDialog.dismiss();
-        });
-
-        uploadImg.setOnClickListener(v -> {
-            // TODO: Handle the upload image action
         });
 
         reviewDialog.show();
     }
 
     private void submitReview(String reviewContent, String ratings) {
-        // Create a new review object
-        Map<String, Object> review = new HashMap<>();
-        review.put("timestamp", System.currentTimeMillis());
-        review.put("description", reviewContent);
-        review.put("ratings", ratings);
-        review.put("reviewerId", reviewerId);
-        review.put("likedUserIds", new ArrayList<String>());
-        review.put("dislikedUserIds", new ArrayList<String>());
-        review.put("restaurantId", restaurantId);
 
-        // Add review to db
-        db.collection("restaurants").document(restaurantId).
-                collection("reviews")
-                .add(review)
+        db.collection("users")
+                .document(reviewerId)
+                .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if (documentSnapshot.exists()) {
+                            String reviewerName = documentSnapshot.getString("username");
+                            String reviewerAvaUrl = documentSnapshot.getString("avaUrl");
 
-                        // Add to user's review list
-                        String reviewId = task.getResult().getId();
-                        db.collection("users")
-                                .document(reviewerId)
-                                .collection("reviews")
-                                .document(reviewId)
-                                .set(review)
-                                .addOnCompleteListener(task1 -> {
-                                    if (task1.isSuccessful()) {
-                                        Log.d(TAG, "Review reference added to user successfully");
-                                    } else {
-                                        Log.e(TAG, "Failed to add review reference to user", task1.getException());
-                                    }
-                                });
+                            // Create a new review object
+                            Map<String, Object> review = new HashMap<>();
+                            review.put("timestamp", System.currentTimeMillis());
+                            review.put("description", reviewContent);
+                            review.put("ratings", ratings);
+                            review.put("reviewerName", reviewerName);
+                            review.put("reviewerAvaUrl", reviewerAvaUrl);
+                            review.put("likedUserIds", new ArrayList<String>());
+                            review.put("dislikedUserIds", new ArrayList<String>());
+                            review.put("restaurantId", restaurantId);
 
-                        Toast.makeText(RestaurantDetailActivity.this, "Review added", Toast.LENGTH_SHORT).show();
+                            // Add review to db
+                            db.collection("restaurants")
+                                    .document(restaurantId)
+                                    .collection("reviews")
+                                    .add(review)
+                                    .addOnCompleteListener(task1 -> {
+                                        if (task1.isSuccessful()) {
+
+                                            // Add to user's review list
+                                            String reviewId = task1.getResult().getId();
+                                            db.collection("users")
+                                                    .document(reviewerId)
+                                                    .collection("reviews")
+                                                    .document(reviewId)
+                                                    .set(review)
+                                                    .addOnCompleteListener(task2 -> {
+                                                        if (task2.isSuccessful()) {
+                                                            Log.d(TAG, "Review reference added to user successfully");
+                                                        } else {
+                                                            Log.e(TAG, "Failed to add review reference to user", task2.getException());
+                                                        }
+                                                    });
+
+                                            Toast.makeText(RestaurantDetailActivity.this, "Review added", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(RestaurantDetailActivity.this, "Failed to add review", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
                     } else {
-                        Toast.makeText(RestaurantDetailActivity.this, "Failed to add review", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Error getting documents", task.getException());
                     }
                 });
     }

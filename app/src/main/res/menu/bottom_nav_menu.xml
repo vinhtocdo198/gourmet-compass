@@ -9,10 +9,6 @@
         android:icon="@drawable/ic_browse"
         android:title="@string/browse" />
     <item
-        android:id="@+id/map_fragment"
-        android:icon="@drawable/ic_map"
-        android:title="@string/map" />
-    <item
         android:id="@+id/noti_fragment"
         android:icon="@drawable/ic_noti"
         android:title="@string/notification" />

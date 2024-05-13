@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.ReviewRVAdapter;
-import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.example.gourmetcompass.models.Review;
+import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -104,6 +104,9 @@ public class RestaurantReviewFragment extends Fragment {
                                 review.setId(document.getId());
                                 reviews.add(review);
                             }
+//                            adapter = new ReviewRVAdapter(activity, reviews, restaurantId);
+//                            recyclerView.setAdapter(adapter);
+//                            adapter.notifyDataSetChanged();
                             if (activity != null) {
                                 if (adapter == null) {
                                     adapter = new ReviewRVAdapter(activity, reviews, restaurantId);

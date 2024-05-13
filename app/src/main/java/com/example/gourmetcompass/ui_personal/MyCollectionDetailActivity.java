@@ -40,7 +40,7 @@ public class MyCollectionDetailActivity extends AppCompatActivity {
     FirebaseFirestore db;
     FirebaseUser user;
     String collectionId, collectionType;
-    ImageButton backBtn, searchBtn, moreBtn;
+    ImageButton backBtn, moreBtn;
     Button addBtn;
     TextView itemName, collName;
     RecyclerView recyclerView;
@@ -70,10 +70,6 @@ public class MyCollectionDetailActivity extends AppCompatActivity {
         backBtn.setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
-        });
-
-        searchBtn.setOnClickListener(v -> {
-
         });
 
         moreBtn.setOnClickListener(v -> openBottomSheet());
@@ -165,7 +161,6 @@ public class MyCollectionDetailActivity extends AppCompatActivity {
         addBtn = findViewById(R.id.my_coll_detail_btn_add);
         collName = findViewById(R.id.my_coll_detail_coll_title);
         backBtn = findViewById(R.id.my_coll_detail_btn_back);
-        searchBtn = findViewById(R.id.my_coll_detail_btn_search);
         moreBtn = findViewById(R.id.my_coll_detail_btn_more);
         itemName = findViewById(R.id.my_coll_detail_title);
         progressBar = findViewById(R.id.my_coll_detail_progress_bar);

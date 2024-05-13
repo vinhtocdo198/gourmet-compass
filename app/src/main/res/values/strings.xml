@@ -11,7 +11,6 @@
     <string name="address_title">Address</string>
     <string name="phone_title">Phone Number</string>
     <string name="open_hr_title">Opening Hours</string>
-    <string name="ratings_title">Ratings (%.1f/5.0)</string>
     <string name="star">Star</string>
     <string name="res_bg_image">Restaurant bg image</string>
     <string name="res_ava_image">Restaurant ava image</string>
@@ -31,7 +30,6 @@
     <string name="submit">Submit</string>
     <string name="new_collection">New collection</string>
     <string name="done">Done</string>
-    <string name="map_key">AIzaSyBzwyjsKBQSDkVrJwKi20-fgaYrZmkFcMQ</string>
     <string name="cancel">Cancel</string>
     <string name="upload">Upload</string>
     <string name="rate_this_restaurant">Rate this restaurant</string>
@@ -86,12 +84,13 @@
     <string name="default_web_client_id">558185215566-mv1o6pid90pgmkn5s9r018fnb427f211.apps.googleusercontent.com</string>
     <string name="no_items">You have no items for now</string>
     <string name="add_some_items">Add some items here</string>
-    <string name="ratings_n_a">Ratings (N/A)</string>
+    <string name="ratings_title">Ratings (%1$s/5.0)</string>
     <string name="first_to_review">Be the first person to write a review</string>
     <string name="rename_collection">Rename collection</string>
     <string name="delete_collection">Delete collection</string>
     <string name="top_categories">Top categories</string>
     <string name="_1_result">1 result</string>
     <string name="empty_search">No results</string>
+    <string name="show_replies">Show all replies</string>
 
 </resources>

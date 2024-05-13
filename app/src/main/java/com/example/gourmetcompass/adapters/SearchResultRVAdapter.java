@@ -49,9 +49,8 @@ public class SearchResultRVAdapter extends RecyclerView.Adapter<SearchResultRVAd
 
         holder.itemName.setText(restaurant.getName());
         holder.itemDesc.setText(restaurant.getDescription());
-        holder.itemRatings.setText(String.valueOf(restaurant.getRatings()));
         holder.btnMore.setVisibility(View.GONE);
-        setResRatings(holder, restaurant.getId());
+        setResRatings(holder, restaurant);
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), RestaurantDetailActivity.class);
             intent.putExtra("restaurantId", restaurant.getId());
@@ -62,18 +61,19 @@ public class SearchResultRVAdapter extends RecyclerView.Adapter<SearchResultRVAd
         });
     }
 
-    private void setResRatings(@NonNull SearchResultRVAdapter.MyViewHolder holder, String restaurantId) {
+    private void setResRatings(@NonNull SearchResultRVAdapter.MyViewHolder holder, Restaurant restaurant) {
         db.collection("restaurants")
-                .document(restaurantId)
+                .document(restaurant.getId())
                 .collection("reviews")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         int reviewCount = task.getResult().size();
+                        holder.itemRatingCount.setText(String.format(context.getString(R.string.rating_count), reviewCount));
                         if (reviewCount > 0) {
-                            holder.itemRatingCount.setText(String.format(context.getString(R.string.rating_count), reviewCount));
+                            holder.itemRatings.setText(String.valueOf(restaurant.getRatings()));
                         } else {
-                            holder.itemRatingCount.setText("(N/A)");
+                            holder.itemRatings.setText("N/A");
                         }
                         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) holder.itemRatingCount.getLayoutParams();
                         params.setMarginEnd(20);
