@@ -17,24 +17,6 @@
         android:textColor="@color/black"
         android:textSize="@dimen/text_25" />
 
-    <!--    <EditText-->
-    <!--        android:id="@+id/search_bar_browse"-->
-    <!--        style="@style/TextFont"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginHorizontal="@dimen/margin_30"-->
-    <!--        android:layout_marginVertical="@dimen/margin_15"-->
-    <!--        android:autofillHints="name"-->
-    <!--        android:background="@drawable/border_search_bar"-->
-    <!--        android:drawableEnd="@drawable/ic_search"-->
-    <!--        android:hint="Restaurant, cuisine,..."-->
-    <!--        android:inputType="text"-->
-    <!--        android:paddingVertical="@dimen/padding_10"-->
-    <!--        android:paddingStart="@dimen/padding_25"-->
-    <!--        android:paddingEnd="@dimen/padding_15"-->
-    <!--        android:selectAllOnFocus="true"-->
-    <!--        android:textColor="@color/black"-->
-    <!--        tools:ignore="HardcodedText" />-->
     <com.example.gourmetcompass.utils.EditTextUtil
         android:id="@+id/search_bar_browse"
         android:layout_width="match_parent"

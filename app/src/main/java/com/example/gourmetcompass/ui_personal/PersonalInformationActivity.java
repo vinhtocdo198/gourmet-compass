@@ -111,7 +111,8 @@ public class PersonalInformationActivity extends AppCompatActivity {
 
         db.collection("users").document(userId)
                 .update("username", newUsername,
-                        "phone", newPhone)
+                        "phone", newPhone,
+                        "avaUrl", avatarUri.toString())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(PersonalInformationActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();

@@ -3,7 +3,7 @@ package com.example.gourmetcompass.models;
 import java.util.ArrayList;
 
 public class Review {
-    String id, description, ratings, reviewerId, restaurantId;
+    String id, description, ratings, reviewerName, restaurantId, reviewerAvaUrl;
     long timestamp;
     ArrayList<String> likedUserIds, dislikedUserIds;
 
@@ -15,12 +15,12 @@ public class Review {
         this.id = id;
     }
 
-    public String getReviewerId() {
-        return reviewerId;
+    public String getReviewerName() {
+        return reviewerName;
     }
 
-    public void setReviewerId(String reviewerId) {
-        this.reviewerId = reviewerId;
+    public void setReviewerName(String reviewerName) {
+        this.reviewerName = reviewerName;
     }
 
     public String getDescription() {
@@ -69,5 +69,13 @@ public class Review {
 
     public void setRestaurantId(String restaurantId) {
         this.restaurantId = restaurantId;
+    }
+
+    public String getReviewerAvaUrl() {
+        return reviewerAvaUrl;
+    }
+
+    public void setReviewerAvaUrl(String reviewerAvaUrl) {
+        this.reviewerAvaUrl = reviewerAvaUrl;
     }
 }

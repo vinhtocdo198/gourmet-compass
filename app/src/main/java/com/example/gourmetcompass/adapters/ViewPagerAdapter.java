@@ -14,6 +14,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
 
     private final String[] titles = {"Detail", "Menu", "Gallery", "Review"};
     private final String restaurantId;
+    private RestaurantMenuFragment restaurantMenuFragment;
 
     public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity, String restaurantId) {
         super(fragmentActivity);
@@ -26,7 +27,10 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
         Fragment fragment;
         switch (position) {
             case 1:
-                fragment = RestaurantMenuFragment.newInstance(restaurantId);
+                if (restaurantMenuFragment == null) {
+                    restaurantMenuFragment = RestaurantMenuFragment.newInstance(restaurantId);
+                }
+                fragment = restaurantMenuFragment;
                 break;
             case 2:
                 fragment = RestaurantGalleryFragment.newInstance(restaurantId);
@@ -45,5 +49,12 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         return titles.length;
+    }
+
+    public RestaurantMenuFragment getRestaurantMenuFragment() {
+        if (restaurantMenuFragment == null) {
+            restaurantMenuFragment = RestaurantMenuFragment.newInstance(restaurantId);
+        }
+        return restaurantMenuFragment;
     }
 }

@@ -97,8 +97,18 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
                         } else {
                             float avgRating = totalRating / size;
                             holder.dishRatings.setText(String.valueOf(avgRating));
+                            db.collection("restaurants")
+                                    .document(restaurantId)
+                                    .collection("dishes")
+                                    .document(dish.getId())
+                                    .update("ratings", String.valueOf(avgRating));
                         }
                         holder.dishRatingCount.setText(String.format(context.getString(R.string.rating_count), size));
+                        db.collection("restaurants")
+                                .document(restaurantId)
+                                .collection("dishes")
+                                .document(dish.getId())
+                                .update("ratingCount", size);
                     }
                 });
     }

@@ -65,6 +65,7 @@ public class RestaurantDetailFragment extends Fragment {
         addressContent.setText(restaurant.getAddress());
         phoneContent.setText(restaurant.getPhoneNo());
         openHrContent.setText(restaurant.getOpeningHours());
+        ratingsTitle.setText(getString(R.string.ratings_title, restaurant.getRatings()));
     }
 
     private void initViews(View view) {
@@ -81,7 +82,8 @@ public class RestaurantDetailFragment extends Fragment {
     }
 
     private void fetchRestaurantDetail() {
-        db.collection("restaurants").document(restaurantId)
+        db.collection("restaurants")
+                .document(restaurantId)
                 .addSnapshotListener((value, e) -> {
                     if (e != null) {
                         Log.w(TAG, "Listen failed.", e);
@@ -138,10 +140,18 @@ public class RestaurantDetailFragment extends Fragment {
 
                         if (activity != null) {
                             if (totalReviews == 0) {
-                                ratingsTitle.setText(R.string.ratings_n_a);
+                                db.collection("restaurants")
+                                        .document(restaurantId)
+                                        .update("ratings", "N/A")
+                                        .addOnCompleteListener(task -> {
+                                            if (task.isSuccessful()) {
+                                                Log.d(TAG, "Ratings successfully updated!");
+                                            } else {
+                                                Log.w(TAG, "Error updating document", task.getException());
+                                            }
+                                        });
                             } else {
                                 averageRatings = totalRatings / totalReviews;
-                                ratingsTitle.setText(String.format(activity.getString(R.string.ratings_title), averageRatings));
                                 db.collection("restaurants")
                                         .document(restaurantId)
                                         .update("ratings", String.valueOf(averageRatings))
