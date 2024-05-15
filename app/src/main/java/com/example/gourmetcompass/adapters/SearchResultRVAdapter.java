@@ -3,7 +3,6 @@ package com.example.gourmetcompass.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,25 +60,16 @@ public class SearchResultRVAdapter extends RecyclerView.Adapter<SearchResultRVAd
         });
     }
 
-    private void setResRatings(@NonNull SearchResultRVAdapter.MyViewHolder holder, Restaurant restaurant) {
-        db.collection("restaurants")
-                .document(restaurant.getId())
-                .collection("reviews")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        int reviewCount = task.getResult().size();
-                        holder.itemRatingCount.setText(String.format(context.getString(R.string.rating_count), reviewCount));
-                        if (reviewCount > 0) {
-                            holder.itemRatings.setText(String.valueOf(restaurant.getRatings()));
-                        } else {
-                            holder.itemRatings.setText("N/A");
-                        }
-                        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) holder.itemRatingCount.getLayoutParams();
-                        params.setMarginEnd(20);
-                        holder.itemRatingCount.setLayoutParams(params);
-                    }
-                });
+    private void setResRatings(@NonNull MyViewHolder holder, Restaurant restaurant) {
+        holder.itemRatingCount.setText(String.format(context.getString(R.string.rating_count), restaurant.getRatingCount()));
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) holder.itemRatingCount.getLayoutParams();
+        params.setMarginEnd(20);
+        holder.itemRatingCount.setLayoutParams(params);
+        if (restaurant.getRatings().equals("N/A")) {
+            holder.itemRatings.setText("N/A");
+        } else {
+            holder.itemRatings.setText(String.format(context.getString(R.string.item_ratings), Float.parseFloat(restaurant.getRatings())));
+        }
     }
 
     @Override

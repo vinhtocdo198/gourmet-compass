@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -28,6 +27,7 @@ import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gourmetcompass.R;
+import com.example.gourmetcompass.models.User;
 import com.example.gourmetcompass.utils.BottomSheetUtil;
 import com.example.gourmetcompass.utils.EditTextUtil;
 import com.example.gourmetcompass.utils.FirestoreUtil;
@@ -47,7 +47,6 @@ public class PersonalInformationActivity extends AppCompatActivity {
     StorageReference storageRef;
     String userId;
     Uri avatarUri;
-    ProgressBar progressBar;
     LinearLayout basicInfoContainer;
 
     @Override
@@ -102,17 +101,28 @@ public class PersonalInformationActivity extends AppCompatActivity {
             avatarRef.putFile(avatarUri)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
+                            avatarRef.getDownloadUrl()
+                                    .addOnCompleteListener(uriTask -> {
+                                        if (uriTask.isSuccessful()) {
+                                            String avaUri = uriTask.getResult().toString();
+                                            saveNewAvatar(newUsername, newPhone, avaUri);
+                                        } else {
+                                            Log.d(TAG, "saveNewUserInfo: Failed to get avatar uri");
+                                        }
+                                    });
                             Log.d(TAG, "saveNewUserInfo: Avatar saved");
                         } else {
                             Log.d(TAG, "saveNewUserInfo: Failed to save avatar");
                         }
                     });
         }
+    }
 
+    private void saveNewAvatar(String newUsername, String newPhone, String avaUri) {
         db.collection("users").document(userId)
                 .update("username", newUsername,
                         "phone", newPhone,
-                        "avaUrl", avatarUri.toString())
+                        "avaUrl", avaUri)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(PersonalInformationActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();
@@ -186,7 +196,6 @@ public class PersonalInformationActivity extends AppCompatActivity {
         backBtn = findViewById(R.id.btn_back_basic_info);
         saveBtn = findViewById(R.id.btn_save_basic_info);
         userAvatar = findViewById(R.id.avatar_basic_info);
-        progressBar = findViewById(R.id.progress_bar_basic_info);
 
         // Text fields
         emailTextField = findViewById(R.id.email_basic_info);
@@ -199,31 +208,37 @@ public class PersonalInformationActivity extends AppCompatActivity {
     }
 
     private void getUserInformation() {
-        progressBar.setVisibility(View.VISIBLE);
 
         storageRef.child("user_images/" + userId + "/avatar/")
                 .getDownloadUrl()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         avatarUri = task.getResult();
-                        Log.d(TAG, "getUserInformation: " + avatarUri.toString());
                         Glide.with(this)
                                 .load(avatarUri)
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(userAvatar);
-                        progressBar.setVisibility(View.GONE);
                     } else {
                         Log.d(TAG, "getUserInformation: Failed to get avatar");
                     }
                 });
 
-        db.collection("users").document(userId)
+        db.collection("users")
+                .document(userId)
                 .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        usernameTextField.setText(documentSnapshot.getString("username"));
-                        emailTextField.setText(documentSnapshot.getString("email"));
-                        phoneTextField.setText(documentSnapshot.getString("phone"));
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult().exists()) {
+                        User user = task.getResult().toObject(User.class);
+                        if (user != null) {
+                            emailTextField.setText(user.getEmail());
+                            usernameTextField.setText(user.getUsername());
+                            phoneTextField.setText(user.getPhone());
+                            Log.d(TAG, "getUserInformation: " + user.getAvaUrl());
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
                     }
                 });
     }

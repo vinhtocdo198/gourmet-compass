@@ -5,13 +5,14 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.gourmetcompass.MainActivity;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.models.Restaurant;
@@ -46,9 +47,12 @@ public class HomeRVAdapter extends RecyclerView.Adapter<HomeRVAdapter.MyViewHold
         // Init firebase services
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-
         holder.resName.setText(restaurant.getName());
-        holder.resImgBtn.setOnClickListener(v -> {
+        Glide.with(context)
+                .load("")
+                .placeholder(R.drawable.bg_shimmer)
+                .into(holder.resImgThumbnail);
+        holder.resImgThumbnail.setOnClickListener(v -> {
             // Navigate to RestaurantDetailActivity
             int pos = holder.getAdapterPosition();
             if (pos != RecyclerView.NO_POSITION) {
@@ -78,14 +82,13 @@ public class HomeRVAdapter extends RecyclerView.Adapter<HomeRVAdapter.MyViewHold
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView resName;
-        ImageButton resImgBtn;
+        ImageView resImgThumbnail;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             resName = itemView.findViewById(R.id.res_name_home);
-            resImgBtn = itemView.findViewById(R.id.res_img_home);
-            // TODO: Add image here
+            resImgThumbnail = itemView.findViewById(R.id.res_img_home);
         }
     }
 }

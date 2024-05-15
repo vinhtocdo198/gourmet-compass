@@ -55,8 +55,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_5"
-                android:background="@drawable/border_filter"
-                android:drawableStart="@drawable/ic_star_selector"
+                android:background="@drawable/btn_filter"
+                android:drawableStart="@drawable/ic_star_filter_off"
                 android:drawablePadding="@dimen/padding_5"
                 android:elevation="5dp"
                 android:paddingHorizontal="@dimen/padding_10"
@@ -72,8 +72,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_5"
-                android:background="@drawable/border_filter"
-                android:drawableStart="@drawable/ic_edit_selector"
+                android:background="@drawable/btn_filter"
+                android:drawableStart="@drawable/ic_edit_filter_off"
                 android:drawablePadding="@dimen/padding_5"
                 android:elevation="5dp"
                 android:paddingHorizontal="@dimen/padding_10"
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_5"
                 android:background="@drawable/border_filter"
-                android:drawableStart="@drawable/ic_location_selector"
+                android:drawableStart="@drawable/ic_location_filter"
                 android:drawablePadding="@dimen/padding_5"
                 android:elevation="5dp"
                 android:paddingHorizontal="@dimen/padding_10"
@@ -98,6 +98,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/content_text"
                 android:textSize="@dimen/text_14"
+                android:visibility="gone"
                 tools:ignore="RtlSymmetry" />
 
         </LinearLayout>
@@ -126,6 +127,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:visibility="gone"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView

@@ -1,7 +1,6 @@
 package com.example.gourmetcompass.ui_general;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,14 +18,14 @@ import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gourmetcompass.R;
-import com.example.gourmetcompass.utils.FirestoreUtil;
-import com.example.gourmetcompass.utils.StorageUtil;
 import com.example.gourmetcompass.models.User;
 import com.example.gourmetcompass.ui_personal.ChangePasswordActivity;
 import com.example.gourmetcompass.ui_personal.MyCollectionsActivity;
 import com.example.gourmetcompass.ui_personal.MyReviewsActivity;
 import com.example.gourmetcompass.ui_personal.PersonalInformationActivity;
 import com.example.gourmetcompass.ui_personal.RequestAddRestaurantActivity;
+import com.example.gourmetcompass.utils.FirestoreUtil;
+import com.example.gourmetcompass.utils.StorageUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
@@ -38,11 +37,9 @@ public class AccountFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseFirestore db;
     StorageReference storageRef;
-    String userId, avatarUrl;
-    User user;
+    String userId;
     TextView usernameAppBar;
     ImageView userAvatarAppBar;
-    Uri avatarUri;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

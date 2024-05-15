@@ -1,7 +1,7 @@
 package com.example.gourmetcompass.models;
 
 public class Reply {
-    String id, replierName, description, replierAvaUrl;
+    String id, replierName, description, replierAvaUrl, replierId;
     long timestamp;
 
     public String getId() {
@@ -18,6 +18,14 @@ public class Reply {
 
     public void setReplierName(String replierName) {
         this.replierName = replierName;
+    }
+
+    public String getReplierId() {
+        return replierId;
+    }
+
+    public void setReplierId(String replierId) {
+        this.replierId = replierId;
     }
 
     public String getDescription() {

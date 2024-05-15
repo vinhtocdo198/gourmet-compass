@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gourmetcompass.R;
 
+// Not implemented yet
 public class RequestAddRestaurantActivity extends AppCompatActivity {
 
     ImageButton backBtn;

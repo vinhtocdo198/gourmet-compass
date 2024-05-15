@@ -160,7 +160,7 @@ public class MyCollectionDetailRVAdapter extends RecyclerView.Adapter<MyCollecti
                         int reviewCount = task.getResult().size();
                         holder.itemRatingCount.setText(String.format(context.getString(R.string.rating_count), reviewCount));
                         if (reviewCount > 0) {
-                            holder.itemRatings.setText(String.valueOf(item.getRatings()));
+                            holder.itemRatings.setText(String.format(context.getString(R.string.item_ratings), Float.parseFloat(item.getRatings())));
                         } else {
                             holder.itemRatings.setText("N/A");
                         }

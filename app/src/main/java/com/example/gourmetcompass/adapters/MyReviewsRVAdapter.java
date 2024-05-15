@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.example.gourmetcompass.models.Review;
@@ -52,7 +53,10 @@ public class MyReviewsRVAdapter extends RecyclerView.Adapter<MyReviewsRVAdapter.
         setResName(holder, review.getRestaurantId());
         holder.reviewContent.setText(review.getDescription());
         holder.reviewTime.setText(getTimePassed(review.getTimestamp()));
-        // TODO: set restaurant image
+        Glide.with(context)
+                .load("")
+                .placeholder(R.drawable.bg_shimmer)
+                .into(holder.resImg);
 
         holder.view.setOnClickListener(v -> {
             Intent intent = new Intent(holder.view.getContext(), RestaurantDetailActivity.class);
