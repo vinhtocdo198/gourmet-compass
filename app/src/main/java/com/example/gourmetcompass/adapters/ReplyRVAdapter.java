@@ -29,6 +29,7 @@ import com.example.gourmetcompass.utils.StorageUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
 
@@ -88,20 +89,22 @@ public class ReplyRVAdapter extends RecyclerView.Adapter<ReplyRVAdapter.MyViewHo
     }
 
     private void openEditReplyBottomSheet(@NonNull MyViewHolder holder, Reply reply) {
-        BottomSheetDialog editReviewSheet = new BottomSheetDialog(context, R.style.BottomSheetTheme);
-        View sheetView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_edit_reply, holder.itemView.findViewById(R.id.btms_edit_reply_container));
-        editReviewSheet.setContentView(sheetView);
-        BottomSheetUtil.openBottomSheet(editReviewSheet);
+        if (user.getUid().equals(reply.getReplierId())) {
+            BottomSheetDialog editReplySheet = new BottomSheetDialog(context, R.style.BottomSheetTheme);
+            View sheetView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_edit_reply, holder.itemView.findViewById(R.id.btms_edit_reply_container));
+            editReplySheet.setContentView(sheetView);
+            BottomSheetUtil.openBottomSheet(editReplySheet);
 
-        Button editBtn = sheetView.findViewById(R.id.btn_edit_btms_edit_reply);
-        Button deleteBtn = sheetView.findViewById(R.id.btn_delete_btms_edit_reply);
+            Button editBtn = sheetView.findViewById(R.id.btn_edit_btms_edit_reply);
+            Button deleteBtn = sheetView.findViewById(R.id.btn_delete_btms_edit_reply);
 
-        editBtn.setOnClickListener(v -> openEditReplyDialog(reply, editReviewSheet));
+            editBtn.setOnClickListener(v -> openEditReplyDialog(reply, editReplySheet));
 
-        deleteBtn.setOnClickListener(v -> deleteReply(reply, editReviewSheet));
+            deleteBtn.setOnClickListener(v -> deleteReply(reply, editReplySheet));
+        }
     }
 
-    private void deleteReply(Reply reply, BottomSheetDialog editReviewSheet) {
+    private void deleteReply(Reply reply, BottomSheetDialog editReplySheet) {
         db.collection("restaurants")
                 .document(restaurantId)
                 .collection("reviews")
@@ -111,16 +114,22 @@ public class ReplyRVAdapter extends RecyclerView.Adapter<ReplyRVAdapter.MyViewHo
                 .delete()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(context, "Review deleted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Reply deleted", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(context, "Failed to delete review", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Failed to delete reply", Toast.LENGTH_SHORT).show();
                     }
                 });
 
-        editReviewSheet.dismiss();
+        db.collection("restaurants")
+                .document(restaurantId)
+                .collection("reviews")
+                .document(reviewId)
+                .update("replyCount", FieldValue.increment(-1));
+
+        editReplySheet.dismiss();
     }
 
-    private void openEditReplyDialog(Reply reply, BottomSheetDialog editReviewSheet) {
+    private void openEditReplyDialog(Reply reply, BottomSheetDialog editReplySheet) {
         Dialog replyDialog = new Dialog(context);
         replyDialog.setContentView(R.layout.dialog_reply_review);
 
@@ -143,23 +152,23 @@ public class ReplyRVAdapter extends RecyclerView.Adapter<ReplyRVAdapter.MyViewHo
         EditText replyTextField = replyDialog.findViewById(R.id.reply_review_dialog_content);
         replyDialogTitle.setText(String.format(context.getString(R.string.replying_to) + reviewerName));
 
-        // Sett the current review data
+        // Sett the current reply data
         replyTextField.setText(reply.getDescription());
 
         cancelBtn.setOnClickListener(v1 -> replyDialog.dismiss());
 
         submitBtn.setOnClickListener(v2 -> {
-            String reviewContent = replyTextField.getText().toString();
-            if (reviewContent.isEmpty()) {
-                Toast.makeText(context, "Review cannot be empty", Toast.LENGTH_SHORT).show();
+            String replyContent = replyTextField.getText().toString();
+            if (replyContent.isEmpty()) {
+                Toast.makeText(context, "Reply cannot be empty", Toast.LENGTH_SHORT).show();
                 return;
             }
-            submitEditReply(reviewContent, reply.getId());
+            submitEditReply(replyContent, reply.getId());
             replyDialog.dismiss();
         });
 
         replyDialog.show();
-        editReviewSheet.dismiss();
+        editReplySheet.dismiss();
     }
 
     private void submitEditReply(String replyContent, String replyId) {

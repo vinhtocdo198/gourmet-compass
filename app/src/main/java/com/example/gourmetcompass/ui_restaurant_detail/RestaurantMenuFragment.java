@@ -59,16 +59,21 @@ public class RestaurantMenuFragment extends Fragment {
             restaurantId = getArguments().getString("restaurantId");
         }
 
-        progressBar = view.findViewById(R.id.menu_progress_bar);
-        recyclerView = view.findViewById(R.id.menu_layout);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
-        menu = new ArrayList<>();
+        // Init views
+        initViews(view);
 
         // Fetch restaurant menu
         fetchRestaurantMenu();
 
         return view;
+    }
+
+    private void initViews(View view) {
+        progressBar = view.findViewById(R.id.menu_progress_bar);
+        recyclerView = view.findViewById(R.id.menu_layout);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
+        menu = new ArrayList<>();
     }
 
     @Override

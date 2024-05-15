@@ -438,11 +438,13 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                             review.put("timestamp", System.currentTimeMillis());
                             review.put("description", reviewContent);
                             review.put("ratings", ratings);
+                            review.put("reviewerId", reviewerId);
                             review.put("reviewerName", reviewerName);
                             review.put("reviewerAvaUrl", reviewerAvaUrl);
                             review.put("likedUserIds", new ArrayList<String>());
                             review.put("dislikedUserIds", new ArrayList<String>());
                             review.put("restaurantId", restaurantId);
+                            review.put("replyCount", 0);
 
                             // Add review to db
                             db.collection("restaurants")

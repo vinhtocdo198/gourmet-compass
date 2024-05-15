@@ -37,22 +37,37 @@
 
     </LinearLayout>
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/noti_empty_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:ignore="UseCompoundDrawables">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_empty_noti"
+            android:contentDescription="@string/empty" />
+
+        <TextView
+            style="@style/TextFont"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="center"
+            android:layout_marginVertical="@dimen/margin_20"
+            android:text="@string/you_are_all_set"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_20" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/noti_recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+    </LinearLayout>
 
-        </LinearLayout>
-
-    </ScrollView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/noti_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

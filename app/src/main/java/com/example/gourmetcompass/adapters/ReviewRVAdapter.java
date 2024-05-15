@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -119,17 +118,19 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
     }
 
     private void openEditReviewBottomSheet(@NonNull MyViewHolder holder, Review review) {
-        BottomSheetDialog editReviewSheet = new BottomSheetDialog(context, R.style.BottomSheetTheme);
-        View sheetView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_edit_review, holder.itemView.findViewById(R.id.btms_edit_review_container));
-        editReviewSheet.setContentView(sheetView);
-        BottomSheetUtil.openBottomSheet(editReviewSheet);
+        if (user.getUid().equals(review.getReviewerId())) {
+            BottomSheetDialog editReviewSheet = new BottomSheetDialog(context, R.style.BottomSheetTheme);
+            View sheetView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_edit_review, holder.itemView.findViewById(R.id.btms_edit_review_container));
+            editReviewSheet.setContentView(sheetView);
+            BottomSheetUtil.openBottomSheet(editReviewSheet);
 
-        Button editBtn = sheetView.findViewById(R.id.btn_edit_btms_edit_review);
-        Button deleteBtn = sheetView.findViewById(R.id.btn_delete_btms_edit_review);
+            Button editBtn = sheetView.findViewById(R.id.btn_edit_btms_edit_review);
+            Button deleteBtn = sheetView.findViewById(R.id.btn_delete_btms_edit_review);
 
-        editBtn.setOnClickListener(v -> openEditReviewDialog(review, editReviewSheet));
+            editBtn.setOnClickListener(v -> openEditReviewDialog(review, editReviewSheet));
 
-        deleteBtn.setOnClickListener(v -> deleteReview(review, editReviewSheet));
+            deleteBtn.setOnClickListener(v -> deleteReview(review, editReviewSheet));
+        }
     }
 
     private void deleteReview(Review review, BottomSheetDialog editReviewSheet) {
@@ -141,8 +142,6 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(context, "Review deleted", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(context, "Failed to delete review", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -236,8 +235,6 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(context, "Review updated", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(context, "Failed to update review", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -330,6 +327,8 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
             }
         }
 
+        sendDislikeNoti(review);
+
         // Update Firestore
         db.collection("restaurants").document(restaurantId)
                 .collection("reviews").document(review.getId())
@@ -342,6 +341,55 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
                         Log.d(TAG, "Error updating document", task.getException());
                     }
                 });
+    }
+
+    private void sendDislikeNoti(Review review) {
+        if (!user.getUid().equals(review.getReviewerId())) {
+            db.collection("users")
+                    .document(review.getReviewerId())
+                    .collection("notifications")
+                    .whereEqualTo("reviewId", review.getId())
+                    .whereEqualTo("type", "dislike")
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                // No existing dislike noti for this review, create a new one
+                                Map<String, Object> notiMap = new HashMap<>();
+                                notiMap.put("timestamp", System.currentTimeMillis());
+                                notiMap.put("type", "dislike");
+                                notiMap.put("reviewDesc", review.getDescription());
+                                notiMap.put("reviewId", review.getId());
+                                notiMap.put("restaurantId", restaurantId);
+                                notiMap.put("checked", false);
+
+                                db.collection("users")
+                                        .document(review.getReviewerId())
+                                        .collection("notifications")
+                                        .add(notiMap)
+                                        .addOnCompleteListener(task1 -> {
+                                            if (task1.isSuccessful()) {
+                                                Log.d(TAG, "Dislike noti added");
+                                            } else {
+                                                Log.d(TAG, "Failed to add dislike noti", task1.getException());
+                                            }
+                                        });
+                            } else {
+                                // Update existing dislike noti
+                                DocumentSnapshot notiDoc = task.getResult().getDocuments().get(0);
+                                notiDoc.getReference()
+                                        .update("timestamp", System.currentTimeMillis())
+                                        .addOnCompleteListener(task2 -> {
+                                            if (task2.isSuccessful()) {
+                                                Log.d(TAG, "Dislike noti updated");
+                                            } else {
+                                                Log.d(TAG, "Failed to update dislike noti", task2.getException());
+                                            }
+                                        });
+                            }
+                        }
+                    });
+        }
     }
 
     private void likeReview(@NonNull MyViewHolder holder, Review review) {
@@ -360,6 +408,8 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
             }
         }
 
+        sendLikeNoti(review);
+
         // Update Firestore
         db.collection("restaurants").document(restaurantId)
                 .collection("reviews").document(review.getId())
@@ -372,6 +422,55 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
                         Log.d(TAG, "Error updating document", task.getException());
                     }
                 });
+    }
+
+    private void sendLikeNoti(Review review) {
+        if (!user.getUid().equals(review.getReviewerId())) {
+            db.collection("users")
+                    .document(review.getReviewerId())
+                    .collection("notifications")
+                    .whereEqualTo("reviewId", review.getId())
+                    .whereEqualTo("type", "like")
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                // No existing like noti for this review, create a new one
+                                Map<String, Object> notiMap = new HashMap<>();
+                                notiMap.put("timestamp", System.currentTimeMillis());
+                                notiMap.put("type", "like");
+                                notiMap.put("reviewDesc", review.getDescription());
+                                notiMap.put("reviewId", review.getId());
+                                notiMap.put("restaurantId", restaurantId);
+                                notiMap.put("checked", false);
+
+                                db.collection("users")
+                                        .document(review.getReviewerId())
+                                        .collection("notifications")
+                                        .add(notiMap)
+                                        .addOnCompleteListener(task1 -> {
+                                            if (task1.isSuccessful()) {
+                                                Log.d(TAG, "Like noti added");
+                                            } else {
+                                                Log.d(TAG, "Failed to add like noti", task1.getException());
+                                            }
+                                        });
+                            } else {
+                                // Update existing like noti
+                                DocumentSnapshot notiDoc = task.getResult().getDocuments().get(0);
+                                notiDoc.getReference()
+                                        .update("timestamp", System.currentTimeMillis())
+                                        .addOnCompleteListener(task2 -> {
+                                            if (task2.isSuccessful()) {
+                                                Log.d(TAG, "Like noti updated");
+                                            } else {
+                                                Log.d(TAG, "Failed to update like noti", task2.getException());
+                                            }
+                                        });
+                            }
+                        }
+                    });
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -477,7 +576,9 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
                 Toast.makeText(context, "Reply cannot be empty", Toast.LENGTH_SHORT).show();
                 return;
             }
-            replyToReview(review.getId(), replyContent);
+            replyToReview(review, replyContent);
+
+            sendReplyNoti(review);
 
             dialog.dismiss();
         });
@@ -485,7 +586,56 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
         dialog.show();
     }
 
-    private void replyToReview(String reviewId, String replyContent) {
+    private void sendReplyNoti(Review review) {
+        if (!user.getUid().equals(review.getReviewerId())) {
+            db.collection("users")
+                    .document(review.getReviewerId())
+                    .collection("notifications")
+                    .whereEqualTo("reviewId", review.getId())
+                    .whereEqualTo("type", "reply")
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                // No existing reply noti for this review, create a new one
+                                Map<String, Object> notiMap = new HashMap<>();
+                                notiMap.put("timestamp", System.currentTimeMillis());
+                                notiMap.put("type", "reply");
+                                notiMap.put("reviewDesc", review.getDescription());
+                                notiMap.put("reviewId", review.getId());
+                                notiMap.put("restaurantId", restaurantId);
+                                notiMap.put("checked", false);
+
+                                db.collection("users")
+                                        .document(review.getReviewerId())
+                                        .collection("notifications")
+                                        .add(notiMap)
+                                        .addOnCompleteListener(task1 -> {
+                                            if (task1.isSuccessful()) {
+                                                Log.d(TAG, "Reply noti added");
+                                            } else {
+                                                Log.d(TAG, "Failed to add reply noti", task1.getException());
+                                            }
+                                        });
+                            } else {
+                                // Update existing reply noti
+                                DocumentSnapshot notiDoc = task.getResult().getDocuments().get(0);
+                                notiDoc.getReference()
+                                        .update("timestamp", System.currentTimeMillis())
+                                        .addOnCompleteListener(task2 -> {
+                                            if (task2.isSuccessful()) {
+                                                Log.d(TAG, "Reply noti updated");
+                                            } else {
+                                                Log.d(TAG, "Failed to update reply noti", task2.getException());
+                                            }
+                                        });
+                            }
+                        }
+                    });
+        }
+    }
+
+    private void replyToReview(Review review, String replyContent) {
 
         db.collection("users")
                 .document(user.getUid())
@@ -502,21 +652,27 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
                             reply.put("description", replyContent);
                             reply.put("replierName", username);
                             reply.put("replierAvaUrl", userAvaUrl);
+                            reply.put("replierId", user.getUid());
 
                             // Add the reply to Firestore
                             db.collection("restaurants")
                                     .document(restaurantId)
                                     .collection("reviews")
-                                    .document(reviewId)
+                                    .document(review.getId())
                                     .collection("replies")
                                     .add(reply)
                                     .addOnCompleteListener(task1 -> {
                                         if (task1.isSuccessful()) {
                                             Toast.makeText(context, "Reply submitted", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(context, "Failed to submit reply", Toast.LENGTH_SHORT).show();
                                         }
                                     });
+
+                            db.collection("restaurants")
+                                    .document(restaurantId)
+                                    .collection("reviews")
+                                    .document(review.getId())
+                                    .update("replyCount", review.getReplyCount() + 1);
+
                         } else {
                             Log.d(TAG, "No such document");
                         }

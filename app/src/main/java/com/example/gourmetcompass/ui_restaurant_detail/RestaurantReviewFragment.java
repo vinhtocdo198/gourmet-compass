@@ -19,6 +19,8 @@ import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.ReviewRVAdapter;
 import com.example.gourmetcompass.models.Review;
 import com.example.gourmetcompass.utils.FirestoreUtil;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -32,6 +34,7 @@ public class RestaurantReviewFragment extends Fragment {
 
     private static final String TAG = "RestaurantReviewFragment";
     FirebaseFirestore db;
+    FirebaseUser user;
     String restaurantId;
     ArrayList<Review> reviews;
     RecyclerView recyclerView;
@@ -55,7 +58,9 @@ public class RestaurantReviewFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_restaurant_review, container, false);
 
+        // Init firebase services
         db = FirestoreUtil.getInstance().getFirestore();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         // Get the restaurant object from the arguments
         if (getArguments() != null) {
@@ -104,9 +109,18 @@ public class RestaurantReviewFragment extends Fragment {
                                 review.setId(document.getId());
                                 reviews.add(review);
                             }
-//                            adapter = new ReviewRVAdapter(activity, reviews, restaurantId);
-//                            recyclerView.setAdapter(adapter);
-//                            adapter.notifyDataSetChanged();
+
+                            // Sort the reviews so that current user's reviews will be on top
+                            reviews.sort((review1, review2) -> {
+                                if (review1.getReviewerId().equals(user.getUid()) && !review2.getReviewerId().equals(user.getUid())) {
+                                    return -1;
+                                } else if (!review1.getReviewerId().equals(user.getUid()) && review2.getReviewerId().equals(user.getUid())) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+                            });
+
                             if (activity != null) {
                                 if (adapter == null) {
                                     adapter = new ReviewRVAdapter(activity, reviews, restaurantId);
@@ -116,21 +130,22 @@ public class RestaurantReviewFragment extends Fragment {
                                     adapter.notifyDataSetChanged();
                                 }
                             }
+                            setLayout(reviews.size());
                             progressBar.setVisibility(View.GONE);
-
-                            // Show empty icon if there are no reviews
-                            if (reviews.isEmpty()) {
-                                reviewLayout.setVisibility(View.GONE);
-                                reviewEmptyLayout.setVisibility(View.VISIBLE);
-                            } else {
-                                reviewLayout.setVisibility(View.VISIBLE);
-                                reviewEmptyLayout.setVisibility(View.GONE);
-                            }
-
                         } else {
                             Log.d(TAG, "Current data: null");
                         }
                     }
                 });
+    }
+
+    private void setLayout(int size) {
+        if (size == 0) {
+            reviewLayout.setVisibility(View.GONE);
+            reviewEmptyLayout.setVisibility(View.VISIBLE);
+        } else {
+            reviewLayout.setVisibility(View.VISIBLE);
+            reviewEmptyLayout.setVisibility(View.GONE);
+        }
     }
 }
