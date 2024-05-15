@@ -91,6 +91,9 @@
     <string name="top_categories">Top categories</string>
     <string name="_1_result">1 result</string>
     <string name="empty_search">No results</string>
+    <string name="noti_description">noti_description</string>
+    <string name="noti_time">Notification Time</string>
     <string name="show_replies">Show all replies</string>
+
 
 </resources>
