@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/app_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/noti_icon"
+            android:layout_width="@dimen/dish_ava_size"
+            android:layout_height="@dimen/dish_ava_size"
+            android:padding="10dp"
+            />
+        <TextView
+            android:id="@+id/noti_description"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:layout_weight="2"
+            style="@style/TextFont"
+            android:text="@string/noti_description"
+            android:maxLines="3"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            />
+        <TextView
+            android:id="@+id/noti_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|bottom"
+            android:layout_marginHorizontal="10dp"
+            android:layout_weight="1"
+            style="@style/TextFont"
+            android:text="@string/noti_time"
+            android:textSize="16sp"
+            />
+
+
+    </LinearLayout>
+
+</RelativeLayout>
