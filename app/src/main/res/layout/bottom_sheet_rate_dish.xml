@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/dialog_add_review"
+    android:id="@+id/btms_rate_dish_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_dialog"
+    android:background="@drawable/bg_bottom_sheet"
     android:orientation="vertical"
-    android:paddingHorizontal="@dimen/padding_5"
     android:paddingVertical="@dimen/padding_20">
 
     <TextView
@@ -14,12 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/add_a_review"
+        android:text="@string/rate_this_dish"
         android:textColor="@color/title_text"
         android:textSize="@dimen/text_18" />
 
     <RatingBar
-        android:id="@+id/rating_bar_add_review"
+        android:id="@+id/rating_bar_dish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -29,31 +27,15 @@
         android:rating="5"
         android:stepSize="1" />
 
-
-    <EditText
-        android:id="@+id/dialog_text_add_review"
-        style="@style/TextFont"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_10"
-        android:background="@drawable/input_text_field"
-        android:gravity="top|start"
-        android:hint="@string/description"
-        android:inputType="textMultiLine"
-        android:minLines="6"
-        android:padding="@dimen/padding_10"
-        android:textSize="@dimen/text_16"
-        tools:ignore="Autofill" />
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin_40"
+        android:layout_marginTop="@dimen/margin_20"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_cancel_add_review"
+            android:id="@+id/btn_cancel_rate_dish"
             style="@style/TitleFont"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
@@ -66,7 +48,7 @@
             android:textSize="@dimen/text_18" />
 
         <Button
-            android:id="@+id/btn_submit_add_review"
+            android:id="@+id/btn_submit_rate_dish"
             style="@style/TitleFont"
             android:layout_width="130dp"
             android:layout_height="wrap_content"

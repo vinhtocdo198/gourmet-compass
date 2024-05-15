@@ -38,7 +38,7 @@ public class AccountFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseFirestore db;
     StorageReference storageRef;
-    String userId;
+    String userId, avatarUrl;
     User user;
     TextView usernameAppBar;
     ImageView userAvatarAppBar;
@@ -118,6 +118,7 @@ public class AccountFragment extends Fragment {
         myReviewsBtn = view.findViewById(R.id.my_reviews_btn);
         changePasswordBtn = view.findViewById(R.id.change_password_btn);
         requestBtn = view.findViewById(R.id.add_edit_res_btn);
+        requestBtn.setVisibility(View.GONE);
         logoutBtn = view.findViewById(R.id.log_out_btn);
     }
 
@@ -139,38 +140,27 @@ public class AccountFragment extends Fragment {
 
     private void getUserData() {
 
-        storageRef.child("user_images/" + userId + "/avatar/")
-                .getDownloadUrl()
+        db.collection("users")
+                .document(userId)
+                .get()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        avatarUri = task.getResult();
-                        if (getActivity() != null) {
+                    if (task.isSuccessful() && task.getResult().exists()) {
+                        User user = task.getResult().toObject(User.class);
+                        if (user != null && getActivity() != null) {
+                            usernameAppBar.setText(user.getUsername());
                             Glide.with(getActivity())
-                                    .load(avatarUri)
+                                    .load(user.getAvaUrl())
+                                    .placeholder(R.drawable.ic_default_avatar)
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .into(userAvatarAppBar);
+                        } else {
+                            Log.d(TAG, "No such document");
                         }
                     } else {
-                        Log.d(TAG, "getUserInformation: Failed to get avatar");
+                        Log.d(TAG, "get failed with ", task.getException());
                     }
                 });
 
-        db.collection("users").document(userId)
-                .addSnapshotListener((value, error) -> {
-                    if (error != null) {
-                        Log.w(TAG, "getUserInformation: Listen failed.", error);
-                        return;
-                    }
-
-                    if (value != null && value.exists()) {
-                        user = value.toObject(User.class);
-                        if (user != null) {
-                            usernameAppBar.setText(user.getUsername());
-                        }
-                    } else {
-                        Log.d(TAG, "getUserInformation: Current data: null");
-                    }
-                });
     }
 
 }

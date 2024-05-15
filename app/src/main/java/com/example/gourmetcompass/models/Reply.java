@@ -1,18 +1,8 @@
 package com.example.gourmetcompass.models;
 
 public class Reply {
-    String id, replierId, description;
+    String id, replierName, description, replierAvaUrl;
     long timestamp;
-
-    public Reply() {
-    }
-
-    public Reply(String id, String replierId, String description, long timestamp) {
-        this.id = id;
-        this.replierId = replierId;
-        this.description = description;
-        this.timestamp = timestamp;
-    }
 
     public String getId() {
         return id;
@@ -22,12 +12,12 @@ public class Reply {
         this.id = id;
     }
 
-    public String getReplierId() {
-        return replierId;
+    public String getReplierName() {
+        return replierName;
     }
 
-    public void setReplierId(String replierId) {
-        this.replierId = replierId;
+    public void setReplierName(String replierName) {
+        this.replierName = replierName;
     }
 
     public String getDescription() {
@@ -44,5 +34,13 @@ public class Reply {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getReplierAvaUrl() {
+        return replierAvaUrl;
+    }
+
+    public void setReplierAvaUrl(String replierAvaUrl) {
+        this.replierAvaUrl = replierAvaUrl;
     }
 }
