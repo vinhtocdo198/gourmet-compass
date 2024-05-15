@@ -12,7 +12,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,7 +43,7 @@ public class SearchResultActivity extends AppCompatActivity {
     FirebaseFirestore db;
     Client client;
     Index index;
-    ArrayList<Restaurant> restaurantResultList;
+    ArrayList<Restaurant> resResultList;
     RecyclerView recyclerView;
     SearchResultRVAdapter adapter;
     LinearLayout emptyLayout;
@@ -72,20 +71,20 @@ public class SearchResultActivity extends AppCompatActivity {
         // Set search text result and quantity
         searchTextResult.setText(searchQuery);
 
-//        setupFilterBtn(highestRatedBtn);
+        // Show search results
+        fetchSearchResults(new Query(searchQuery).setHitsPerPage(50));
+        setupFilterBtn(highestRatedBtn, "highestRated");
 
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void fetchSearchResults() {
+    private void fetchSearchResults(Query query) {
 
         progressBar.setVisibility(View.VISIBLE);
 
         // Init Algolia client and index
         client = new Client("78N1O9F3YM", "4c4b59f91005ba629915c09271699474");
         index = client.getIndex("restaurants");
-
-        Query query = new Query(searchQuery).setHitsPerPage(50);
 
         index.searchAsync(query, (JSONObject content, AlgoliaException e) -> {
             if (e != null) {
@@ -118,7 +117,7 @@ public class SearchResultActivity extends AppCompatActivity {
                         String objectID = hit.getString("objectID");
                         fetchResFromFirestore(objectID);
                     }
-                    adapter = new SearchResultRVAdapter(this, restaurantResultList);
+                    adapter = new SearchResultRVAdapter(this, resResultList);
                     recyclerView.setAdapter(adapter);
                 }
             } catch (JSONException jsonException) {
@@ -139,7 +138,7 @@ public class SearchResultActivity extends AppCompatActivity {
                             Restaurant restaurant = document.toObject(Restaurant.class);
                             if (restaurant != null) {
                                 restaurant.setId(document.getId());
-                                restaurantResultList.add(restaurant);
+                                resResultList.add(restaurant);
                             }
                         } else {
                             Log.d(TAG, "No such document");
@@ -162,7 +161,7 @@ public class SearchResultActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.res_search_list_progress_bar);
         emptyLayout = findViewById(R.id.empty_search_layout);
         filterScrollView = findViewById(R.id.filter_scroll_view);
-        restaurantResultList = new ArrayList<>();
+        resResultList = new ArrayList<>();
         initRecyclerView();
     }
 
@@ -170,23 +169,28 @@ public class SearchResultActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.res_search_list_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        fetchSearchResults();
     }
 
-    private void setupFilterBtn(Button button) {
-        // Initially, the button is not clicked
-        button.setTag(false);
+    private void setupFilterBtn(Button button, String filter) {
         button.setOnClickListener(v -> {
-            boolean isClicked = (boolean) button.getTag();
-            if (isClicked) {
-                // If the button was previously clicked, reset its background and update its state
-                button.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_filter, null));
-                button.setTag(false);
-            } else {
-                // If the button was not previously clicked, change its background and update its state
-                button.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_filter_full, null));
-                button.setTag(true);
+            ArrayList<Restaurant> filteredList = new ArrayList<>();
+            switch (filter) {
+                case "highestRated":
+                    resResultList.sort((r1, r2) -> {
+                        float rating1 = r1.getRatings().equals("N/A") ? 0 : Float.parseFloat(r1.getRatings());
+                        float rating2 = r2.getRatings().equals("N/A") ? 0 : Float.parseFloat(r2.getRatings());
+                        return Float.compare(rating2, rating1);
+                    });
+                    filteredList = resResultList;
+                    break;
+                // TODO: Implement most reviewed filter
+//                case "mostReviewed":
+//                    resResultList.sort((r1, r2) -> Integer.compare(r2.getReviewCount(), r1.getReviewCount()));
+//                    filteredList = resResultList;
+//                    break;
             }
+            adapter = new SearchResultRVAdapter(SearchResultActivity.this, filteredList);
+            recyclerView.setAdapter(adapter);
         });
     }
 

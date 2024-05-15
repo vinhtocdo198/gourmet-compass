@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.bumptech.glide.Glide;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.BottomSheetCollectionsRVAdapter;
 import com.example.gourmetcompass.adapters.ViewPagerAdapter;
@@ -188,12 +189,17 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         viewPager2 = findViewById(R.id.view_pager);
         tabLayout = findViewById(R.id.tab_layout);
         appBarLayout = findViewById(R.id.app_bar_layout);
-        resImgBg = findViewById(R.id.res_img_bg);
         resDetailContainer = findViewById(R.id.res_detail_container);
         bottomSheets = new ArrayList<>();
         collList = new ArrayList<>();
         searchBarUtil = findViewById(R.id.search_bar_menu);
         searchBarUtil.setVisibility(View.GONE);
+        resImgBg = findViewById(R.id.res_img_bg);
+        Glide.with(RestaurantDetailActivity.this)
+                .load("")
+                .placeholder(R.drawable.bg_shimmer)
+                .centerCrop()
+                .into(resImgBg);
     }
 
     private void openBottomSheet() {
@@ -461,11 +467,48 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                                                         }
                                                     });
 
+                                            updateResRatings();
+
                                             Toast.makeText(RestaurantDetailActivity.this, "Review added", Toast.LENGTH_SHORT).show();
                                         } else {
                                             Toast.makeText(RestaurantDetailActivity.this, "Failed to add review", Toast.LENGTH_SHORT).show();
                                         }
                                     });
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.e(TAG, "Error getting documents", task.getException());
+                    }
+                });
+    }
+
+    private void updateResRatings() {
+        db.collection("restaurants")
+                .document(restaurantId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if (documentSnapshot.exists()) {
+                            Restaurant restaurant = documentSnapshot.toObject(Restaurant.class);
+                            if (restaurant != null) {
+                                float currentRating = restaurant.getRatings().equals("N/A") ? 0 : Float.parseFloat(restaurant.getRatings());
+                                int ratingCount = restaurant.getRatingCount();
+
+                                // Update the restaurant document with the new ratings and rating count
+                                db.collection("restaurants")
+                                        .document(restaurantId)
+                                        .update("ratings", String.valueOf(currentRating)
+                                                , "ratingCount", ratingCount + 1)
+                                        .addOnCompleteListener(updateTask -> {
+                                            if (updateTask.isSuccessful()) {
+                                                Log.d(TAG, "Restaurant ratings and rating count updated successfully");
+                                            } else {
+                                                Log.e(TAG, "Failed to update restaurant ratings and rating count", updateTask.getException());
+                                            }
+                                        });
+                            }
                         } else {
                             Log.d(TAG, "No such document");
                         }

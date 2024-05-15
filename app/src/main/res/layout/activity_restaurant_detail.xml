@@ -19,12 +19,13 @@
         <ImageView
             android:id="@+id/res_img_bg"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="120dp"
+            android:background="@drawable/bg_shimmer"
             android:contentDescription="@string/res_bg_image"
+            android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.example.gourmetcompass.utils.EditTextUtil
             android:id="@+id/search_bar_menu"
@@ -81,7 +82,7 @@
         style="@style/TitleFont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_10"
         android:maxLines="3"
         android:text="@string/restaurant_name"
         android:textAlignment="center"
@@ -96,7 +97,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_20"
-        android:layout_marginTop="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_10"
         android:background="@drawable/border_tab_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

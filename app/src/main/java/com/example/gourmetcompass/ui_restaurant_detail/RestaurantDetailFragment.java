@@ -65,7 +65,13 @@ public class RestaurantDetailFragment extends Fragment {
         addressContent.setText(restaurant.getAddress());
         phoneContent.setText(restaurant.getPhoneNo());
         openHrContent.setText(restaurant.getOpeningHours());
-        ratingsTitle.setText(getString(R.string.ratings_title, restaurant.getRatings()));
+        if (getActivity() != null) {
+            if (restaurant.getRatings().equals("N/A")) {
+                ratingsTitle.setText(getActivity().getString(R.string.ratings_title_na));
+            } else {
+                ratingsTitle.setText(String.format(getActivity().getString(R.string.ratings_title), Float.parseFloat(restaurant.getRatings())));
+            }
+        }
     }
 
     private void initViews(View view) {

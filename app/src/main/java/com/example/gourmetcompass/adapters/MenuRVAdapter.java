@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.example.gourmetcompass.models.Dish;
@@ -72,6 +73,10 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
         holder.dishName.setText(dish.getName());
         holder.dishDesc.setText(dish.getDescription());
         setDishRatings(holder, dish);
+        Glide.with(context)
+                .load("")
+                .placeholder(R.drawable.bg_shimmer)
+                .into(holder.dishImg);
         holder.dishImgBtn.setOnClickListener(v -> openBottomSheet(holder, dish));
     }
 
@@ -418,7 +423,6 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
             dishRatingCount = itemView.findViewById(R.id.dish_rating_count);
             dishImg = itemView.findViewById(R.id.dish_img);
             dishImgBtn = itemView.findViewById(R.id.dish_btn_more);
-            // TODO: Add image here
         }
     }
 }

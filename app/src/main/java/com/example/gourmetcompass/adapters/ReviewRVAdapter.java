@@ -3,6 +3,8 @@ package com.example.gourmetcompass.adapters;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -14,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,10 +30,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.models.Reply;
+import com.example.gourmetcompass.models.Restaurant;
 import com.example.gourmetcompass.models.Review;
+import com.example.gourmetcompass.utils.BottomSheetUtil;
 import com.example.gourmetcompass.utils.ButtonUtil;
 import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.example.gourmetcompass.utils.StorageUtil;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -58,7 +64,6 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
     FirebaseUser user;
     FirebaseFirestore db;
     StorageReference storageRef;
-    Uri reviewerAvaUri;
 
     public ReviewRVAdapter(Context context, ArrayList<Review> reviews, String restaurantId) {
         this.context = context;
@@ -98,13 +103,156 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
         // Set up replies recyclerview
         holder.repliesRV.setLayoutManager(new LinearLayoutManager(context));
         holder.repliesRV.setHasFixedSize(true);
-        setReplyData(holder, review);
+        setReplyData(holder, review, review.getReviewerName());
 
         // Set up buttons
         holder.replyBtn.setOnClickListener(v -> openReplyDialog(review));
         holder.likeBtn.setOnClickListener(v -> likeReview(holder, review));
         holder.dislikeBtn.setOnClickListener(v -> dislikeReview(holder, review));
         setCollapseReplyButton(holder, review);
+
+        // Open edit review bottom sheet
+        holder.itemView.setOnLongClickListener(v -> {
+            openEditReviewBottomSheet(holder, review);
+            return false;
+        });
+    }
+
+    private void openEditReviewBottomSheet(@NonNull MyViewHolder holder, Review review) {
+        BottomSheetDialog editReviewSheet = new BottomSheetDialog(context, R.style.BottomSheetTheme);
+        View sheetView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_edit_review, holder.itemView.findViewById(R.id.btms_edit_review_container));
+        editReviewSheet.setContentView(sheetView);
+        BottomSheetUtil.openBottomSheet(editReviewSheet);
+
+        Button editBtn = sheetView.findViewById(R.id.btn_edit_btms_edit_review);
+        Button deleteBtn = sheetView.findViewById(R.id.btn_delete_btms_edit_review);
+
+        editBtn.setOnClickListener(v -> openEditReviewDialog(review, editReviewSheet));
+
+        deleteBtn.setOnClickListener(v -> deleteReview(review, editReviewSheet));
+    }
+
+    private void deleteReview(Review review, BottomSheetDialog editReviewSheet) {
+        db.collection("restaurants")
+                .document(restaurantId)
+                .collection("reviews")
+                .document(review.getId())
+                .delete()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(context, "Review deleted", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Failed to delete review", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        db.collection("restaurants")
+                .document(restaurantId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().exists()) {
+                            Restaurant restaurant = task.getResult().toObject(Restaurant.class);
+                            if (restaurant != null) {
+                                db.collection("restaurants")
+                                        .document(restaurantId)
+                                        .update("ratingCount", restaurant.getRatingCount() - 1);
+                            }
+                        }
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                });
+
+        db.collection("users")
+                .document(user.getUid())
+                .collection("reviews")
+                .document(review.getId())
+                .delete()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "Review deleted");
+                    } else {
+                        Log.d(TAG, "Failed to delete review", task.getException());
+                    }
+                });
+        editReviewSheet.dismiss();
+    }
+
+    private void openEditReviewDialog(Review review, BottomSheetDialog editReviewSheet) {
+        Dialog reviewDialog = new Dialog(context);
+        reviewDialog.setContentView(R.layout.dialog_add_review);
+
+        // Set the dialog width and height
+        Window window = reviewDialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(window.getAttributes());
+            DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+            layoutParams.width = (int) (metrics.widthPixels * 0.9); // 90% of screen width
+            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            window.setAttributes(layoutParams);
+        }
+        reviewDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        // Init views
+        Button cancelBtn = reviewDialog.findViewById(R.id.btn_cancel_add_review);
+        Button submitBtn = reviewDialog.findViewById(R.id.btn_submit_add_review);
+        EditText reviewTextField = reviewDialog.findViewById(R.id.dialog_text_add_review);
+        RatingBar ratingBar = reviewDialog.findViewById(R.id.rating_bar_add_review);
+
+        // Sett the current review data
+        reviewTextField.setText(review.getDescription());
+        ratingBar.setRating(Float.parseFloat(review.getRatings()));
+
+        cancelBtn.setOnClickListener(v1 -> reviewDialog.dismiss());
+
+        submitBtn.setOnClickListener(v2 -> {
+            String reviewContent = reviewTextField.getText().toString();
+            String ratings = String.valueOf(ratingBar.getRating());
+            if (reviewContent.isEmpty()) {
+                Toast.makeText(context, "Review cannot be empty", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            submitEditReview(reviewContent, ratings, review.getId());
+            reviewDialog.dismiss();
+        });
+
+        reviewDialog.show();
+        editReviewSheet.dismiss();
+    }
+
+    private void submitEditReview(String reviewContent, String ratings, String reviewId) {
+
+        Map<String, Object> updatedReview = new HashMap<>();
+        updatedReview.put("description", reviewContent);
+        updatedReview.put("ratings", ratings);
+
+        db.collection("restaurants")
+                .document(restaurantId)
+                .collection("reviews")
+                .document(reviewId)
+                .update(updatedReview)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(context, "Review updated", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Failed to update review", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        db.collection("users")
+                .document(user.getUid())
+                .collection("reviews")
+                .document(reviewId)
+                .update(updatedReview)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "Review updated");
+                    } else {
+                        Log.d(TAG, "Failed to update review", task.getException());
+                    }
+                });
 
     }
 
@@ -134,7 +282,7 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
         });
     }
 
-    private void setReplyData(@NonNull MyViewHolder holder, Review review) {
+    private void setReplyData(@NonNull MyViewHolder holder, Review review, String reviewerName) {
 
         db.collection("restaurants")
                 .document(restaurantId)
@@ -158,7 +306,7 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
                                 reply.setId(document.getId());
                                 replies.add(reply);
                             }
-                            replyRVAdapter = new ReplyRVAdapter(context, replies, restaurantId, review.getId());
+                            replyRVAdapter = new ReplyRVAdapter(context, replies, restaurantId, review.getId(), reviewerName);
                             holder.repliesRV.setAdapter(replyRVAdapter);
                             replyRVAdapter.notifyDataSetChanged();
                         }
