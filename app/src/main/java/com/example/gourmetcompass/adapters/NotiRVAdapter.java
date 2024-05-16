@@ -81,7 +81,9 @@ public class NotiRVAdapter extends RecyclerView.Adapter<NotiRVAdapter.MyViewHold
         // Navigate to corresponding restaurant when a noti is clicked
         holder.itemView.setOnClickListener(v -> {
             // Check if the review still exists
-            db.collection("reviews")
+            db.collection("users")
+                    .document(user.getUid())
+                    .collection("reviews")
                     .document(noti.getReviewId())
                     .get()
                     .addOnCompleteListener(task -> {
