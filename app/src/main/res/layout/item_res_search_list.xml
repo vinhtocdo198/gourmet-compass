@@ -25,8 +25,8 @@
             <ImageView
                 android:id="@+id/res_search_list_res_img"
                 android:layout_width="@dimen/dish_ava_size"
-                android:layout_height="match_parent"
-                android:background="@drawable/sample_ava"
+                android:layout_height="@dimen/dish_ava_size"
+                android:background="@drawable/bg_shimmer"
                 android:contentDescription="@string/dish_ava"
                 android:scaleType="centerCrop" />
 

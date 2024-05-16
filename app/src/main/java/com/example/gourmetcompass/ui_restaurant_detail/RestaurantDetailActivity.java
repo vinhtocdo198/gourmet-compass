@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -33,6 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.BottomSheetCollectionsRVAdapter;
 import com.example.gourmetcompass.adapters.ViewPagerAdapter;
@@ -41,6 +43,7 @@ import com.example.gourmetcompass.models.MyCollection;
 import com.example.gourmetcompass.models.Restaurant;
 import com.example.gourmetcompass.utils.BottomSheetUtil;
 import com.example.gourmetcompass.utils.EditTextUtil;
+import com.example.gourmetcompass.utils.StorageUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -49,6 +52,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,6 +64,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private final String[] titles = {"Detail", "Menu", "Gallery", "Review"};
     FirebaseFirestore db;
     FirebaseUser user;
+    StorageReference storageRef;
     ViewPagerAdapter viewPagerAdapter;
     TabLayout tabLayout;
     ViewPager2 viewPager2;
@@ -85,6 +90,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         if (user != null) {
             reviewerId = user.getUid();
         }
+        storageRef = StorageUtil.getInstance().getStorage().getReference();
 
         // Get restaurant id from intent
         restaurantId = getIntent().getStringExtra("restaurantId");
@@ -195,11 +201,26 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         searchBarUtil = findViewById(R.id.search_bar_menu);
         searchBarUtil.setVisibility(View.GONE);
         resImgBg = findViewById(R.id.res_img_bg);
-        Glide.with(RestaurantDetailActivity.this)
-                .load("")
-                .placeholder(R.drawable.bg_shimmer)
-                .centerCrop()
-                .into(resImgBg);
+        getResBgImg();
+    }
+
+    private void getResBgImg() {
+        storageRef.child("res_images/" + restaurantId + "/app_bar/app_bar.jpg")
+                .getDownloadUrl()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Uri resBgUrl = task.getResult();
+                        Log.d(TAG, "getResBgImg: " + resBgUrl);
+                        Glide.with(RestaurantDetailActivity.this)
+                                .load(resBgUrl)
+                                .placeholder(R.drawable.bg_shimmer)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .centerCrop()
+                                .into(resImgBg);
+                    } else {
+                        Log.e(TAG, "Failed to fetch restaurant background image", task.getException());
+                    }
+                });
     }
 
     private void openBottomSheet() {

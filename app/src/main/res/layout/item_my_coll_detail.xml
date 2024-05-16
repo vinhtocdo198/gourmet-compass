@@ -26,7 +26,7 @@
                 android:id="@+id/my_coll_detail_ava"
                 android:layout_width="@dimen/dish_ava_size"
                 android:layout_height="@dimen/dish_ava_size"
-                android:background="@drawable/sample_ava"
+                android:background="@drawable/bg_shimmer"
                 android:contentDescription="@string/dish_ava"
                 android:scaleType="centerCrop" />
 

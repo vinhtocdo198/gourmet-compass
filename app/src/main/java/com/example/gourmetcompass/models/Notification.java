@@ -1,7 +1,7 @@
 package com.example.gourmetcompass.models;
 
 public class Notification {
-    String id, restaurantId, reviewDesc, type;
+    String id, restaurantId, reviewDesc, reviewId, type;
     long timestamp;
     boolean checked;
 
@@ -27,6 +27,14 @@ public class Notification {
 
     public void setReviewDesc(String reviewDesc) {
         this.reviewDesc = reviewDesc;
+    }
+
+    public String getReviewId() {
+        return reviewId;
+    }
+
+    public void setReviewId(String reviewId) {
+        this.reviewId = reviewId;
     }
 
     public String getType() {

@@ -2,6 +2,7 @@ package com.example.gourmetcompass.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +19,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.example.gourmetcompass.models.Dish;
 import com.example.gourmetcompass.models.MyCollection;
 import com.example.gourmetcompass.utils.BottomSheetUtil;
 import com.example.gourmetcompass.utils.EditTextUtil;
+import com.example.gourmetcompass.utils.StorageUtil;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +34,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +48,7 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
     ArrayList<BottomSheetDialog> bottomSheets;
     FirebaseFirestore db;
     FirebaseUser user;
+    StorageReference storageRef;
     ArrayList<MyCollection> collList;
     String restaurantId;
 
@@ -67,17 +72,33 @@ public class MenuRVAdapter extends RecyclerView.Adapter<MenuRVAdapter.MyViewHold
         // Init firebase services
         db = FirestoreUtil.getInstance().getFirestore();
         user = FirebaseAuth.getInstance().getCurrentUser();
+        storageRef = StorageUtil.getInstance().getStorage().getReference();
 
         bottomSheets = new ArrayList<>();
         collList = new ArrayList<>();
         holder.dishName.setText(dish.getName());
         holder.dishDesc.setText(dish.getDescription());
         setDishRatings(holder, dish);
-        Glide.with(context)
-                .load("")
-                .placeholder(R.drawable.bg_shimmer)
-                .into(holder.dishImg);
+        getDishThumbnailImg(holder, dish);
         holder.dishImgBtn.setOnClickListener(v -> openBottomSheet(holder, dish));
+    }
+
+    private void getDishThumbnailImg(@NonNull MyViewHolder holder, Dish dish) {
+        storageRef.child("res_images/" + restaurantId + "/menu/" + dish.getId() + ".jpg")
+                .getDownloadUrl()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Uri resBgUrl = task.getResult();
+                        Glide.with(context)
+                                .load(resBgUrl)
+                                .placeholder(R.drawable.bg_shimmer)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .centerCrop()
+                                .into(holder.dishImg);
+                    } else {
+                        Log.e(TAG, "Failed to fetch restaurant background image", task.getException());
+                    }
+                });
     }
 
     private void setDishRatings(@NonNull MyViewHolder holder, Dish dish) {

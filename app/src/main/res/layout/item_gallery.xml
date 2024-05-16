@@ -13,6 +13,6 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/gallery_img"
         android:scaleType="centerCrop"
-        android:src="@drawable/sample_ava" />
+        android:src="@drawable/bg_shimmer" />
 
 </androidx.cardview.widget.CardView>

@@ -6,10 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gourmetcompass.MainActivity;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.HomeRVAdapter;
-import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.example.gourmetcompass.models.Restaurant;
+import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,28 +33,25 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment {
 
     FirebaseFirestore db;
-    ImageButton searchImgBtn;
+    ImageView searchImgBtn;
+    ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        searchImgBtn = view.findViewById(R.id.search_bar_home);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Init db instance
         db = FirestoreUtil.getInstance().getFirestore();
 
+        searchImgBtn = view.findViewById(R.id.search_bar_home);
+        progressBar = view.findViewById(R.id.home_progress_bar);
+
         // Fetch data from db into 3 RecyclerViews
         initGourmetsChoiceRV(view.findViewById(R.id.first_scroll));
-        initTopRatedRV(view.findViewById(R.id.second_scroll));
-        initNewlyOpenedRV(view.findViewById(R.id.third_scroll));
+        initTopReviewedRV(view.findViewById(R.id.second_scroll));
+        initOlderWiserRV(view.findViewById(R.id.third_scroll));
 
         // Navigate to browse fragment
         searchImgBtn.setOnClickListener(v -> {
@@ -68,9 +65,10 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        return view;
     }
 
-    private void initNewlyOpenedRV(@NonNull RecyclerView recyclerView) {
+    private void initOlderWiserRV(@NonNull RecyclerView recyclerView) {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
@@ -78,11 +76,12 @@ public class HomeFragment extends Fragment {
         HomeRVAdapter adapter = new HomeRVAdapter(getContext(), list);
         recyclerView.setAdapter(adapter);
 
-        getNewlyOpenedRes(list, adapter);
+        getOlderWiserRes(list, adapter);
     }
 
-    private void getNewlyOpenedRes(ArrayList<Restaurant> list, HomeRVAdapter adapter) {
+    private void getOlderWiserRes(ArrayList<Restaurant> list, HomeRVAdapter adapter) {
         db.collection("restaurants")
+                .orderBy("timestamp", Query.Direction.ASCENDING)
                 .limit(10)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -115,6 +114,9 @@ public class HomeFragment extends Fragment {
     }
 
     private void getGourmetsChoiceRes(ArrayList<Restaurant> list, HomeRVAdapter adapter) {
+
+        progressBar.setVisibility(View.VISIBLE);
+
         db.collection("restaurants")
                 .limit(10)
                 .get()
@@ -126,9 +128,12 @@ public class HomeFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Restaurant restaurant = document.toObject(Restaurant.class);
                                 restaurant.setId(document.getId());
+                                restaurant.setRatings(restaurant.getRatings().equals("N/A") ? "0" : restaurant.getRatings());
                                 list.add(restaurant);
                             }
+                            list.sort((r1, r2) -> Float.compare(Float.parseFloat(r2.getRatings()), Float.parseFloat(r1.getRatings())));
                             adapter.notifyDataSetChanged();
+                            progressBar.setVisibility(View.GONE);
                         } else {
                             Log.d("Firestore error", "Error getting documents: ", task.getException());
                         }
@@ -136,7 +141,7 @@ public class HomeFragment extends Fragment {
                 });
     }
 
-    private void initTopRatedRV(@NonNull RecyclerView recyclerView) {
+    private void initTopReviewedRV(@NonNull RecyclerView recyclerView) {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
@@ -144,12 +149,12 @@ public class HomeFragment extends Fragment {
         HomeRVAdapter adapter = new HomeRVAdapter(getContext(), list);
         recyclerView.setAdapter(adapter);
 
-        getTopRatedRes(list, adapter);
+        getTopReviewedRes(list, adapter);
     }
 
-    private void getTopRatedRes(ArrayList<Restaurant> list, HomeRVAdapter adapter) {
+    private void getTopReviewedRes(ArrayList<Restaurant> list, HomeRVAdapter adapter) {
         db.collection("restaurants")
-                .orderBy("ratings", Query.Direction.DESCENDING)
+                .orderBy("ratingCount", Query.Direction.DESCENDING)
                 .limit(10)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
