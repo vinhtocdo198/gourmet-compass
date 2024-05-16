@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -14,11 +13,11 @@
         android:elevation="10dp"
         app:cardCornerRadius="20dp">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/res_img_home"
             android:layout_width="@dimen/res_img_home_size"
             android:layout_height="@dimen/res_img_home_size"
-            android:background="@drawable/sample_ava"
+            android:background="@drawable/bg_shimmer"
             android:contentDescription="@string/dish_ava"
             android:scaleType="centerCrop" />
 

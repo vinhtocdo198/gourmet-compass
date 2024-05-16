@@ -40,5 +40,6 @@
     <dimen name="coll_ava_size">50dp</dimen>
     <dimen name="res_img_home_size">100dp</dimen>
     <dimen name="user_ava_size">120dp</dimen>
+    <dimen name="noti_icon_size">65dp</dimen>
 
 </resources>

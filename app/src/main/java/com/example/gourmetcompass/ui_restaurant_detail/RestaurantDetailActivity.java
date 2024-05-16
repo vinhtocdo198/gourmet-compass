@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -32,6 +33,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.BottomSheetCollectionsRVAdapter;
 import com.example.gourmetcompass.adapters.ViewPagerAdapter;
@@ -40,6 +43,7 @@ import com.example.gourmetcompass.models.MyCollection;
 import com.example.gourmetcompass.models.Restaurant;
 import com.example.gourmetcompass.utils.BottomSheetUtil;
 import com.example.gourmetcompass.utils.EditTextUtil;
+import com.example.gourmetcompass.utils.StorageUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -48,6 +52,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,6 +64,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private final String[] titles = {"Detail", "Menu", "Gallery", "Review"};
     FirebaseFirestore db;
     FirebaseUser user;
+    StorageReference storageRef;
     ViewPagerAdapter viewPagerAdapter;
     TabLayout tabLayout;
     ViewPager2 viewPager2;
@@ -84,6 +90,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         if (user != null) {
             reviewerId = user.getUid();
         }
+        storageRef = StorageUtil.getInstance().getStorage().getReference();
 
         // Get restaurant id from intent
         restaurantId = getIntent().getStringExtra("restaurantId");
@@ -188,12 +195,32 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         viewPager2 = findViewById(R.id.view_pager);
         tabLayout = findViewById(R.id.tab_layout);
         appBarLayout = findViewById(R.id.app_bar_layout);
-        resImgBg = findViewById(R.id.res_img_bg);
         resDetailContainer = findViewById(R.id.res_detail_container);
         bottomSheets = new ArrayList<>();
         collList = new ArrayList<>();
         searchBarUtil = findViewById(R.id.search_bar_menu);
         searchBarUtil.setVisibility(View.GONE);
+        resImgBg = findViewById(R.id.res_img_bg);
+        getResBgImg();
+    }
+
+    private void getResBgImg() {
+        storageRef.child("res_images/" + restaurantId + "/app_bar/app_bar.jpg")
+                .getDownloadUrl()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Uri resBgUrl = task.getResult();
+                        Log.d(TAG, "getResBgImg: " + resBgUrl);
+                        Glide.with(RestaurantDetailActivity.this)
+                                .load(resBgUrl)
+                                .placeholder(R.drawable.bg_shimmer)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .centerCrop()
+                                .into(resImgBg);
+                    } else {
+                        Log.e(TAG, "Failed to fetch restaurant background image", task.getException());
+                    }
+                });
     }
 
     private void openBottomSheet() {
@@ -432,11 +459,13 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                             review.put("timestamp", System.currentTimeMillis());
                             review.put("description", reviewContent);
                             review.put("ratings", ratings);
+                            review.put("reviewerId", reviewerId);
                             review.put("reviewerName", reviewerName);
                             review.put("reviewerAvaUrl", reviewerAvaUrl);
                             review.put("likedUserIds", new ArrayList<String>());
                             review.put("dislikedUserIds", new ArrayList<String>());
                             review.put("restaurantId", restaurantId);
+                            review.put("replyCount", 0);
 
                             // Add review to db
                             db.collection("restaurants")
@@ -461,11 +490,48 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                                                         }
                                                     });
 
+                                            updateResRatings();
+
                                             Toast.makeText(RestaurantDetailActivity.this, "Review added", Toast.LENGTH_SHORT).show();
                                         } else {
                                             Toast.makeText(RestaurantDetailActivity.this, "Failed to add review", Toast.LENGTH_SHORT).show();
                                         }
                                     });
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.e(TAG, "Error getting documents", task.getException());
+                    }
+                });
+    }
+
+    private void updateResRatings() {
+        db.collection("restaurants")
+                .document(restaurantId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if (documentSnapshot.exists()) {
+                            Restaurant restaurant = documentSnapshot.toObject(Restaurant.class);
+                            if (restaurant != null) {
+                                float currentRating = restaurant.getRatings().equals("N/A") ? 0 : Float.parseFloat(restaurant.getRatings());
+                                int ratingCount = restaurant.getRatingCount();
+
+                                // Update the restaurant document with the new ratings and rating count
+                                db.collection("restaurants")
+                                        .document(restaurantId)
+                                        .update("ratings", String.valueOf(currentRating)
+                                                , "ratingCount", ratingCount + 1)
+                                        .addOnCompleteListener(updateTask -> {
+                                            if (updateTask.isSuccessful()) {
+                                                Log.d(TAG, "Restaurant ratings and rating count updated successfully");
+                                            } else {
+                                                Log.e(TAG, "Failed to update restaurant ratings and rating count", updateTask.getException());
+                                            }
+                                        });
+                            }
                         } else {
                             Log.d(TAG, "No such document");
                         }

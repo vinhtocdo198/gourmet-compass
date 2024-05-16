@@ -1,7 +1,13 @@
 package com.example.gourmetcompass.models;
 
+import java.util.ArrayList;
+
 public class Restaurant {
-    private String id, name, description, address, phoneNo, openingHours, ratings, category, tag;
+    String id, name, description, address, phoneNo, openingHours, ratings, category, tag;
+    String resThumbnail, resAppBar;
+    ArrayList<String> resGallery;
+    int ratingCount;
+
     boolean isGourmetsChoice;
 
     public String getId() {
@@ -60,6 +66,14 @@ public class Restaurant {
         this.ratings = ratings;
     }
 
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
+    }
+
     public String getCategory() {
         return category;
     }
@@ -82,6 +96,30 @@ public class Restaurant {
 
     public void setGourmetsChoice(boolean gourmetsChoice) {
         isGourmetsChoice = gourmetsChoice;
+    }
+
+    public String getResThumbnail() {
+        return resThumbnail;
+    }
+
+    public void setResThumbnail(String resThumbnail) {
+        this.resThumbnail = resThumbnail;
+    }
+
+    public String getResAppBar() {
+        return resAppBar;
+    }
+
+    public void setResAppBar(String resAppBar) {
+        this.resAppBar = resAppBar;
+    }
+
+    public ArrayList<String> getResGallery() {
+        return resGallery;
+    }
+
+    public void setResGallery(ArrayList<String> resGallery) {
+        this.resGallery = resGallery;
     }
 
 }

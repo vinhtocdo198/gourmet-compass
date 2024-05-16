@@ -1,16 +1,21 @@
 package com.example.gourmetcompass.ui_personal;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gourmetcompass.MainActivity;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.MyReviewsRVAdapter;
 import com.example.gourmetcompass.utils.FirestoreUtil;
@@ -25,13 +30,16 @@ import java.util.ArrayList;
 public class MyReviewsActivity extends AppCompatActivity {
 
     private static final String TAG = "MyReviewsActivity";
-    ImageButton backBtn, searchBtn;
+    ImageButton backBtn;
+    Button addBtn;
     FirebaseFirestore db;
     FirebaseUser user;
     RecyclerView recyclerView;
     MyReviewsRVAdapter adapter;
     ProgressBar progressBar;
     ArrayList<Review> reviewList;
+    LinearLayout myReviewsEmptyLayout;
+    RelativeLayout myReviewsLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +53,7 @@ public class MyReviewsActivity extends AppCompatActivity {
         // Init views
         initViews();
 
+        // Fetch review data
         fetchReviewData();
 
         backBtn.setOnClickListener(v -> {
@@ -52,17 +61,21 @@ public class MyReviewsActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
         });
 
-        searchBtn.setOnClickListener(v -> {
-            // Search
+        addBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(MyReviewsActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         });
 
     }
 
     private void initViews() {
         backBtn = findViewById(R.id.btn_back_my_reviews);
-        searchBtn = findViewById(R.id.btn_search_my_reviews);
+        addBtn = findViewById(R.id.my_reviews_btn_add);
         recyclerView = findViewById(R.id.my_reviews_recyclerview);
         progressBar = findViewById(R.id.my_reviews_progress_bar);
+        myReviewsEmptyLayout = findViewById(R.id.my_reviews_empty_layout);
+        myReviewsLayout = findViewById(R.id.my_reviews_layout);
         initRecyclerView();
     }
 
@@ -78,18 +91,32 @@ public class MyReviewsActivity extends AppCompatActivity {
     private void fetchReviewData() {
         db.collection("users").document(user.getUid())
                 .collection("reviews")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Log.w(TAG, "Listen failed.", error);
+                        return;
+                    }
+
+                    reviewList.clear();
+                    if (value != null) {
+                        for (QueryDocumentSnapshot document : value) {
                             Review review = document.toObject(Review.class);
                             reviewList.add(review);
                         }
-                        adapter.notifyDataSetChanged();
-                        progressBar.setVisibility(View.GONE);
-                    } else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
                     }
+                    setLayout(reviewList.size());
+                    adapter.notifyDataSetChanged();
+                    progressBar.setVisibility(View.GONE);
                 });
+    }
+
+    public void setLayout(int size) {
+        if (size == 0) {
+            myReviewsLayout.setVisibility(View.GONE);
+            myReviewsEmptyLayout.setVisibility(View.VISIBLE);
+        } else {
+            myReviewsLayout.setVisibility(View.VISIBLE);
+            myReviewsEmptyLayout.setVisibility(View.GONE);
+        }
     }
 }

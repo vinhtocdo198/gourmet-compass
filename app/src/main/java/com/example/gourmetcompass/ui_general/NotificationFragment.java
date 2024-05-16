@@ -1,66 +1,170 @@
 package com.example.gourmetcompass.ui_general;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import java.util.concurrent.TimeUnit;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gourmetcompass.R;
+import com.example.gourmetcompass.adapters.NotiRVAdapter;
+import com.example.gourmetcompass.models.Notification;
+import com.example.gourmetcompass.utils.FirestoreUtil;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NotificationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
 public class NotificationFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public NotificationFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NotificationFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static NotificationFragment newInstance(String param1, String param2) {
-        NotificationFragment fragment = new NotificationFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private static final String TAG = "NotificationFragment";
+    FirebaseFirestore db;
+    FirebaseUser user;
+    ArrayList<Notification> notiList;
+    RecyclerView recyclerView;
+    NotiRVAdapter adapter;
+    ImageButton checkBtn;
+    LinearLayout emptyLayout;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_notification, container, false);
+
+        // Init firebase services
+        db = FirestoreUtil.getInstance().getFirestore();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        // Init views
+        initViews(view);
+
+        // Fetch notifications
+        fetchNotifications();
+
+        // Mark all notifications as read
+        checkBtn.setOnClickListener(v -> markAllNotiAsRead());
+
+        return view;
+    }
+
+    private void markAllNotiAsRead() {
+        for (Notification noti : notiList) {
+            db.collection("users")
+                    .document(user.getUid())
+                    .collection("notifications")
+                    .document(noti.getId())
+                    .update("checked", true);
+        }
+        Toast.makeText(getContext(), "All notifications are marked as read", Toast.LENGTH_SHORT).show();
+    }
+
+    private void initViews(View view) {
+        checkBtn = view.findViewById(R.id.btn_check_noti);
+        emptyLayout = view.findViewById(R.id.noti_empty_layout);
+        recyclerView = view.findViewById(R.id.noti_recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
+        notiList = new ArrayList<>();
+    }
+
+    private void showNotiBadge() {
+        if (getActivity() != null) {
+            BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottomNavigationView);
+            BadgeDrawable badge = bottomNav.getOrCreateBadge(R.id.noti_fragment);
+            badge.setVisible(true);
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notification, container, false);
+    private void hideNotiBadge() {
+        if (getActivity() != null) {
+            BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottomNavigationView);
+            BadgeDrawable badge = bottomNav.getBadge(R.id.noti_fragment);
+            if (badge != null) {
+                badge.setVisible(false);
+                bottomNav.removeBadge(R.id.noti_fragment);
+            }
+        }
+    }
+
+    private void fetchNotifications() {
+
+        db.collection("users")
+                .document(user.getUid())
+                .collection("notifications")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        return;
+                    }
+                    notiList.clear();
+                    boolean allRead = true;
+                    if (value != null) {
+                        for (DocumentSnapshot doc : value.getDocuments()) {
+                            Notification noti = doc.toObject(Notification.class);
+                            if (noti != null) {
+                                noti.setId(doc.getId());
+                                if (!noti.isChecked()) {
+                                    allRead = false;
+                                }
+
+                                // Delete notifications that are older than 30 days
+                                if (System.currentTimeMillis() - noti.getTimestamp() > TimeUnit.DAYS.toMillis(30)) {
+                                    deleteOldNoti(noti);
+                                } else {
+                                    notiList.add(noti);
+                                }
+                            }
+                        }
+                    }
+
+                    // Show or hide the notification badge
+                    if (allRead) {
+                        hideNotiBadge();
+                    } else {
+                        showNotiBadge();
+                    }
+
+                    checkBtn.setEnabled(!allRead);
+                    setLayout(notiList.size());
+                    adapter = new NotiRVAdapter(getContext(), notiList);
+                    recyclerView.setAdapter(adapter);
+                });
+    }
+
+    private void deleteOldNoti(Notification noti) {
+        db.collection("users")
+                .document(user.getUid())
+                .collection("notifications")
+                .document(noti.getId())
+                .delete()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "Old notifications deleted");
+                    }
+                });
+    }
+
+    private void setLayout(int size) {
+        if (size == 0) {
+            recyclerView.setVisibility(View.GONE);
+            emptyLayout.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyLayout.setVisibility(View.GONE);
+        }
     }
 }

@@ -12,7 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,13 +38,13 @@ public class SearchResultActivity extends AppCompatActivity {
     private static final String TAG = "SearchResultActivity";
     String searchQuery;
     TextView searchTextResult, resultQuantity;
-    Button highestRatedBtn, mostReviewedBtn, nearestBtn;
+    Button highestRatedBtn, mostReviewedBtn;
     ImageButton backBtn;
     ProgressBar progressBar;
     FirebaseFirestore db;
     Client client;
     Index index;
-    ArrayList<Restaurant> restaurantResultList;
+    ArrayList<Restaurant> resResultList;
     RecyclerView recyclerView;
     SearchResultRVAdapter adapter;
     LinearLayout emptyLayout;
@@ -72,20 +72,27 @@ public class SearchResultActivity extends AppCompatActivity {
         // Set search text result and quantity
         searchTextResult.setText(searchQuery);
 
-//        setupFilterBtn(highestRatedBtn);
+        // Show search results
+        fetchSearchResults(new Query(searchQuery).setHitsPerPage(50));
 
+        // Set up filters
+        setupFilterBtn(highestRatedBtn, "highestRated",
+                R.drawable.ic_star_filter_on, R.drawable.ic_star_filter_off
+        );
+
+        setupFilterBtn(mostReviewedBtn, "mostReviewed",
+                R.drawable.ic_edit_filter_on, R.drawable.ic_edit_filter_off
+        );
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void fetchSearchResults() {
+    private void fetchSearchResults(Query query) {
 
         progressBar.setVisibility(View.VISIBLE);
 
         // Init Algolia client and index
         client = new Client("78N1O9F3YM", "4c4b59f91005ba629915c09271699474");
         index = client.getIndex("restaurants");
-
-        Query query = new Query(searchQuery).setHitsPerPage(50);
 
         index.searchAsync(query, (JSONObject content, AlgoliaException e) -> {
             if (e != null) {
@@ -113,12 +120,13 @@ public class SearchResultActivity extends AppCompatActivity {
                         emptyLayout.setVisibility(View.GONE);
                     }
 
+                    resResultList.clear();
                     for (int i = 0; i < hits.length(); i++) {
                         JSONObject hit = hits.getJSONObject(i);
                         String objectID = hit.getString("objectID");
                         fetchResFromFirestore(objectID);
                     }
-                    adapter = new SearchResultRVAdapter(this, restaurantResultList);
+                    adapter = new SearchResultRVAdapter(this, resResultList);
                     recyclerView.setAdapter(adapter);
                 }
             } catch (JSONException jsonException) {
@@ -139,7 +147,7 @@ public class SearchResultActivity extends AppCompatActivity {
                             Restaurant restaurant = document.toObject(Restaurant.class);
                             if (restaurant != null) {
                                 restaurant.setId(document.getId());
-                                restaurantResultList.add(restaurant);
+                                resResultList.add(restaurant);
                             }
                         } else {
                             Log.d(TAG, "No such document");
@@ -157,12 +165,11 @@ public class SearchResultActivity extends AppCompatActivity {
         resultQuantity = findViewById(R.id.result_quantity);
         highestRatedBtn = findViewById(R.id.highest_rated_filter);
         mostReviewedBtn = findViewById(R.id.most_reviewed_filter);
-        nearestBtn = findViewById(R.id.nearest_filter);
         backBtn = findViewById(R.id.btn_back_res_search_list);
         progressBar = findViewById(R.id.res_search_list_progress_bar);
         emptyLayout = findViewById(R.id.empty_search_layout);
         filterScrollView = findViewById(R.id.filter_scroll_view);
-        restaurantResultList = new ArrayList<>();
+        resResultList = new ArrayList<>();
         initRecyclerView();
     }
 
@@ -170,24 +177,45 @@ public class SearchResultActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.res_search_list_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        fetchSearchResults();
     }
 
-    private void setupFilterBtn(Button button) {
-        // Initially, the button is not clicked
-        button.setTag(false);
+    private void setupFilterBtn(Button button, String filter, int icFilterOn, int icFilterOff) {
+        boolean[] isFilterOn = {false};
+
         button.setOnClickListener(v -> {
-            boolean isClicked = (boolean) button.getTag();
-            if (isClicked) {
-                // If the button was previously clicked, reset its background and update its state
-                button.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_filter, null));
-                button.setTag(false);
+            isFilterOn[0] = !isFilterOn[0];
+            if (isFilterOn[0]) {
+                button.setBackgroundResource(R.drawable.btn_filter_full);
+                button.setTextColor(ContextCompat.getColor(SearchResultActivity.this, R.color.white));
+                button.setCompoundDrawablesWithIntrinsicBounds(icFilterOn, 0, 0, 0);
+                fetchFilteredResults(filter);
             } else {
-                // If the button was not previously clicked, change its background and update its state
-                button.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_filter_full, null));
-                button.setTag(true);
+                button.setBackgroundResource(R.drawable.btn_filter);
+                button.setTextColor(ContextCompat.getColor(SearchResultActivity.this, R.color.content_text));
+                button.setCompoundDrawablesWithIntrinsicBounds(icFilterOff, 0, 0, 0);
+                fetchSearchResults(new Query(searchQuery).setHitsPerPage(50));
             }
         });
+    }
+
+    private void fetchFilteredResults(String filter) {
+        ArrayList<Restaurant> filteredList = new ArrayList<>();
+        switch (filter) {
+            case "highestRated":
+                resResultList.sort((r1, r2) -> {
+                    float rating1 = r1.getRatings().equals("N/A") ? 0 : Float.parseFloat(r1.getRatings());
+                    float rating2 = r2.getRatings().equals("N/A") ? 0 : Float.parseFloat(r2.getRatings());
+                    return Float.compare(rating2, rating1);
+                });
+                filteredList = resResultList;
+                break;
+            case "mostReviewed":
+                resResultList.sort((r1, r2) -> Integer.compare(r2.getRatingCount(), r1.getRatingCount()));
+                filteredList = resResultList;
+                break;
+        }
+        adapter = new SearchResultRVAdapter(SearchResultActivity.this, filteredList);
+        recyclerView.setAdapter(adapter);
     }
 
 }

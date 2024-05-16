@@ -21,6 +21,7 @@
     <string name="icon">Icon</string>
     <string name="react_count">(%1$d)</string>
     <string name="rating_count">(%1$d)</string>
+    <string name="item_ratings">%.1f</string>
     <string name="ratings">%1$s</string>
     <string name="add_to_collection">Add to collection</string>
     <string name="add_a_review">Add a review</string>
@@ -40,8 +41,8 @@
     <string name="pizza">Pizza</string>
     <string name="navigate_to_browse">Navigate_To_Browse</string>
     <string name="background_home_img">background_home_img</string>
-    <string name="newly_opened">Newly opened</string>
-    <string name="top_rated">Top rated</string>
+    <string name="older_wiser">The older, the wiser</string>
+    <string name="top_reviewed">Top reviewed</string>
     <string name="home">Home</string>
     <string name="browse">Browse</string>
     <string name="map">Map</string>
@@ -83,8 +84,11 @@
     <string name="add_your_first_collection">Add your first collection!</string>
     <string name="default_web_client_id">374546131077-cbp3d6id9u8cq7kvo0mp9qmu7e4cng8i.apps.googleusercontent.com</string>
     <string name="no_items">You have no items for now</string>
+    <string name="no_reviews">You have no reviews for now</string>
     <string name="add_some_items">Add some items here</string>
-    <string name="ratings_title">Ratings (%1$s/5.0)</string>
+    <string name="add_some_reviews">Write your first review</string>
+    <string name="ratings_title">Ratings (%.1f/5.0)</string>
+    <string name="ratings_title_na">Ratings (N/A)</string>
     <string name="first_to_review">Be the first person to write a review</string>
     <string name="rename_collection">Rename collection</string>
     <string name="delete_collection">Delete collection</string>
@@ -92,8 +96,17 @@
     <string name="_1_result">1 result</string>
     <string name="empty_search">No results</string>
     <string name="noti_description">noti_description</string>
-    <string name="noti_time">Notification Time</string>
     <string name="show_replies">Show all replies</string>
+    <string name="edit_review">Edit review</string>
+    <string name="delete_review">Delete review</string>
+    <string name="edit_reply">Edit reply</string>
+    <string name="delete_reply">Delete reply</string>
+    <string name="replying_to">"Replying to "</string>
+    <string name="in_res_name">in %1$s</string>
+    <string name="liked_review">Someone liked your review</string>
+    <string name="disliked_review">Someone disliked your review</string>
+    <string name="replied_review">Someone replied to your review</string>
+    <string name="you_are_all_set">You are all set!</string>
 
 
 </resources>

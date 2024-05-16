@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.example.gourmetcompass.models.Dish;
@@ -24,11 +27,13 @@ import com.example.gourmetcompass.models.Restaurant;
 import com.example.gourmetcompass.ui_personal.MyCollectionDetailActivity;
 import com.example.gourmetcompass.ui_restaurant_detail.RestaurantDetailActivity;
 import com.example.gourmetcompass.utils.BottomSheetUtil;
+import com.example.gourmetcompass.utils.StorageUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -39,6 +44,7 @@ public class MyCollectionDetailRVAdapter extends RecyclerView.Adapter<MyCollecti
     ArrayList<Object> itemList;
     FirebaseFirestore db;
     FirebaseUser user;
+    StorageReference storageRef;
     String userId, collectionId;
 
     public MyCollectionDetailRVAdapter(Context context, ArrayList<Object> itemList, String collectionId) {
@@ -64,12 +70,15 @@ public class MyCollectionDetailRVAdapter extends RecyclerView.Adapter<MyCollecti
         if (user != null) {
             userId = user.getUid();
         }
+        storageRef = StorageUtil.getInstance().getStorage().getReference();
 
         if (item instanceof Restaurant) {
             Restaurant restaurant = (Restaurant) item;
+            getResThumbnailImg(holder, restaurant);
             holder.itemName.setText(restaurant.getName());
             holder.itemDesc.setText(restaurant.getDescription());
-            setResRatings(holder, (Restaurant) item);
+            holder.itemRatingCount.setText(String.format(context.getString(R.string.rating_count), restaurant.getRatingCount()));
+            holder.itemRatings.setText(restaurant.getRatings());
             holder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(holder.itemView.getContext(), RestaurantDetailActivity.class);
                 intent.putExtra("restaurantId", restaurant.getId());
@@ -80,10 +89,11 @@ public class MyCollectionDetailRVAdapter extends RecyclerView.Adapter<MyCollecti
             });
         } else if (item instanceof Dish) {
             Dish dish = (Dish) item;
+            getDishThumbnailImg(holder, dish);
             holder.itemName.setText(dish.getName());
             holder.itemDesc.setText(dish.getDescription());
-            holder.itemRatings.setText(String.valueOf(dish.getRatings()));
             holder.itemRatingCount.setText(String.format(context.getString(R.string.rating_count), dish.getRatingCount()));
+            holder.itemRatings.setText(dish.getRatingCount() > 0 ? dish.getRatings() : "N/A");
             holder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(holder.itemView.getContext(), RestaurantDetailActivity.class);
                 intent.putExtra("restaurantId", dish.getRestaurantId());
@@ -95,6 +105,42 @@ public class MyCollectionDetailRVAdapter extends RecyclerView.Adapter<MyCollecti
         }
 
         holder.btnMore.setOnClickListener(v -> openRemoveBtms(holder, item));
+    }
+
+    private void getDishThumbnailImg(@NonNull MyViewHolder holder, Dish dish) {
+        storageRef.child("res_images/" + dish.getRestaurantId() + "/menu/" + dish.getId() + ".jpg")
+                .getDownloadUrl()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Uri resBgUrl = task.getResult();
+                        Glide.with(context)
+                                .load(resBgUrl)
+                                .placeholder(R.drawable.bg_shimmer)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .centerCrop()
+                                .into(holder.itemImg);
+                    } else {
+                        Log.e(TAG, "Failed to fetch restaurant background image", task.getException());
+                    }
+                });
+    }
+
+    private void getResThumbnailImg(@NonNull MyViewHolder holder, Restaurant restaurant) {
+        storageRef.child("res_images/" + restaurant.getId() + "/app_bar/app_bar.jpg")
+                .getDownloadUrl()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Uri resBgUrl = task.getResult();
+                        Glide.with(context)
+                                .load(resBgUrl)
+                                .placeholder(R.drawable.bg_shimmer)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .centerCrop()
+                                .into(holder.itemImg);
+                    } else {
+                        Log.e(TAG, "Failed to fetch restaurant background image", task.getException());
+                    }
+                });
     }
 
     private void openRemoveBtms(@NonNull MyViewHolder holder, Object item) {
@@ -148,24 +194,6 @@ public class MyCollectionDetailRVAdapter extends RecyclerView.Adapter<MyCollecti
                 bottomSheet.dismiss();
             }
         });
-    }
-
-    private void setResRatings(@NonNull MyViewHolder holder, Restaurant item) {
-        db.collection("restaurants")
-                .document(item.getId())
-                .collection("reviews")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        int reviewCount = task.getResult().size();
-                        holder.itemRatingCount.setText(String.format(context.getString(R.string.rating_count), reviewCount));
-                        if (reviewCount > 0) {
-                            holder.itemRatings.setText(String.valueOf(item.getRatings()));
-                        } else {
-                            holder.itemRatings.setText("N/A");
-                        }
-                    }
-                });
     }
 
     @Override
