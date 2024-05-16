@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.concurrent.TimeUnit;
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gourmetcompass.MainActivity;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.adapters.NotiRVAdapter;
 import com.example.gourmetcompass.models.Notification;
@@ -38,7 +40,8 @@ public class NotificationFragment extends Fragment {
     RecyclerView recyclerView;
     NotiRVAdapter adapter;
     ImageButton checkBtn;
-    LinearLayout emptyLayout;
+    LinearLayout emptyLayout, notLoggedInLayout;
+    TextView logInTv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,11 +55,22 @@ public class NotificationFragment extends Fragment {
         // Init views
         initViews(view);
 
-        // Fetch notifications
-        fetchNotifications();
+        if (user != null) {
+            // Fetch notifications
+            fetchNotifications();
 
-        // Mark all notifications as read
-        checkBtn.setOnClickListener(v -> markAllNotiAsRead());
+            // Mark all notifications as read
+            checkBtn.setOnClickListener(v -> markAllNotiAsRead());
+        } else {
+            checkBtn.setEnabled(false);
+            notLoggedInLayout.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+            logInTv.setOnClickListener(v -> {
+                if (getContext() instanceof MainActivity) {
+                    ((MainActivity) getContext()).selectBottomNavItem(R.id.account_fragment);
+                }
+            });
+        }
 
         return view;
     }
@@ -74,7 +88,9 @@ public class NotificationFragment extends Fragment {
 
     private void initViews(View view) {
         checkBtn = view.findViewById(R.id.btn_check_noti);
+        logInTv = view.findViewById(R.id.tv_noti_not_logged_in);
         emptyLayout = view.findViewById(R.id.noti_empty_layout);
+        notLoggedInLayout = view.findViewById(R.id.noti_not_logged_in_layout);
         recyclerView = view.findViewById(R.id.noti_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);

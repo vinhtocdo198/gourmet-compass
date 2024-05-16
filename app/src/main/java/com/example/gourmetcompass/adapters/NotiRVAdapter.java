@@ -1,11 +1,13 @@
 package com.example.gourmetcompass.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +20,9 @@ import com.example.gourmetcompass.MainActivity;
 import com.example.gourmetcompass.models.Notification;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.ui_restaurant_detail.RestaurantDetailActivity;
+import com.example.gourmetcompass.utils.BottomSheetUtil;
 import com.example.gourmetcompass.utils.FirestoreUtil;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -80,45 +84,98 @@ public class NotiRVAdapter extends RecyclerView.Adapter<NotiRVAdapter.MyViewHold
 
         // Navigate to corresponding restaurant when a noti is clicked
         holder.itemView.setOnClickListener(v -> {
-            // Check if the review still exists
-            db.collection("users")
-                    .document(user.getUid())
-                    .collection("reviews")
-                    .document(noti.getReviewId())
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                Intent intent = new Intent(context, RestaurantDetailActivity.class);
-                                intent.putExtra("restaurantId", noti.getRestaurantId());
-                                context.startActivity(intent);
-                                if (context instanceof MainActivity) {
-                                    ((MainActivity) context).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
-                                }
+            seeNoti(noti);
+        });
 
-                                // Mark the notification as read
-                                if (!noti.isChecked()) {
-                                    db.collection("users")
-                                            .document(user.getUid())
-                                            .collection("notifications")
-                                            .document(noti.getId())
-                                            .update("checked", true)
-                                            .addOnCompleteListener(readTask -> {
-                                                if (readTask.isSuccessful()) {
-                                                    Log.d(TAG, "onBindViewHolder: Notification marked as read");
-                                                }
-                                            });
-                                }
-                            } else {
-                                // If the review does not exist, show a Toast message
-                                Toast.makeText(context, "Oops, your review has been deleted!", Toast.LENGTH_SHORT).show();
+        holder.itemView.setOnLongClickListener(v -> {
+            openBottomSheet(holder, noti);
+            return false;
+        });
+    }
+
+    private void seeNoti(Notification noti) {
+        // Check if the review still exists
+        db.collection("users")
+                .document(user.getUid())
+                .collection("reviews")
+                .document(noti.getReviewId())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Intent intent = new Intent(context, RestaurantDetailActivity.class);
+                            intent.putExtra("restaurantId", noti.getRestaurantId());
+                            context.startActivity(intent);
+                            if (context instanceof MainActivity) {
+                                ((MainActivity) context).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
+                            }
+
+                            // Mark the notification as read
+                            if (!noti.isChecked()) {
+                                db.collection("users")
+                                        .document(user.getUid())
+                                        .collection("notifications")
+                                        .document(noti.getId())
+                                        .update("checked", true)
+                                        .addOnCompleteListener(readTask -> {
+                                            if (readTask.isSuccessful()) {
+                                                Log.d(TAG, "onBindViewHolder: Notification marked as read");
+                                            }
+                                        });
                             }
                         } else {
-                            Log.d(TAG, "get failed with ", task.getException());
+                            // If the review does not exist, show a Toast message
+                            Toast.makeText(context, "Oops, your review has been deleted!", Toast.LENGTH_SHORT).show();
                         }
-                    });
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                });
+    }
+
+    private void openBottomSheet(@NonNull MyViewHolder holder, Notification noti) {
+        BottomSheetDialog handleNotiSheet = new BottomSheetDialog(context, R.style.BottomSheetTheme);
+        View sheetView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_handle_noti, holder.itemView.findViewById(R.id.btms_noti_container));
+        handleNotiSheet.setContentView(sheetView);
+        BottomSheetUtil.openBottomSheet(handleNotiSheet);
+
+        Button markBtn = sheetView.findViewById(R.id.btn_noti_mark);
+        Button removeBtn = sheetView.findViewById(R.id.btn_noti_remove);
+
+        markBtn.setText(noti.isChecked() ? R.string.mark_as_unread : R.string.mark_as_read);
+        markBtn.setOnClickListener(v1 -> {
+            changeNoti(noti, !noti.isChecked());
+            handleNotiSheet.dismiss();
         });
+
+        removeBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onClick(View v) {
+                db.collection("users")
+                        .document(user.getUid())
+                        .collection("notifications")
+                        .document(noti.getId())
+                        .delete()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                notiList.remove(noti);
+                                notifyDataSetChanged();
+                                Toast.makeText(context, "Notification removed", Toast.LENGTH_SHORT).show();
+                                handleNotiSheet.dismiss();
+                            }
+                        });
+            }
+        });
+    }
+
+    private void changeNoti(Notification noti, boolean value) {
+        db.collection("users")
+                .document(user.getUid())
+                .collection("notifications")
+                .document(noti.getId())
+                .update("checked", value);
     }
 
     private String getTimePassed(long timestamp) {
