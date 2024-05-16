@@ -33,15 +33,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.Objects;
+
 public class LogInFragment extends Fragment {
-    BeginSignInRequest signInRequest;
-    private static final int RC_SIGN_IN = 123;
-    Button googleBtn;
-    GoogleSignInClient mGoogleSignInClient;
+    private static final String GoogleTag = "GoogleActivity";
     public final String TAG = "LogInFragment";
+    private static final int RC_SIGN_IN = 9001;
+    FirebaseAuth mAuth;
+    FirebaseUser currentUser;
+    GoogleSignInClient mGoogleSignInClient;
     EditTextUtil emailTextField, passwordTextField;
     Button logInBtn, signUpBtn;
-    FirebaseAuth mAuth;
+    Button googleBtn;
     TextView forgotPass;
 
     @Nullable
@@ -51,8 +54,7 @@ public class LogInFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_log_in, container, false);
 
-        // Init firebase auth
-        mAuth = FirebaseAuth.getInstance();
+
 
         // Init views
         initViews(view);
@@ -64,12 +66,12 @@ public class LogInFragment extends Fragment {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this.getActivity(), gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(this.requireActivity(), gso);
+        // Init firebase auth
+        mAuth = FirebaseAuth.getInstance();
+
         googleBtn.setOnClickListener(view12 -> signIn());
-
-
         logInBtn.setOnClickListener(view13 -> logIn());
-
         return view;
     }
 
@@ -105,6 +107,17 @@ public class LogInFragment extends Fragment {
                 });
     }
 
+    public void onStart(){
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            // Pass user data to account fragment
+            Bundle bundle = new Bundle();
+            bundle.putString("userId", currentUser.getUid());
+            replaceFragment(new AccountFragment(), bundle);
+        }
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -154,12 +167,17 @@ public class LogInFragment extends Fragment {
             try {
                 // Google Sign-In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
+                if (account == null) {
+                    Log.w(GoogleTag, "No account selected");
+                    return;
+                }
+                Toast.makeText(getContext(), "Google sign in successful", Toast.LENGTH_SHORT).show();
+                Log.d(GoogleTag, "firebaseAuthWithGoogle:" + account.getId());
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 // Google Sign-In failed, update UI accordingly
                 Toast.makeText(getContext(), "Google sign in failed", Toast.LENGTH_SHORT).show();
-                Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-                Log.w(TAG, "signInResult:failed message=" + e.getMessage());
+                Log.w(GoogleTag, "signInResult:failed code=" + e.getStatusCode());
             }
         }
     }
@@ -172,19 +190,12 @@ public class LogInFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            if (user != null) {
-                                // Pass user data to account fragment
-                                Bundle bundle = new Bundle();
-                                bundle.putString("userId", user.getUid());
-                                replaceFragment(new AccountFragment(), bundle);
-                            }
-                            Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_SHORT).show();
+                            Log.d(GoogleTag, "signInWithCredential:success");
+                            Toast.makeText(getActivity(), "Authentication success.", Toast.LENGTH_SHORT).show();
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getActivity(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            Log.w(GoogleTag, "signInWithCredential:failure", task.getException());
+                            Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
 
                         }
                     }
