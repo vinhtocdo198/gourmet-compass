@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GourmetCompass</string>
+    <string name="app_name">Gourmet</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -107,6 +107,10 @@
     <string name="disliked_review">Someone disliked your review</string>
     <string name="replied_review">Someone replied to your review</string>
     <string name="you_are_all_set">You are all set!</string>
+    <string name="log_in_to_see_noti">Log in to see your notifications</string>
+    <string name="mark_as_unread">Mark as unread</string>
+    <string name="remove_notification">Remove notification</string>
+    <string name="mark_as_read">Mark as read</string>
 
 
 </resources>
