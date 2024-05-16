@@ -76,12 +76,12 @@ public class PersonalInformationActivity extends AppCompatActivity {
         userAvatar.setOnClickListener(v -> openBottomSheet());
 
         saveBtn.setOnClickListener(v -> {
-            saveNewUserInfo();
+            checkNewUserInfo();
             clearAllFocus();
         });
     }
 
-    private void saveNewUserInfo() {
+    private void checkNewUserInfo() {
         String newUsername = usernameTextField.getText();
         String newPhone = phoneTextField.getText();
 
@@ -95,30 +95,46 @@ public class PersonalInformationActivity extends AppCompatActivity {
             return;
         }
 
-        // Save avatar
+        saveNewUserInfo(newUsername, newPhone);
+    }
+
+    private void saveNewUserInfo(String newUsername, String newPhone) {
         if (avatarUri != null) {
-            StorageReference avatarRef = storageRef.child("user_images/" + userId + "/avatar/");
-            avatarRef.putFile(avatarUri)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            avatarRef.getDownloadUrl()
-                                    .addOnCompleteListener(uriTask -> {
-                                        if (uriTask.isSuccessful()) {
-                                            String avaUri = uriTask.getResult().toString();
-                                            saveNewAvatar(newUsername, newPhone, avaUri);
-                                        } else {
-                                            Log.d(TAG, "saveNewUserInfo: Failed to get avatar uri");
-                                        }
-                                    });
-                            Log.d(TAG, "saveNewUserInfo: Avatar saved");
-                        } else {
-                            Log.d(TAG, "saveNewUserInfo: Failed to save avatar");
-                        }
-                    });
+            StorageReference avatarRef = storageRef.child("user_images").child(userId).child("avatar");
+            avatarRef.putFile(avatarUri).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    avatarRef.getDownloadUrl()
+                            .addOnCompleteListener(uriTask -> {
+                                if (uriTask.isSuccessful()) {
+                                    String avaUri = uriTask.getResult().toString();
+                                    saveNewAvatarAndInfo(newUsername, newPhone, avaUri);
+                                } else {
+                                    Log.d(TAG, "saveNewUserInfo: Failed to get avatar uri");
+                                }
+                            });
+                } else {
+                    Log.d(TAG, "saveNewUserInfo: Failed to save avatar");
+                }
+            });
+        } else {
+            saveOnlyNewInfo(newUsername, newPhone);
         }
     }
 
-    private void saveNewAvatar(String newUsername, String newPhone, String avaUri) {
+    private void saveOnlyNewInfo(String newUsername, String newPhone) {
+        db.collection("users").document(userId)
+                .update("username", newUsername,
+                        "phone", newPhone)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(PersonalInformationActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(PersonalInformationActivity.this, "Failed to save changes", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void saveNewAvatarAndInfo(String newUsername, String newPhone, String avaUri) {
         db.collection("users").document(userId)
                 .update("username", newUsername,
                         "phone", newPhone,
@@ -213,9 +229,8 @@ public class PersonalInformationActivity extends AppCompatActivity {
                 .getDownloadUrl()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        avatarUri = task.getResult();
-                        Glide.with(this)
-                                .load(avatarUri)
+                        Glide.with(PersonalInformationActivity.this)
+                                .load(task.getResult())
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(userAvatar);
                     } else {

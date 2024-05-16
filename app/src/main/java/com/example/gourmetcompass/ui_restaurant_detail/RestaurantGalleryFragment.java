@@ -79,6 +79,7 @@ public class RestaurantGalleryFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
 
+        // TODO: check folder path
         // Navigate to gallery folder
         StorageReference restaurantFolderRef = storageRef.child("res_images").child(restaurantId).child("gallery");
 

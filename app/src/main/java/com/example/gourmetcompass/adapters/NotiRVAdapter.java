@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -20,6 +21,7 @@ import com.example.gourmetcompass.ui_restaurant_detail.RestaurantDetailActivity;
 import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -75,27 +77,45 @@ public class NotiRVAdapter extends RecyclerView.Adapter<NotiRVAdapter.MyViewHold
         }
         holder.notiDesc.setText(noti.getReviewDesc());
         holder.notiTime.setText(getTimePassed(noti.getTimestamp()));
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, RestaurantDetailActivity.class);
-            intent.putExtra("restaurantId", noti.getRestaurantId());
-            context.startActivity(intent);
-            if (context instanceof MainActivity) {
-                ((MainActivity) context).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
-            }
 
-            // Mark the notification as read
-            if (!noti.isChecked()) {
-                db.collection("users")
-                        .document(user.getUid())
-                        .collection("notifications")
-                        .document(noti.getId())
-                        .update("checked", true)
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                Log.d(TAG, "onBindViewHolder: Notification marked as read");
+        // Navigate to corresponding restaurant when a noti is clicked
+        holder.itemView.setOnClickListener(v -> {
+            // Check if the review still exists
+            db.collection("reviews")
+                    .document(noti.getReviewId())
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Intent intent = new Intent(context, RestaurantDetailActivity.class);
+                                intent.putExtra("restaurantId", noti.getRestaurantId());
+                                context.startActivity(intent);
+                                if (context instanceof MainActivity) {
+                                    ((MainActivity) context).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
+                                }
+
+                                // Mark the notification as read
+                                if (!noti.isChecked()) {
+                                    db.collection("users")
+                                            .document(user.getUid())
+                                            .collection("notifications")
+                                            .document(noti.getId())
+                                            .update("checked", true)
+                                            .addOnCompleteListener(readTask -> {
+                                                if (readTask.isSuccessful()) {
+                                                    Log.d(TAG, "onBindViewHolder: Notification marked as read");
+                                                }
+                                            });
+                                }
+                            } else {
+                                // If the review does not exist, show a Toast message
+                                Toast.makeText(context, "Oops, your review has been deleted!", Toast.LENGTH_SHORT).show();
                             }
-                        });
-            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    });
         });
     }
 
