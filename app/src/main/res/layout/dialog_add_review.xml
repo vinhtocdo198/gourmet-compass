@@ -4,13 +4,12 @@
     android:id="@+id/dialog_add_review"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/dialog_bg"
+    android:background="@drawable/bg_dialog"
     android:orientation="vertical"
     android:paddingHorizontal="@dimen/padding_5"
     android:paddingVertical="@dimen/padding_20">
 
     <TextView
-        android:id="@+id/dialog_title"
         style="@style/TitleFont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_10"
-        android:background="@drawable/border_input_text"
+        android:background="@drawable/input_text_field"
         android:gravity="top|start"
         android:hint="@string/description"
         android:inputType="textMultiLine"
@@ -45,23 +44,6 @@
         android:padding="@dimen/padding_10"
         android:textSize="@dimen/text_16"
         tools:ignore="Autofill" />
-
-    <Button
-        android:id="@+id/btn_upload_add_review"
-        style="@style/TitleFont"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginHorizontal="@dimen/margin_10"
-        android:layout_marginTop="@dimen/margin_10"
-        android:background="@drawable/btn_upload"
-        android:drawableStart="@drawable/ic_upload"
-        android:paddingHorizontal="@dimen/padding_10"
-        android:text="@string/upload"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_16"
-        tools:ignore="RtlSymmetry" />
 
     <LinearLayout
         android:layout_width="wrap_content"

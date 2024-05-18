@@ -1,7 +1,7 @@
 package com.example.gourmetcompass.models;
 
 public class User {
-    private String id, username, email, phone, avatarUrl;
+    private String id, username, email, phone, avaUrl;
 
     public String getId() {
         return id;
@@ -35,11 +35,11 @@ public class User {
         this.phone = phone;
     }
 
-    public String getAvatarUrl() {
-        return avatarUrl;
+    public String getAvaUrl() {
+        return avaUrl;
     }
 
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
+    public void setAvaUrl(String avaUrl) {
+        this.avaUrl = avaUrl;
     }
 }

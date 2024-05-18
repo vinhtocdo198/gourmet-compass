@@ -2,19 +2,8 @@ package com.example.gourmetcompass.models;
 
 public class Dish {
 
-    private String id, name, description, ratings;
+    private String id, name, description, ratings, restaurantId;
     private int ratingCount;
-
-    public Dish() {
-    }
-
-    public Dish(String id, String name, String description, String ratings, int ratingCount) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.ratings = ratings;
-        this.ratingCount = ratingCount;
-    }
 
     public String getId() {
         return id;
@@ -54,5 +43,13 @@ public class Dish {
 
     public void setRatingCount(int ratingCount) {
         this.ratingCount = ratingCount;
+    }
+
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
     }
 }

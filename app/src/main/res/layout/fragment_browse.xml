@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/app_bg"
     android:orientation="vertical"
-    tools:context=".ui_general.HomeFragment">
+    tools:context=".views.general.HomeFragment">
 
     <TextView
         style="@style/TitleFont"
@@ -17,91 +17,27 @@
         android:textColor="@color/black"
         android:textSize="@dimen/text_25" />
 
-    <EditText
+    <com.example.gourmetcompass.utils.EditTextUtil
         android:id="@+id/search_bar_browse"
-        style="@style/TextFont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_30"
-        android:layout_marginVertical="@dimen/margin_15"
-        android:autofillHints="name"
-        android:background="@drawable/border_search_bar"
-        android:drawableEnd="@drawable/ic_search"
-        android:hint="Restaurant, cuisine,..."
-        android:inputType="text"
-        android:paddingVertical="@dimen/padding_10"
-        android:paddingStart="@dimen/padding_25"
-        android:paddingEnd="@dimen/padding_15"
-        android:selectAllOnFocus="true"
+        android:layout_marginVertical="@dimen/margin_15" />
+
+    <TextView
+        style="@style/TitleFont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/padding_30"
+        android:text="@string/top_categories"
         android:textColor="@color/black"
-        tools:ignore="HardcodedText" />
+        android:textSize="@dimen/text_20" />
 
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/res_categories_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="@dimen/padding_30">
-
-            <TextView
-                style="@style/TitleFont"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10"
-                android:text="@string/recent_searches"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_18" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/first_scroll_browse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="@dimen/margin_5"
-                android:background="@color/divider" />
-
-            <TextView
-                style="@style/TitleFont"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10"
-                android:text="@string/popular_searches"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_18" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/second_scroll_browse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="@dimen/margin_5"
-                android:background="@color/divider" />
-
-            <TextView
-                style="@style/TitleFont"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10"
-                android:text="@string/recommended"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_18" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/third_scroll_browse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-    </ScrollView>
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin_10"
+        android:paddingHorizontal="@dimen/padding_20" />
 
 </LinearLayout>

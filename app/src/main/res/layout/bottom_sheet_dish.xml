@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/bottom_sheet"
+    android:id="@+id/btms_dish_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_bottom_sheet"
@@ -8,14 +8,13 @@
     android:paddingTop="@dimen/padding_20">
 
     <View
-        android:id="@+id/drag_handle"
         android:layout_width="50dp"
         android:layout_height="5dp"
         android:layout_gravity="center"
         android:background="@drawable/ic_drag_handle" />
 
     <Button
-        android:id="@+id/btn_add_btms_res"
+        android:id="@+id/btn_add_btms_dish"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_20"
@@ -28,7 +27,7 @@
         android:textSize="@dimen/text_16" />
 
     <Button
-        android:id="@+id/btn_add_review_btms_res"
+        android:id="@+id/btn_rate_btms_dish"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_20"

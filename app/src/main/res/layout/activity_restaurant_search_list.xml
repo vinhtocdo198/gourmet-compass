@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/app_bg"
     android:orientation="vertical"
-    tools:context=".ui_general.RestaurantSearchListActivity">
+    tools:context=".views.general.SearchResultActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,6 +39,7 @@
     </LinearLayout>
 
     <HorizontalScrollView
+        android:id="@+id/filter_scroll_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_15">
@@ -54,8 +55,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_5"
-                android:background="@drawable/border_filter"
-                android:drawableStart="@drawable/ic_star_selector"
+                android:background="@drawable/btn_filter"
+                android:drawableStart="@drawable/ic_star_filter_off"
                 android:drawablePadding="@dimen/padding_5"
                 android:elevation="5dp"
                 android:paddingHorizontal="@dimen/padding_10"
@@ -71,8 +72,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_5"
-                android:background="@drawable/border_filter"
-                android:drawableStart="@drawable/ic_edit_selector"
+                android:background="@drawable/btn_filter"
+                android:drawableStart="@drawable/ic_edit_filter_off"
                 android:drawablePadding="@dimen/padding_5"
                 android:elevation="5dp"
                 android:paddingHorizontal="@dimen/padding_10"
@@ -89,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_5"
                 android:background="@drawable/border_filter"
-                android:drawableStart="@drawable/ic_location_selector"
+                android:drawableStart="@drawable/ic_location_filter"
                 android:drawablePadding="@dimen/padding_5"
                 android:elevation="5dp"
                 android:paddingHorizontal="@dimen/padding_10"
@@ -97,6 +98,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/content_text"
                 android:textSize="@dimen/text_14"
+                android:visibility="gone"
                 tools:ignore="RtlSymmetry" />
 
         </LinearLayout>
@@ -117,7 +119,35 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginVertical="@dimen/margin_15">
+        android:layout_marginTop="@dimen/margin_5"
+        android:layout_marginBottom="@dimen/margin_15">
+
+        <LinearLayout
+            android:id="@+id/empty_search_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="400dp"
+                android:background="@drawable/ic_empty_search"
+                android:contentDescription="@string/empty" />
+
+            <TextView
+                style="@style/TextFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="@dimen/margin_30"
+                android:layout_marginTop="-10dp"
+                android:text="@string/empty_search"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_18" />
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/res_search_list_recyclerview"

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottom_sheet_new_coll_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -24,20 +23,12 @@
         android:textColor="@color/title_text"
         android:textSize="@dimen/text_18" />
 
-    <EditText
+    <com.example.gourmetcompass.utils.EditTextUtil
         android:id="@+id/btms_new_text_field"
-        style="@style/TextFont"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_30"
-        android:layout_marginTop="@dimen/margin_20"
-        android:background="@drawable/border_input_text"
-        android:gravity="center_vertical"
-        android:inputType="textMultiLine"
-        android:padding="@dimen/padding_10"
-        android:text="@string/my_collection"
-        android:textSize="@dimen/text_16"
-        tools:ignore="Autofill,LabelFor" />
+        android:layout_marginTop="@dimen/margin_20" />
 
     <Button
         android:id="@+id/btms_new_btn_done"
@@ -45,7 +36,7 @@
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin_40"
+        android:layout_marginTop="@dimen/margin_30"
         android:layout_marginBottom="@dimen/margin_30"
         android:background="@drawable/btn_orange"
         android:elevation="5dp"

@@ -36,16 +36,6 @@
             tools:ignore="HardcodedText" />
 
         <ImageButton
-            android:id="@+id/btn_search_my_collections"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginHorizontal="@dimen/margin_5"
-            android:background="@drawable/ic_search"
-            android:contentDescription="Search collection"
-            tools:ignore="HardcodedText" />
-
-        <ImageButton
             android:id="@+id/btn_add_my_collections"
             android:layout_width="48dp"
             android:layout_height="48dp"

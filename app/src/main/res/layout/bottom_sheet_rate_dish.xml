@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/btms_rate_dish_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet"
+    android:orientation="vertical"
+    android:paddingVertical="@dimen/padding_20">
+
+    <TextView
+        style="@style/TitleFont"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/rate_this_dish"
+        android:textColor="@color/title_text"
+        android:textSize="@dimen/text_18" />
+
+    <RatingBar
+        android:id="@+id/rating_bar_dish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_10"
+        android:numStars="5"
+        android:progressTint="@color/star"
+        android:rating="5"
+        android:stepSize="1" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_20"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_cancel_rate_dish"
+            style="@style/TitleFont"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/margin_10"
+            android:background="@drawable/btn_orange_alt"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/button_orange"
+            android:textSize="@dimen/text_18" />
+
+        <Button
+            android:id="@+id/btn_submit_rate_dish"
+            style="@style/TitleFont"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/margin_10"
+            android:background="@drawable/btn_orange"
+            android:text="@string/submit"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_18" />
+
+    </LinearLayout>
+
+</LinearLayout>

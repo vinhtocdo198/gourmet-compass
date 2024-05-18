@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_15"
+    tools:ignore="HardcodedText">
+
+    <EditText
+        android:id="@+id/edit_text_field_text"
+        style="@style/TextFont"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:autofillHints="text"
+        android:background="@drawable/input_text_field"
+        android:hint="Enter text"
+        android:inputType="text"
+        android:padding="12dp"
+        android:selectAllOnFocus="true"
+        android:textColor="@color/black" />
+
+    <ImageView
+        android:id="@+id/edit_text_field_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignEnd="@+id/edit_text_field_text"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="13dp"
+        android:contentDescription="Edit text" />
+
+</RelativeLayout>

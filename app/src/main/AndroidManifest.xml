@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" >
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,48 +16,44 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.GourmetCompass" >
+        android:theme="@style/Theme.GourmetCompass">
         <activity
-            android:name=".ui_personal.MyCollectionDetailActivity"
+            android:name=".views.general.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".MapsActivity"
+            android:name=".views.personal.MyCollectionDetailActivity"
             android:exported="false" /> <!-- Restaurant search list -->
         <activity
-            android:name=".ui_general.RestaurantSearchListActivity"
+            android:name=".views.general.SearchResultActivity"
             android:exported="false" /> <!-- Restaurant details -->
         <activity
-            android:name=".ui_restaurant_detail.RestaurantDetailActivity"
+            android:name=".views.restaurant_detail.RestaurantDetailActivity"
             android:exported="false" /> <!-- Personal information -->
         <activity
-            android:name=".ui_personal.PersonalInformationActivity"
+            android:name=".views.personal.PersonalInformationActivity"
             android:exported="false" />
         <activity
-            android:name=".ui_personal.MyCollectionsActivity"
+            android:name=".views.personal.MyCollectionsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui_personal.MyReviewsActivity"
+            android:name=".views.personal.MyReviewsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui_personal.ChangePasswordActivity"
+            android:name=".views.personal.ChangePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".ui_personal.RequestAddRestaurantActivity"
+            android:name=".views.personal.RequestAddRestaurantActivity"
             android:exported="false" /> <!-- Main -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.App.SplashScreen" >
+            android:theme="@style/Theme.App.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/map_key" />
     </application>
 
 </manifest>

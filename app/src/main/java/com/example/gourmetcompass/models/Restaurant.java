@@ -1,22 +1,14 @@
 package com.example.gourmetcompass.models;
 
+import java.util.ArrayList;
+
 public class Restaurant {
-    private String id, name, description, address, phoneNo, openingHours, ratings, category, tag;
+    String id, name, description, address, phoneNo, openingHours, ratings, category, tag;
+    String resThumbnail, resAppBar;
+    ArrayList<String> resGallery;
+    int ratingCount;
 
-    public Restaurant() {
-    }
-
-    public Restaurant(String id, String name, String description, String address, String phoneNo, String openingHours, String ratings, String category, String tag) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.address = address;
-        this.phoneNo = phoneNo;
-        this.openingHours = openingHours;
-        this.ratings = ratings;
-        this.category = category;
-        this.tag = tag;
-    }
+    boolean isGourmetsChoice;
 
     public String getId() {
         return id;
@@ -74,6 +66,14 @@ public class Restaurant {
         this.ratings = ratings;
     }
 
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
+    }
+
     public String getCategory() {
         return category;
     }
@@ -88,6 +88,38 @@ public class Restaurant {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public boolean isGourmetsChoice() {
+        return isGourmetsChoice;
+    }
+
+    public void setGourmetsChoice(boolean gourmetsChoice) {
+        isGourmetsChoice = gourmetsChoice;
+    }
+
+    public String getResThumbnail() {
+        return resThumbnail;
+    }
+
+    public void setResThumbnail(String resThumbnail) {
+        this.resThumbnail = resThumbnail;
+    }
+
+    public String getResAppBar() {
+        return resAppBar;
+    }
+
+    public void setResAppBar(String resAppBar) {
+        this.resAppBar = resAppBar;
+    }
+
+    public ArrayList<String> getResGallery() {
+        return resGallery;
+    }
+
+    public void setResGallery(ArrayList<String> resGallery) {
+        this.resGallery = resGallery;
     }
 
 }

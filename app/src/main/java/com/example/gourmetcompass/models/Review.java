@@ -3,23 +3,10 @@ package com.example.gourmetcompass.models;
 import java.util.ArrayList;
 
 public class Review {
-    String id, description, ratings, reviewerId;
+    String id, description, ratings, reviewerName, restaurantId, reviewerAvaUrl, reviewerId;
     long timestamp;
+    int replyCount;
     ArrayList<String> likedUserIds, dislikedUserIds;
-    // TODO: upload image urls
-
-    public Review() {
-    }
-
-    public Review(String id, String reviewerId, String description, String ratings, long timestamp, ArrayList<String> likedUserIds, ArrayList<String> dislikedUserIds) {
-        this.id = id;
-        this.reviewerId = reviewerId;
-        this.description = description;
-        this.ratings = ratings;
-        this.timestamp = timestamp;
-        this.likedUserIds = likedUserIds;
-        this.dislikedUserIds = dislikedUserIds;
-    }
 
     public String getId() {
         return id;
@@ -27,6 +14,14 @@ public class Review {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getReviewerName() {
+        return reviewerName;
+    }
+
+    public void setReviewerName(String reviewerName) {
+        this.reviewerName = reviewerName;
     }
 
     public String getReviewerId() {
@@ -75,5 +70,29 @@ public class Review {
 
     public void setDislikedUserIds(ArrayList<String> dislikedUserIds) {
         this.dislikedUserIds = dislikedUserIds;
+    }
+
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
+    public String getReviewerAvaUrl() {
+        return reviewerAvaUrl;
+    }
+
+    public void setReviewerAvaUrl(String reviewerAvaUrl) {
+        this.reviewerAvaUrl = reviewerAvaUrl;
+    }
+
+    public int getReplyCount() {
+        return replyCount;
+    }
+
+    public void setReplyCount(int replyCount) {
+        this.replyCount = replyCount;
     }
 }

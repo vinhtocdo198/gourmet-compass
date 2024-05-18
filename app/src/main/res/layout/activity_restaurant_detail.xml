@@ -2,10 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/res_detail_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_bg"
-    tools:context=".ui_restaurant_detail.RestaurantDetailActivity">
+    tools:context=".views.restaurant_detail.RestaurantDetailActivity">
 
     <FrameLayout
         android:id="@+id/app_bar"
@@ -16,16 +17,25 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/res_img_bg"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="120dp"
+            android:background="@drawable/bg_shimmer"
             android:contentDescription="@string/res_bg_image"
+            android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.example.gourmetcompass.utils.EditTextUtil
+            android:id="@+id/search_bar_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_20" />
 
         <LinearLayout
+            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_20"
@@ -72,7 +82,7 @@
         style="@style/TitleFont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_10"
         android:maxLines="3"
         android:text="@string/restaurant_name"
         android:textAlignment="center"
@@ -87,7 +97,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_20"
-        android:layout_marginTop="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_10"
         android:background="@drawable/border_tab_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

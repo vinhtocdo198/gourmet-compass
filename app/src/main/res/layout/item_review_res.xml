@@ -98,28 +98,21 @@
             android:textSize="@dimen/text_14"
             tools:ignore="HardcodedText" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/review_img_upload_recyclerview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_10"
-            android:visibility="gone" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_10"
-            android:layout_marginVertical="@dimen/margin_5"
+            android:layout_marginTop="@dimen/margin_5"
             android:orientation="horizontal">
 
-            <Button
+            <com.example.gourmetcompass.utils.ButtonUtil
                 android:id="@+id/reply_btn"
                 style="@style/TitleFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_5"
                 android:layout_weight="1"
-                android:background="@drawable/btn_review"
+                android:background="@drawable/btn_reply"
                 android:drawableStart="@drawable/ic_reply"
                 android:elevation="5dp"
                 android:paddingHorizontal="@dimen/padding_10"
@@ -129,14 +122,14 @@
                 android:textSize="@dimen/text_14"
                 tools:ignore="RtlSymmetry" />
 
-            <Button
+            <com.example.gourmetcompass.utils.ButtonUtil
                 android:id="@+id/like_btn"
                 style="@style/TitleFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_5"
                 android:layout_weight="1"
-                android:background="@drawable/btn_review"
+                android:background="@drawable/btn_react"
                 android:drawableStart="@drawable/ic_thumb_up"
                 android:elevation="5dp"
                 android:paddingHorizontal="@dimen/padding_10"
@@ -146,14 +139,14 @@
                 android:textSize="@dimen/text_14"
                 tools:ignore="RtlSymmetry" />
 
-            <Button
+            <com.example.gourmetcompass.utils.ButtonUtil
                 android:id="@+id/dislike_btn"
                 style="@style/TitleFont"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_5"
                 android:layout_weight="1"
-                android:background="@drawable/btn_review"
+                android:background="@drawable/btn_react"
                 android:drawableStart="@drawable/ic_thumb_down"
                 android:elevation="5dp"
                 android:paddingHorizontal="@dimen/padding_10"
@@ -164,6 +157,20 @@
                 tools:ignore="RtlSymmetry" />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/show_replies_btn"
+            style="@style/TitleFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_10"
+            android:background="@android:color/transparent"
+            android:elevation="5dp"
+            android:paddingHorizontal="@dimen/padding_10"
+            android:text="@string/show_replies"
+            android:textAllCaps="false"
+            android:textColor="@color/option_text"
+            android:textSize="@dimen/text_14" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/reply_recyclerview"

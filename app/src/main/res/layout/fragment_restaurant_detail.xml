@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_bg"
-    tools:context=".ui_restaurant_detail.RestaurantDetailActivity">
+    tools:context=".views.restaurant_detail.RestaurantDetailActivity"
+    tools:ignore="HardcodedText">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -148,7 +149,7 @@
                 style="@style/TitleFont"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_10"
+                android:layout_marginBottom="@dimen/margin_5"
                 android:paddingHorizontal="@dimen/margin_15"
                 android:text="@string/ratings_title"
                 android:textColor="@color/title_text"
@@ -159,27 +160,26 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_5"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/padding_15"
+                tools:ignore="RtlSymmetry">
 
                 <TextView
                     android:id="@+id/rate_count_5"
                     style="@style/TitleFont"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/margin_10"
-                    android:gravity="center"
                     android:text="(0)"
                     android:textColor="@color/star"
-                    android:textSize="@dimen/text_18"
-                    tools:ignore="HardcodedText" />
-
+                    android:textSize="@dimen/text_18" />
 
                 <View
                     android:layout_width="250dp"
                     android:layout_height="24dp"
                     android:layout_marginEnd="@dimen/margin_10"
                     android:background="@drawable/rating_line" />
-
 
                 <TextView
                     android:id="@+id/star5"
@@ -189,14 +189,13 @@
                     android:gravity="center"
                     android:text="5"
                     android:textColor="@color/star"
-                    android:textSize="@dimen/text_18"
-                    tools:ignore="HardcodedText" />
+                    android:textSize="@dimen/text_18" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:contentDescription="@string/star"
-                    android:src="@drawable/ic_star_full" />
+                    android:background="@drawable/ic_star_full"
+                    android:contentDescription="@string/star" />
 
             </LinearLayout>
 
@@ -205,7 +204,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_5"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/padding_15"
+                tools:ignore="RtlSymmetry">
 
                 <TextView
                     android:id="@+id/rate_count_4"
@@ -216,15 +217,13 @@
                     android:gravity="center"
                     android:text="(0)"
                     android:textColor="@color/star"
-                    android:textSize="@dimen/text_18"
-                    tools:ignore="HardcodedText" />
+                    android:textSize="@dimen/text_18" />
 
                 <View
                     android:layout_width="200dp"
                     android:layout_height="24dp"
                     android:layout_marginEnd="@dimen/margin_10"
                     android:background="@drawable/rating_line" />
-
 
                 <TextView
                     android:id="@+id/star4"
@@ -234,8 +233,7 @@
                     android:gravity="center"
                     android:text="4"
                     android:textColor="@color/star"
-                    android:textSize="@dimen/text_18"
-                    tools:ignore="HardcodedText" />
+                    android:textSize="@dimen/text_18" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -250,7 +248,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_5"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/padding_15"
+                tools:ignore="RtlSymmetry">
 
                 <TextView
                     android:id="@+id/rate_count_3"
@@ -261,8 +261,7 @@
                     android:gravity="center"
                     android:text="(0)"
                     android:textColor="@color/star"
-                    android:textSize="@dimen/text_18"
-                    tools:ignore="HardcodedText" />
+                    android:textSize="@dimen/text_18" />
 
                 <View
                     android:layout_width="150dp"
@@ -278,8 +277,7 @@
                     android:gravity="center"
                     android:text="3"
                     android:textColor="@color/star"
-                    android:textSize="@dimen/text_18"
-                    tools:ignore="HardcodedText" />
+                    android:textSize="@dimen/text_18" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -295,7 +293,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_5"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/padding_15"
+                tools:ignore="RtlSymmetry">
 
                 <TextView
                     android:id="@+id/rate_count_2"
@@ -306,8 +306,7 @@
                     android:gravity="center"
                     android:text="(0)"
                     android:textColor="@color/star"
-                    android:textSize="@dimen/text_18"
-                    tools:ignore="HardcodedText" />
+                    android:textSize="@dimen/text_18" />
 
                 <View
                     android:layout_width="100dp"
@@ -323,8 +322,7 @@
                     android:gravity="center"
                     android:text="2"
                     android:textColor="@color/star"
-                    android:textSize="@dimen/text_18"
-                    tools:ignore="HardcodedText" />
+                    android:textSize="@dimen/text_18" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -340,7 +338,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_5"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/padding_15"
+                tools:ignore="RtlSymmetry">
 
                 <TextView
                     android:id="@+id/rate_count_1"
@@ -351,8 +351,7 @@
                     android:gravity="center"
                     android:text="(0)"
                     android:textColor="@color/star"
-                    android:textSize="@dimen/text_18"
-                    tools:ignore="HardcodedText" />
+                    android:textSize="@dimen/text_18" />
 
                 <View
                     android:layout_width="50dp"
@@ -368,8 +367,7 @@
                     android:gravity="center"
                     android:text="1"
                     android:textColor="@color/star"
-                    android:textSize="@dimen/text_18"
-                    tools:ignore="HardcodedText" />
+                    android:textSize="@dimen/text_18" />
 
                 <ImageView
                     android:layout_width="wrap_content"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GourmetCompass</string>
+    <string name="app_name">Gourmet</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -11,7 +11,6 @@
     <string name="address_title">Address</string>
     <string name="phone_title">Phone Number</string>
     <string name="open_hr_title">Opening Hours</string>
-    <string name="ratings_title">Ratings (%.1f/5.0)</string>
     <string name="star">Star</string>
     <string name="res_bg_image">Restaurant bg image</string>
     <string name="res_ava_image">Restaurant ava image</string>
@@ -22,6 +21,7 @@
     <string name="icon">Icon</string>
     <string name="react_count">(%1$d)</string>
     <string name="rating_count">(%1$d)</string>
+    <string name="item_ratings">%.1f</string>
     <string name="ratings">%1$s</string>
     <string name="add_to_collection">Add to collection</string>
     <string name="add_a_review">Add a review</string>
@@ -31,7 +31,6 @@
     <string name="submit">Submit</string>
     <string name="new_collection">New collection</string>
     <string name="done">Done</string>
-    <string name="map_key">AIzaSyBzwyjsKBQSDkVrJwKi20-fgaYrZmkFcMQ</string>
     <string name="cancel">Cancel</string>
     <string name="upload">Upload</string>
     <string name="rate_this_restaurant">Rate this restaurant</string>
@@ -42,32 +41,8 @@
     <string name="pizza">Pizza</string>
     <string name="navigate_to_browse">Navigate_To_Browse</string>
     <string name="background_home_img">background_home_img</string>
-    <string name="china_bar">China Bar</string>
-    <string name="baking_duck">Baking Duck</string>
-    <string name="burger">Burger</string>
-    <string name="pasta">Pasta</string>
-    <string name="kfc">KFC</string>
-    <string name="newly_opened">Newly opened</string>
-    <string name="mc_donals">MC Donals</string>
-    <string name="bun_cha">Bun Cha</string>
-    <string name="mi_quang">Mi Quang</string>
-    <string name="restaurants_near_you">Restaurants near you</string>
-    <string name="banh_hoi">Banh Hoi</string>
-    <string name="banh_mi">Banh Mi</string>
-    <string name="banh_trang">Banh Trang</string>
-    <string name="pancake">Pancake</string>
-    <string name="nearres4">nearres4</string>
-    <string name="nearres3">nearres3</string>
-    <string name="neares1">neares1</string>
-    <string name="nearres2">nearres2</string>
-    <string name="newres4">newres4</string>
-    <string name="newres3">newres3</string>
-    <string name="newres2">newres2</string>
-    <string name="newres1">newres1</string>
-    <string name="choiceres2">Choiceres2</string>
-    <string name="choiceres1">Choiceres1</string>
-    <string name="choiceres3">Choiceres3</string>
-    <string name="choiceres4">Choiceres4</string>
+    <string name="older_wiser">The older, the wiser</string>
+    <string name="top_reviewed">Top reviewed</string>
     <string name="home">Home</string>
     <string name="browse">Browse</string>
     <string name="map">Map</string>
@@ -80,7 +55,6 @@
     <string name="recent_searches">Recent searches</string>
     <string name="popular_searches">Popular searches</string>
     <string name="recommended">Recommended</string>
-    <string name="notificaition">Notification</string>
     <string name="guest">Guest</string>
     <string name="personal_information">Personal Information</string>
     <string name="my_collections">My Collections</string>
@@ -108,7 +82,36 @@
     <string name="edit_avatar">Edit avatar</string>
     <string name="empty">Empty</string>
     <string name="add_your_first_collection">Add your first collection!</string>
+    <string name="default_web_client_id">374546131077-cbp3d6id9u8cq7kvo0mp9qmu7e4cng8i.apps.googleusercontent.com</string>
     <string name="no_items">You have no items for now</string>
+    <string name="no_reviews">You have no reviews for now</string>
     <string name="add_some_items">Add some items here</string>
+    <string name="add_some_reviews">Write your first review</string>
+    <string name="ratings_title">Ratings (%.1f/5.0)</string>
+    <string name="ratings_title_na">Ratings (N/A)</string>
+    <string name="first_to_review">Be the first person to write a review</string>
+    <string name="rename_collection">Rename collection</string>
+    <string name="delete_collection">Delete collection</string>
+    <string name="top_categories">Top categories</string>
+    <string name="_1_result">1 result</string>
+    <string name="empty_search">No results</string>
+    <string name="noti_description">noti_description</string>
+    <string name="show_replies">Show all replies</string>
+    <string name="edit_review">Edit review</string>
+    <string name="delete_review">Delete review</string>
+    <string name="edit_reply">Edit reply</string>
+    <string name="delete_reply">Delete reply</string>
+    <string name="replying_to">"Replying to "</string>
+    <string name="in_res_name">in %1$s</string>
+    <string name="liked_review">Someone liked your review</string>
+    <string name="disliked_review">Someone disliked your review</string>
+    <string name="replied_review">Someone replied to your review</string>
+    <string name="you_are_all_set">You are all set!</string>
+    <string name="log_in_to_see_noti">Log in to see your notifications</string>
+    <string name="mark_as_unread">Mark as unread</string>
+    <string name="remove_notification">Remove notification</string>
+    <string name="mark_as_read">Mark as read</string>
+    <string name="send_email">Send email</string>
+
 
 </resources>

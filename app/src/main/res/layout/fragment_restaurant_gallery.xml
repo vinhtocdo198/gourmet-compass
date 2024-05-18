@@ -8,6 +8,7 @@
         android:id="@+id/gallery_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_20"
         android:paddingHorizontal="@dimen/padding_5" />
 
     <ProgressBar

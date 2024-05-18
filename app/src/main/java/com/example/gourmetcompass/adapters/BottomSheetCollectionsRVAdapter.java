@@ -17,15 +17,16 @@ import java.util.ArrayList;
 
 public class BottomSheetCollectionsRVAdapter extends RecyclerView.Adapter<BottomSheetCollectionsRVAdapter.MyViewHolder> {
 
-    private static final String TAG = "BottomSheetCollectionsRVAdapter";
     Context context;
     ArrayList<MyCollection> collList;
-    String restaurantId;
+    String itemId;
+    String type;
 
-    public BottomSheetCollectionsRVAdapter(Context context, ArrayList<MyCollection> collList, String restaurantId) {
+    public BottomSheetCollectionsRVAdapter(Context context, ArrayList<MyCollection> collList, String itemId, String type) {
         this.context = context;
         this.collList = collList;
-        this.restaurantId = restaurantId;
+        this.itemId = itemId;
+        this.type = type;
     }
 
     @NonNull
@@ -42,15 +43,14 @@ public class BottomSheetCollectionsRVAdapter extends RecyclerView.Adapter<Bottom
         holder.collName.setText(collList.get(position).getName());
 
         // If the restaurant already exists in the collection, set checked to true
-        holder.checkBox.setChecked(userColl.getRestaurants().contains(restaurantId));
+        if (type.equals("restaurant")) {
+            holder.checkBox.setChecked(userColl.getRestaurants().contains(itemId));
+        } else {
+            holder.checkBox.setChecked(userColl.getDishes().contains(itemId));
+        }
         userColl.setChecked(holder.checkBox.isChecked());
 
-        holder.checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userColl.setChecked(holder.checkBox.isChecked());
-            }
-        });
+        holder.checkBox.setOnClickListener(v -> userColl.setChecked(holder.checkBox.isChecked()));
     }
 
     @Override
