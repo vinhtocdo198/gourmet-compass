@@ -1,4 +1,4 @@
-package com.example.gourmetcompass.ui_personal;
+package com.example.gourmetcompass.views.personal;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;

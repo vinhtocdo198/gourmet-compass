@@ -1,4 +1,4 @@
-package com.example.gourmetcompass.ui_general;
+package com.example.gourmetcompass.views.general;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -81,6 +82,7 @@ public class NotificationFragment extends Fragment {
                     .document(noti.getId())
                     .update("checked", true);
         }
+        Toast.makeText(getContext(), "All notifications marked as read", Toast.LENGTH_SHORT).show();
     }
 
     private void initViews(View view) {

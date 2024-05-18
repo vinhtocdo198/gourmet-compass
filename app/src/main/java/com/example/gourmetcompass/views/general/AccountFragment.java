@@ -1,4 +1,4 @@
-package com.example.gourmetcompass.ui_general;
+package com.example.gourmetcompass.views.general;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,11 +19,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.models.User;
-import com.example.gourmetcompass.ui_personal.ChangePasswordActivity;
-import com.example.gourmetcompass.ui_personal.MyCollectionsActivity;
-import com.example.gourmetcompass.ui_personal.MyReviewsActivity;
-import com.example.gourmetcompass.ui_personal.PersonalInformationActivity;
-import com.example.gourmetcompass.ui_personal.RequestAddRestaurantActivity;
+import com.example.gourmetcompass.views.personal.ChangePasswordActivity;
+import com.example.gourmetcompass.views.personal.MyCollectionsActivity;
+import com.example.gourmetcompass.views.personal.MyReviewsActivity;
+import com.example.gourmetcompass.views.personal.PersonalInformationActivity;
+import com.example.gourmetcompass.views.personal.RequestAddRestaurantActivity;
 import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.example.gourmetcompass.utils.StorageUtil;
 import com.google.firebase.auth.FirebaseAuth;

@@ -1,4 +1,4 @@
-package com.example.gourmetcompass.ui_personal;
+package com.example.gourmetcompass.views.personal;
 
 import android.os.Bundle;
 import android.widget.Button;

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.models.MyCollection;
-import com.example.gourmetcompass.ui_personal.MyCollectionDetailActivity;
+import com.example.gourmetcompass.views.personal.MyCollectionDetailActivity;
 
 import java.util.ArrayList;
 

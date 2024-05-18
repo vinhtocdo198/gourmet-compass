@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/app_bg"
     android:orientation="vertical"
-    tools:context=".ui_general.HomeFragment">
+    tools:context=".views.general.HomeFragment">
 
     <TextView
         style="@style/TitleFont"

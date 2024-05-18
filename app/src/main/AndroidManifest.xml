@@ -3,11 +3,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -18,31 +18,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GourmetCompass">
         <activity
-            android:name=".ui_general.ForgotPasswordActivity"
+            android:name=".views.general.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".ui_personal.MyCollectionDetailActivity"
+            android:name=".views.personal.MyCollectionDetailActivity"
             android:exported="false" /> <!-- Restaurant search list -->
         <activity
-            android:name=".ui_general.SearchResultActivity"
+            android:name=".views.general.SearchResultActivity"
             android:exported="false" /> <!-- Restaurant details -->
         <activity
-            android:name=".ui_restaurant_detail.RestaurantDetailActivity"
+            android:name=".views.restaurant_detail.RestaurantDetailActivity"
             android:exported="false" /> <!-- Personal information -->
         <activity
-            android:name=".ui_personal.PersonalInformationActivity"
+            android:name=".views.personal.PersonalInformationActivity"
             android:exported="false" />
         <activity
-            android:name=".ui_personal.MyCollectionsActivity"
+            android:name=".views.personal.MyCollectionsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui_personal.MyReviewsActivity"
+            android:name=".views.personal.MyReviewsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui_personal.ChangePasswordActivity"
+            android:name=".views.personal.ChangePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".ui_personal.RequestAddRestaurantActivity"
+            android:name=".views.personal.RequestAddRestaurantActivity"
             android:exported="false" /> <!-- Main -->
         <activity
             android:name=".MainActivity"

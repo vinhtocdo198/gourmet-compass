@@ -1,4 +1,4 @@
-package com.example.gourmetcompass.ui_general;
+package com.example.gourmetcompass.views.general;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.utils.EditTextUtil;
-import com.google.android.gms.auth.api.identity.BeginSignInRequest;
+import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -33,8 +33,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import java.util.Objects;
-
 public class LogInFragment extends Fragment {
     private static final String GoogleTag = "GoogleActivity";
     public final String TAG = "LogInFragment";
@@ -42,6 +40,7 @@ public class LogInFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     GoogleSignInClient mGoogleSignInClient;
+    SignInClient mSignInClient;
     EditTextUtil emailTextField, passwordTextField;
     Button logInBtn, signUpBtn;
     Button googleBtn;
@@ -71,13 +70,12 @@ public class LogInFragment extends Fragment {
         signUpBtn.setOnClickListener(v -> replaceFragment(new SignUpFragment(), null));
 
         // Google sign up
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this.requireActivity(), gso);
+//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestIdToken(getString(R.string.default_web_client_id))
+//                .requestEmail()
+//                .build();
+//        mGoogleSignInClient = GoogleSignIn.getClient(this.requireActivity(), gso);
 
-        googleBtn.setOnClickListener(v -> signIn());
         logInBtn.setOnClickListener(v -> logIn());
 
         return view;

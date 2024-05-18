@@ -10,10 +10,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.gourmetcompass.databinding.ActivityMainBinding;
-import com.example.gourmetcompass.ui_general.BrowseFragment;
-import com.example.gourmetcompass.ui_general.HomeFragment;
-import com.example.gourmetcompass.ui_general.LogInFragment;
-import com.example.gourmetcompass.ui_general.NotificationFragment;
+import com.example.gourmetcompass.views.general.BrowseFragment;
+import com.example.gourmetcompass.views.general.HomeFragment;
+import com.example.gourmetcompass.views.general.LogInFragment;
+import com.example.gourmetcompass.views.general.NotificationFragment;
 
 public class MainActivity extends AppCompatActivity {
 
