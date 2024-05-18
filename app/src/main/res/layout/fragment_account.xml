@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/app_bg"
     android:orientation="vertical"
-    tools:context=".ui_general.AccountFragment">
+    tools:context=".views.general.AccountFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

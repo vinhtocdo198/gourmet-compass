@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gourmetcompass.MainActivity;
 import com.example.gourmetcompass.models.Notification;
 import com.example.gourmetcompass.R;
-import com.example.gourmetcompass.ui_restaurant_detail.RestaurantDetailActivity;
+import com.example.gourmetcompass.views.restaurant_detail.RestaurantDetailActivity;
 import com.example.gourmetcompass.utils.BottomSheetUtil;
 import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -83,10 +83,7 @@ public class NotiRVAdapter extends RecyclerView.Adapter<NotiRVAdapter.MyViewHold
         holder.notiTime.setText(getTimePassed(noti.getTimestamp()));
 
         // Navigate to corresponding restaurant when a noti is clicked
-        holder.itemView.setOnClickListener(v -> {
-            seeNoti(noti);
-        });
-
+        holder.itemView.setOnClickListener(v -> seeNoti(noti));
         holder.itemView.setOnLongClickListener(v -> {
             openBottomSheet(holder, noti);
             return false;

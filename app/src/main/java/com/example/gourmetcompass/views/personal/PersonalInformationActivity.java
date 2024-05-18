@@ -1,4 +1,4 @@
-package com.example.gourmetcompass.ui_personal;
+package com.example.gourmetcompass.views.personal;
 
 import android.Manifest;
 import android.app.Activity;
@@ -217,9 +217,9 @@ public class PersonalInformationActivity extends AppCompatActivity {
         emailTextField = findViewById(R.id.email_basic_info);
         emailTextField.setEnabled(false);
         usernameTextField = findViewById(R.id.username_basic_info);
-        usernameTextField.setHint("Enter Username");
+        usernameTextField.setHint("Enter username");
         phoneTextField = findViewById(R.id.phone_basic_info);
-        phoneTextField.setHint("Enter Phone Number");
+        phoneTextField.setHint("Enter phone number");
         phoneTextField.setInputType("number");
     }
 

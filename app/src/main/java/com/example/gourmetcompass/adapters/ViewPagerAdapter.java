@@ -5,10 +5,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.gourmetcompass.ui_restaurant_detail.RestaurantDetailFragment;
-import com.example.gourmetcompass.ui_restaurant_detail.RestaurantGalleryFragment;
-import com.example.gourmetcompass.ui_restaurant_detail.RestaurantMenuFragment;
-import com.example.gourmetcompass.ui_restaurant_detail.RestaurantReviewFragment;
+import com.example.gourmetcompass.views.restaurant_detail.RestaurantDetailFragment;
+import com.example.gourmetcompass.views.restaurant_detail.RestaurantGalleryFragment;
+import com.example.gourmetcompass.views.restaurant_detail.RestaurantMenuFragment;
+import com.example.gourmetcompass.views.restaurant_detail.RestaurantReviewFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 

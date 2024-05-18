@@ -1,4 +1,4 @@
-package com.example.gourmetcompass.ui_general;
+package com.example.gourmetcompass.views.general;
 
 import android.os.Bundle;
 import android.text.TextUtils;

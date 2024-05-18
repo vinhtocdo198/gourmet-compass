@@ -1,4 +1,4 @@
-package com.example.gourmetcompass.ui_restaurant_detail;
+package com.example.gourmetcompass.views.restaurant_detail;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -73,13 +73,11 @@ public class RestaurantGalleryFragment extends Fragment {
         imageUrls = new ArrayList<>();
     }
 
-    // TODO: update restaurant id from storage
     @SuppressLint("NotifyDataSetChanged")
     private void fetchGalleryImages() {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        // TODO: check folder path
         // Navigate to gallery folder
         StorageReference restaurantFolderRef = storageRef.child("res_images").child(restaurantId).child("gallery");
 

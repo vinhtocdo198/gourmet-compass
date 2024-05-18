@@ -19,7 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gourmetcompass.MainActivity;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.models.Restaurant;
-import com.example.gourmetcompass.ui_restaurant_detail.RestaurantDetailActivity;
+import com.example.gourmetcompass.views.restaurant_detail.RestaurantDetailActivity;
 import com.example.gourmetcompass.utils.StorageUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

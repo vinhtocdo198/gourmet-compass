@@ -91,11 +91,8 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
         holder.reviewRatings.setText(String.valueOf((int) Float.parseFloat(review.getRatings())));
         holder.reviewerName.setText(review.getReviewerName());
         holder.reviewTime.setText(getTimePassed(review.getTimestamp()));
-        Glide.with(context)
-                .load(review.getReviewerAvaUrl())
-                .placeholder(R.drawable.ic_default_avatar)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(holder.reviewerAvaImg);
+        updateUserAvatar(review);
+        setUserAvatar(holder, review);
         setReactButtonsStatus(holder, review);
         setReplyButton(holder, review);
 
@@ -115,6 +112,37 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
             openEditReviewBottomSheet(holder, review);
             return false;
         });
+    }
+
+    private void setUserAvatar(@NonNull MyViewHolder holder, Review review) {
+        Glide.with(context)
+                .load(review.getReviewerAvaUrl())
+                .placeholder(R.drawable.ic_default_avatar)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.reviewerAvaImg);
+    }
+
+    private void updateUserAvatar(Review review) {
+        db.collection("users")
+                .document(review.getReviewerId())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            String reviewerAvaUrl = document.getString("avaUrl");
+                            db.collection("restaurants")
+                                    .document(restaurantId)
+                                    .collection("reviews")
+                                    .document(review.getId())
+                                    .update("reviewerAvaUrl", reviewerAvaUrl);
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "Get failed with ", task.getException());
+                    }
+                });
     }
 
     private void openEditReviewBottomSheet(@NonNull MyViewHolder holder, Review review) {
