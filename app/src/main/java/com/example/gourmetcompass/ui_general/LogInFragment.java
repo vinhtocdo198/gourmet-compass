@@ -54,24 +54,32 @@ public class LogInFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_log_in, container, false);
 
-
+        // Init firebase auth
+        mAuth = FirebaseAuth.getInstance();
 
         // Init views
         initViews(view);
 
-        signUpBtn.setOnClickListener(view1 -> replaceFragment(new SignUpFragment(), null));
+        forgotPass.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ForgotPasswordActivity.class);
+            startActivity(intent);
+            if (getActivity() != null) {
+                getActivity().overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
+            }
+        });
 
-        /*Google Sign In*/
+        signUpBtn.setOnClickListener(v -> replaceFragment(new SignUpFragment(), null));
+
+        // Google sign up
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this.requireActivity(), gso);
-        // Init firebase auth
-        mAuth = FirebaseAuth.getInstance();
 
-        googleBtn.setOnClickListener(view12 -> signIn());
-        logInBtn.setOnClickListener(view13 -> logIn());
+        googleBtn.setOnClickListener(v -> signIn());
+        logInBtn.setOnClickListener(v -> logIn());
+
         return view;
     }
 
@@ -107,7 +115,7 @@ public class LogInFragment extends Fragment {
                 });
     }
 
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         currentUser = mAuth.getCurrentUser();
@@ -118,6 +126,7 @@ public class LogInFragment extends Fragment {
             replaceFragment(new AccountFragment(), bundle);
         }
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -134,6 +143,7 @@ public class LogInFragment extends Fragment {
 
 
     private void initViews(View view) {
+        forgotPass = view.findViewById(R.id.forgot_pass);
         emailTextField = view.findViewById(R.id.email_log_in);
         emailTextField.setHint("Enter email");
         passwordTextField = view.findViewById(R.id.password_log_in);

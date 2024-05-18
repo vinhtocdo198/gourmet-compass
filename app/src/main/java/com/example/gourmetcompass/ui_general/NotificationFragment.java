@@ -8,9 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.concurrent.TimeUnit;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class NotificationFragment extends Fragment {
 
@@ -83,7 +81,6 @@ public class NotificationFragment extends Fragment {
                     .document(noti.getId())
                     .update("checked", true);
         }
-        Toast.makeText(getContext(), "All notifications are marked as read", Toast.LENGTH_SHORT).show();
     }
 
     private void initViews(View view) {

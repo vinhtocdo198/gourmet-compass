@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.example.gourmetcompass.utils.StorageUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
@@ -40,6 +42,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ReplyRVAdapter extends RecyclerView.Adapter<ReplyRVAdapter.MyViewHolder> {
 
+    private static final String TAG = "ReplyRVAdapter";
     Context context;
     ArrayList<Reply> replies;
     String restaurantId, reviewId, reviewerName;
@@ -75,17 +78,47 @@ public class ReplyRVAdapter extends RecyclerView.Adapter<ReplyRVAdapter.MyViewHo
         holder.replyContent.setText(reply.getDescription());
         holder.replyTime.setText(getTimePassed(reply.getTimestamp()));
         holder.replierName.setText(reply.getReplierName());
-        Glide.with(context)
-                .load(reply.getReplierAvaUrl())
-                .placeholder(R.drawable.ic_default_avatar)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(holder.replierAvaImg);
+        updateUserAvatar(reply);
+        setUserAvatar(holder, reply);
 
         // Open edit reply bottom sheet
         holder.itemView.setOnLongClickListener(v -> {
             openEditReplyBottomSheet(holder, reply);
             return false;
         });
+    }
+
+    private void setUserAvatar(@NonNull MyViewHolder holder, Reply reply) {
+        Glide.with(context)
+                .load(reply.getReplierAvaUrl())
+                .placeholder(R.drawable.ic_default_avatar)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.replierAvaImg);
+    }
+
+    private void updateUserAvatar(Reply reply) {
+        db.collection("users")
+                .document(reply.getReplierId())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            String replierAvaUrl = document.getString("avaUrl");
+                            db.collection("restaurants")
+                                    .document(restaurantId)
+                                    .collection("reviews")
+                                    .document(reviewId)
+                                    .collection("replies")
+                                    .document(reply.getId())
+                                    .update("replierAvaUrl", replierAvaUrl);
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "Get failed with ", task.getException());
+                    }
+                });
     }
 
     private void openEditReplyBottomSheet(@NonNull MyViewHolder holder, Reply reply) {

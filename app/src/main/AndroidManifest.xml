@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GourmetCompass">
         <activity
+            android:name=".ui_general.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui_personal.MyCollectionDetailActivity"
             android:exported="false" /> <!-- Restaurant search list -->
         <activity
@@ -51,7 +54,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

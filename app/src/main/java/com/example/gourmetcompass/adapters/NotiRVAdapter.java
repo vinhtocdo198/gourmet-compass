@@ -83,10 +83,7 @@ public class NotiRVAdapter extends RecyclerView.Adapter<NotiRVAdapter.MyViewHold
         holder.notiTime.setText(getTimePassed(noti.getTimestamp()));
 
         // Navigate to corresponding restaurant when a noti is clicked
-        holder.itemView.setOnClickListener(v -> {
-            seeNoti(noti);
-        });
-
+        holder.itemView.setOnClickListener(v -> seeNoti(noti));
         holder.itemView.setOnLongClickListener(v -> {
             openBottomSheet(holder, noti);
             return false;
