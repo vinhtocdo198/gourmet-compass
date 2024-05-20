@@ -91,7 +91,7 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
         holder.reviewRatings.setText(String.valueOf((int) Float.parseFloat(review.getRatings())));
         holder.reviewerName.setText(review.getReviewerName());
         holder.reviewTime.setText(getTimePassed(review.getTimestamp()));
-        updateUserAvatar(review);
+        updateReviewerInfo(review);
         setUserAvatar(holder, review);
         setReactButtonsStatus(holder, review);
         setReplyButton(holder, review);
@@ -122,7 +122,7 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
                 .into(holder.reviewerAvaImg);
     }
 
-    private void updateUserAvatar(Review review) {
+    private void updateReviewerInfo(Review review) {
         db.collection("users")
                 .document(review.getReviewerId())
                 .get()
@@ -131,11 +131,12 @@ public class ReviewRVAdapter extends RecyclerView.Adapter<ReviewRVAdapter.MyView
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             String reviewerAvaUrl = document.getString("avaUrl");
+                            String username = document.getString("username");
                             db.collection("restaurants")
                                     .document(restaurantId)
                                     .collection("reviews")
                                     .document(review.getId())
-                                    .update("reviewerAvaUrl", reviewerAvaUrl);
+                                    .update("reviewerName", username, "reviewerAvaUrl", reviewerAvaUrl);
                         } else {
                             Log.d(TAG, "No such document");
                         }
