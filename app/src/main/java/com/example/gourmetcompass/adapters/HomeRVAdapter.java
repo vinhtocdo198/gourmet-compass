@@ -1,5 +1,6 @@
 package com.example.gourmetcompass.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -82,12 +83,12 @@ public class HomeRVAdapter extends RecyclerView.Adapter<HomeRVAdapter.MyViewHold
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Uri resBgUrl = task.getResult();
-                        Glide.with(context)
-                                .load(resBgUrl)
-                                .placeholder(R.drawable.bg_shimmer)
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .centerCrop()
-                                .into(holder.resImgThumbnail);
+                        if (!((Activity) context).isFinishing()) {
+                            Glide.with(context)
+                                    .load(resBgUrl)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .into(holder.resImgThumbnail);
+                        }
                     } else {
                         Log.e(TAG, "Failed to fetch restaurant background image", task.getException());
                     }
