@@ -54,8 +54,13 @@ dependencies {
     implementation(libs.play.services.auth)
     implementation(libs.firebase.appcheck.safetynet)
     implementation(libs.algoliasearch.android)
+    testImplementation(libs.mockito.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.rules)
+    androidTestImplementation(libs.espresso.contrib) {
+        exclude(group = "com.google.protobuf", module = "protobuf-lite")
+    }
 
 }

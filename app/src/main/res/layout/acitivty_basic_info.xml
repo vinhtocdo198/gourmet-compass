@@ -22,7 +22,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/margin_15"
             android:background="@drawable/ic_arrow_back"
-            android:contentDescription="Check noti"
+            android:contentDescription="Go back"
             tools:ignore="HardcodedText" />
 
         <TextView
