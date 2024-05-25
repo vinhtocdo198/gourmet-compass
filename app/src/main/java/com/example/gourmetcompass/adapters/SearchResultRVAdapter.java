@@ -3,6 +3,8 @@ package com.example.gourmetcompass.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +15,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gourmetcompass.R;
 import com.example.gourmetcompass.models.Restaurant;
+import com.example.gourmetcompass.utils.StorageUtil;
 import com.example.gourmetcompass.views.restaurant_detail.RestaurantDetailActivity;
 import com.example.gourmetcompass.utils.FirestoreUtil;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
 public class SearchResultRVAdapter extends RecyclerView.Adapter<SearchResultRVAdapter.MyViewHolder> {
 
+    private static final String TAG = "SearchResultRVAdapter";
     Context context;
     ArrayList<Restaurant> restaurantList;
     FirebaseFirestore db;
+    StorageReference storageRef;
 
     public SearchResultRVAdapter(Context context, ArrayList<Restaurant> restaurantList) {
         this.context = context;
@@ -45,10 +53,13 @@ public class SearchResultRVAdapter extends RecyclerView.Adapter<SearchResultRVAd
 
         // Init firebase services
         db = FirestoreUtil.getInstance().getFirestore();
+        storageRef = StorageUtil.getInstance().getStorage().getReference();
 
+        // Init views
         holder.itemName.setText(restaurant.getName());
         holder.itemDesc.setText(restaurant.getDescription());
         holder.btnMore.setVisibility(View.GONE);
+        getResThumbnailImg(holder, restaurant);
         setResRatings(holder, restaurant);
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), RestaurantDetailActivity.class);
@@ -58,6 +69,24 @@ public class SearchResultRVAdapter extends RecyclerView.Adapter<SearchResultRVAd
                 ((Activity) holder.itemView.getContext()).overridePendingTransition(R.anim.slide_in, R.anim.stay_still);
             }
         });
+    }
+
+    private void getResThumbnailImg(@NonNull MyViewHolder holder, Restaurant restaurant) {
+        storageRef.child("res_images/" + restaurant.getId() + "/app_bar/app_bar.jpg")
+                .getDownloadUrl()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Uri resBgUrl = task.getResult();
+                        Glide.with(context)
+                                .load(resBgUrl)
+                                .placeholder(R.drawable.bg_shimmer)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .centerCrop()
+                                .into(holder.itemImg);
+                    } else {
+                        Log.e(TAG, "Failed to fetch restaurant background image", task.getException());
+                    }
+                });
     }
 
     private void setResRatings(@NonNull MyViewHolder holder, Restaurant restaurant) {

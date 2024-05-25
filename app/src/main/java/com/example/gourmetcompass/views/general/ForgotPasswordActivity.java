@@ -55,6 +55,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         emailTextField.clearFocus();
                         Toast.makeText(ForgotPasswordActivity.this, "Email sent. Please check your inbox!", Toast.LENGTH_SHORT).show();
                         finish();
+                        overridePendingTransition(R.anim.stay_still, R.anim.slide_out);
                     } else {
                         emailTextField.clearFocus();
                         Toast.makeText(ForgotPasswordActivity.this, "Email not found!", Toast.LENGTH_SHORT).show();

@@ -78,7 +78,7 @@ public class ReplyRVAdapter extends RecyclerView.Adapter<ReplyRVAdapter.MyViewHo
         holder.replyContent.setText(reply.getDescription());
         holder.replyTime.setText(getTimePassed(reply.getTimestamp()));
         holder.replierName.setText(reply.getReplierName());
-        updateUserAvatar(reply);
+        updateReplierInfo(reply);
         setUserAvatar(holder, reply);
 
         // Open edit reply bottom sheet
@@ -96,7 +96,7 @@ public class ReplyRVAdapter extends RecyclerView.Adapter<ReplyRVAdapter.MyViewHo
                 .into(holder.replierAvaImg);
     }
 
-    private void updateUserAvatar(Reply reply) {
+    private void updateReplierInfo(Reply reply) {
         db.collection("users")
                 .document(reply.getReplierId())
                 .get()
@@ -105,13 +105,14 @@ public class ReplyRVAdapter extends RecyclerView.Adapter<ReplyRVAdapter.MyViewHo
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             String replierAvaUrl = document.getString("avaUrl");
+                            String username = document.getString("username");
                             db.collection("restaurants")
                                     .document(restaurantId)
                                     .collection("reviews")
                                     .document(reviewId)
                                     .collection("replies")
                                     .document(reply.getId())
-                                    .update("replierAvaUrl", replierAvaUrl);
+                                    .update("replierName", username, "replierAvaUrl", replierAvaUrl);
                         } else {
                             Log.d(TAG, "No such document");
                         }

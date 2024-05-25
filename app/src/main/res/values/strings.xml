@@ -48,7 +48,6 @@
     <string name="map">Map</string>
     <string name="notification">Notification</string>
     <string name="account">Account</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="gourmet_s_choice">Gourmet\'s choice</string>
     <string name="search">Search</string>
     <string name="go_to_search_view">Go to search view</string>
@@ -60,7 +59,7 @@
     <string name="my_collections">My Collections</string>
     <string name="my_reviews">My Reviews</string>
     <string name="change_password">Change Password</string>
-    <string name="request_to_add_edit_a_restaurant">Request to add/edit a restaurant</string>
+    <string name="request_edit">Request to add/edit a restaurant</string>
     <string name="log_out">Log Out</string>
     <string name="back_to_previous_page">Back to previous page</string>
     <string name="highest_rated">Highest Rated</string>
@@ -112,6 +111,7 @@
     <string name="remove_notification">Remove notification</string>
     <string name="mark_as_read">Mark as read</string>
     <string name="send_email">Send email</string>
+    <string name="res_thumbnail">Restaurant thumbnail</string>
 
 
 </resources>

@@ -84,6 +84,7 @@ public class SignUpFragment extends Fragment {
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
+
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
                                 // Create a new user with a phone number and username
@@ -102,6 +103,9 @@ public class SignUpFragment extends Fragment {
                                 Bundle bundle = new Bundle();
                                 bundle.putString("userId", user.getUid());
                                 replaceFragment(new AccountFragment(), bundle);
+                                if (getActivity() != null) {
+                                    Toast.makeText(getActivity(), "Signed up successfully", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         } else {
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {

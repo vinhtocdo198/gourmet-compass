@@ -115,7 +115,7 @@
             android:layout_marginVertical="@dimen/margin_10"
             android:background="@color/app_bg"
             android:drawableEnd="@drawable/ic_arrow_right"
-            android:text="@string/request_to_add_edit_a_restaurant"
+            android:text="@string/request_edit"
             android:textAlignment="textStart"
             android:textAllCaps="false"
             android:textSize="@dimen/text_18" />
