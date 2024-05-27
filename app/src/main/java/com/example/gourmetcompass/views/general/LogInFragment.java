@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LogInFragment extends Fragment {
     private static final String GoogleTag = "GoogleActivity";
-    public final String TAG = "LogInFragment";
     private static final int RC_SIGN_IN = 9001;
     FirebaseAuth mAuth;
     FirebaseUser currentUser;

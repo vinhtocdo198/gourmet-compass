@@ -46,19 +46,19 @@ public class SignUpFragment extends Fragment {
         // Init views
         initViews(view);
 
-        loginBtn.setOnClickListener(view1 -> replaceFragment(new LogInFragment(), null));
+        loginBtn.setOnClickListener(v1 -> replaceFragment(new LogInFragment(), null));
 
-        signUpBtn.setOnClickListener(view12 -> signUp());
+        signUpBtn.setOnClickListener(v2 -> signUp());
 
         return view;
     }
 
     private void signUp() {
         String username, email, password, cfPassword;
-        username = String.valueOf(SignUpFragment.this.usernameTextField.getText()).trim();
-        email = String.valueOf(SignUpFragment.this.emailTextField.getText()).trim();
-        password = String.valueOf(SignUpFragment.this.passwordTextField.getText()).trim();
-        cfPassword = String.valueOf(cfPasswordTextField.getText()).trim();
+        username = usernameTextField.getText().trim();
+        email = emailTextField.getText().trim();
+        password = passwordTextField.getText().trim();
+        cfPassword = cfPasswordTextField.getText().trim();
 
         if (TextUtils.isEmpty(username)) {
             Toast.makeText(getContext(), "Please fill in your user name!", Toast.LENGTH_SHORT).show();
@@ -78,7 +78,7 @@ public class SignUpFragment extends Fragment {
         }
         if (!cfPassword.equals(password)) {
             Toast.makeText(getContext(), "Password and confirm password do not match! Please check again!", Toast.LENGTH_SHORT).show();
-            SignUpFragment.this.passwordTextField.setText("");
+            passwordTextField.setText("");
             cfPasswordTextField.setText("");
         } else {
             mAuth.createUserWithEmailAndPassword(email, password)
