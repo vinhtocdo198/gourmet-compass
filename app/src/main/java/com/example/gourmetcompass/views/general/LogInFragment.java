@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +25,6 @@ import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,13 +36,13 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LogInFragment extends Fragment {
     private static final String GoogleTag = "GoogleActivity";
-    public final String TAG = "LogInFragment";
     private static final int RC_SIGN_IN = 9001;
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     GoogleSignInClient mGoogleSignInClient;
     SignInClient mSignInClient;
     EditTextUtil emailTextField, passwordTextField;
+    //    EditText emailText, passwordText;
     Button logInBtn, signUpBtn;
     Button googleBtn;
     TextView forgotPass;
@@ -83,8 +84,10 @@ public class LogInFragment extends Fragment {
 
     private void logIn() {
         String email, password;
-        email = String.valueOf(LogInFragment.this.emailTextField.getText()).trim();
-        password = String.valueOf(LogInFragment.this.passwordTextField.getText()).trim();
+        email = emailTextField.getText().trim();
+        password = passwordTextField.getText().trim();
+//        email = emailText.getText().toString().trim();
+//        password = passwordText.getText().toString().trim();
 
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(getActivity(), "Please fill in your email!", Toast.LENGTH_SHORT).show();
@@ -105,7 +108,9 @@ public class LogInFragment extends Fragment {
                             bundle.putString("userId", user.getUid());
                             replaceFragment(new AccountFragment(), bundle);
                         }
-                        Toast.makeText(getActivity(), "Logged in successfully", Toast.LENGTH_SHORT).show();
+                        if (getActivity() != null) {
+                            Toast.makeText(getActivity(), "Logged in successfully", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         // If sign in fails, display a message to the user.
                         Toast.makeText(getActivity(), "Incorrect credentials. Please check again", Toast.LENGTH_SHORT).show();
@@ -142,6 +147,8 @@ public class LogInFragment extends Fragment {
 
     private void initViews(View view) {
         forgotPass = view.findViewById(R.id.forgot_pass);
+//        emailText = view.findViewById(R.id.email_log_in);
+//        passwordText = view.findViewById(R.id.password_log_in);
         emailTextField = view.findViewById(R.id.email_log_in);
         emailTextField.setHint("Enter email");
         passwordTextField = view.findViewById(R.id.password_log_in);
@@ -154,11 +161,13 @@ public class LogInFragment extends Fragment {
     }
 
     private void replaceFragment(Fragment fragment, Bundle bundle) {
-        fragment.setArguments(bundle);
-        FragmentManager fragmentManager = getParentFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.main_frame_layout, fragment);
-        fragmentTransaction.commit();
+        if (isAdded()) {
+            fragment.setArguments(bundle);
+            FragmentManager fragmentManager = getParentFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.main_frame_layout, fragment);
+            fragmentTransaction.commit();
+        }
     }
 
     private void signIn() {

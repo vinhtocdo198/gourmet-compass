@@ -229,10 +229,12 @@ public class PersonalInformationActivity extends AppCompatActivity {
                 .getDownloadUrl()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Glide.with(PersonalInformationActivity.this)
-                                .load(task.getResult())
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .into(userAvatar);
+                        if (!isFinishing()) {
+                            Glide.with(PersonalInformationActivity.this)
+                                    .load(task.getResult())
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .into(userAvatar);
+                        }
                     } else {
                         Log.d(TAG, "getUserInformation: Failed to get avatar");
                     }

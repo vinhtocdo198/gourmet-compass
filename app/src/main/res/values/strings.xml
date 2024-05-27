@@ -111,6 +111,7 @@
     <string name="remove_notification">Remove notification</string>
     <string name="mark_as_read">Mark as read</string>
     <string name="send_email">Send email</string>
+    <string name="res_thumbnail">Restaurant thumbnail</string>
 
 
 </resources>
